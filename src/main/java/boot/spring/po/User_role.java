@@ -1,7 +1,7 @@
 package boot.spring.po;
 
 public class User_role {
-	int urid;
+	Integer urid;
 	User user;
 	Role role;
 	

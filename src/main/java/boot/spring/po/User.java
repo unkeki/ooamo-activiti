@@ -3,11 +3,11 @@ package boot.spring.po;
 import java.util.List;
 
 public class User {
-	int uid;
+	Integer uid;
 	String username;
 	String password;
 	String tel;
-	int age;
+	Integer age;
 	List<User_role> user_roles;
 	
 	public int getUid() {

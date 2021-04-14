@@ -3,7 +3,7 @@ package boot.spring.po;
 import java.util.List;
 
 public class Permission {
-	int pid;
+	Integer pid;
 	String permissionname;
 	List<Role_permission> rp;
 	public int getPid() {

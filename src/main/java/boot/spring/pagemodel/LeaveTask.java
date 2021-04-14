@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel("请假任务信息")
 public class LeaveTask {
 	@ApiModelProperty("主键")
-	int id;
+	Integer id;
 	@ApiModelProperty("流程实例id")
 	String process_instance_id;
 	@ApiModelProperty("用户名")

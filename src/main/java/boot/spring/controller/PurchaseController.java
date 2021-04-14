@@ -110,8 +110,7 @@ public class PurchaseController {
 		purchase.setItemlist(itemlist);
 		purchase.setTotal(total);
 		purchase.setApplytime(new Date());
-		ProcessInstance ins=purchaseservice.startWorkflow(purchase, userid, variables);
-		System.out.println("流程id"+ins.getId()+"已启动");
+		purchaseservice.startWorkflow(purchase, userid, variables);
 		return new MSG("sucess");
 	}
 	//我发起的采购流程

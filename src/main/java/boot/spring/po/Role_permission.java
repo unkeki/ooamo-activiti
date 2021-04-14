@@ -1,7 +1,7 @@
 package boot.spring.po;
 
 public class Role_permission {
-	int rpid;
+	Integer rpid;
 	Role role;
 	Permission permission;
 	public int getRpid() {

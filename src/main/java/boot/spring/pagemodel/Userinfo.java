@@ -1,11 +1,11 @@
 package boot.spring.pagemodel;
 
 public class Userinfo {
-	int id;
+	Integer id;
 	String username;
 	String password;
 	String tel;
-	int age;
+	Integer age;
 	String rolelist;
 	public int getId() {
 		return id;

@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class PurchaseTask {
-	int bussinesskey;
+	Integer bussinesskey;
 	String applyer;
 	String itemlist;
 	BigDecimal total;

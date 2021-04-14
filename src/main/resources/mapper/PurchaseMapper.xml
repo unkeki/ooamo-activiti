@@ -8,8 +8,8 @@
 	</select>
 	
 	<insert id="save" useGeneratedKeys="true" keyProperty="id" parameterType="boot.spring.po.PurchaseApply">
-	  insert into purchase (id,itemlist,total,applytime,applyer)
-	  values (#{id},#{itemlist},#{total},#{applytime},#{applyer})
+	  insert into purchase (itemlist,total,applytime,applyer)
+	  values (#{itemlist},#{total},#{applytime},#{applyer})
 	</insert>
 	
 	<update id="updateByPrimaryKeySelective" parameterType="boot.spring.po.PurchaseApply">

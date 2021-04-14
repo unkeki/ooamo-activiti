@@ -177,13 +177,11 @@ public class ActivitiController {
 		Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put("applyuserid", userid);
 		ProcessInstance ins = leaveservice.startWorkflow(apply, userid, variables);
-		System.out.println("流程id" + ins.getId() + "已启动");
 		return new MSG("sucess");
 	}
 
 	@ApiOperation("获取部门领导审批代办列表")
-	@RequestMapping(value = "/depttasklist", produces = {
-			"application/json;charset=UTF-8" }, method = RequestMethod.POST)
+	@RequestMapping(value = "/depttasklist", method = RequestMethod.POST)
 	@ResponseBody
 	public DataGrid<LeaveTask> getdepttasklist(HttpSession session, @RequestParam("current") int current,
 			@RequestParam("rowCount") int rowCount) {
@@ -247,7 +245,7 @@ public class ActivitiController {
 		}
 	}
 
-	@RequestMapping(value = "/hrtasklist", produces = { "application/json;charset=UTF-8" }, method = RequestMethod.POST)
+	@RequestMapping(value = "/hrtasklist", method = RequestMethod.POST)
 	@ResponseBody
 	public DataGrid<LeaveTask> gethrtasklist(HttpSession session, @RequestParam("current") int current,
 			@RequestParam("rowCount") int rowCount) {
@@ -311,7 +309,7 @@ public class ActivitiController {
 		}
 	}
 
-	@RequestMapping(value = "/xjtasklist", produces = { "application/json;charset=UTF-8" }, method = RequestMethod.POST)
+	@RequestMapping(value = "/xjtasklist", method = RequestMethod.POST)
 	@ResponseBody
 	public DataGrid<LeaveTask> getXJtasklist(HttpSession session, @RequestParam("current") int current,
 			@RequestParam("rowCount") int rowCount) {
@@ -344,8 +342,7 @@ public class ActivitiController {
 		return grid;
 	}
 
-	@RequestMapping(value = "/updatetasklist", produces = {
-			"application/json;charset=UTF-8" }, method = RequestMethod.POST)
+	@RequestMapping(value = "/updatetasklist", method = RequestMethod.POST)
 	@ResponseBody
 	public DataGrid<LeaveTask> getupdatetasklist(HttpSession session, @RequestParam("current") int current,
 			@RequestParam("rowCount") int rowCount) {

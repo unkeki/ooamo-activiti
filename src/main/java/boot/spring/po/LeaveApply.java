@@ -10,7 +10,7 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel("请假表")
 public class LeaveApply implements Serializable{
 	@ApiModelProperty("主键")
-	int id;
+	Integer id;
 	@ApiModelProperty("流程实例id")
 	String process_instance_id;
 	@ApiModelProperty("用户名")

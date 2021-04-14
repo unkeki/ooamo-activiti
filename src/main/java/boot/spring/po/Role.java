@@ -3,7 +3,7 @@ package boot.spring.po;
 import java.util.List;
 
 public class Role {
-	int rid;
+	Integer rid;
 	String rolename;
 	List<User_role> user_roles;  
 	List<Role_permission> role_permissions;

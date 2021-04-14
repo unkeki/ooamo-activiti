@@ -6,7 +6,7 @@ import java.util.Date;
 import org.activiti.engine.task.Task;
 
 public class PurchaseApply {
-	int id;
+	Integer id;
 	String itemlist;
 	BigDecimal total;
 	Date applytime;
