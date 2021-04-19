@@ -15,13 +15,13 @@
 
 6.系统前端采用基于Bootstrap的模板devoops建立。https://github.com/shenzhanwang/devoops
 
-7.起始页面入口：http://localhost:8080/login
+7.起始页面入口：http://localhost:8888/login
 使用前，编译(可直接在myeclipse完成)：
 ```
 mvn clean install
 ```
-8. swagger入口：http://localhost:8080/swagger-ui.html
-9. 新增流程图设计器，将activiti-explorer.war放入Tomcat8.5的webapps目录下，启动Tomcat，访问http://localhost:8080/activiti-explorer，即可进入登录页面，用户名和密码都是kermit：
+8. swagger入口：http://localhost:8888/swagger-ui.html
+9. 新增流程图设计器，将activiti-explorer.war放入Tomcat8.5的webapps目录下，启动Tomcat，访问http://localhost:8080/activiti-explorer ，即可进入登录页面，用户名和密码都是kermit：
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0419/164940_5fb4fee1_1110335.png "1618821418(1).png")
 点击流程->流程设计工作区->新建模型，填入模型名称，点击创建按钮即可开始流程图设计：
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0419/165212_01f3e2f0_1110335.png "1618821830(1).png")
