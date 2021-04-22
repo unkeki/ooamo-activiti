@@ -32,15 +32,10 @@
 	    	    		$("#endtime").val(obj.end_time);
 	    	    		$("#applytime").val(obj.apply_time);
 	    	    		$("form").attr("action","task/reportcomplete/"+taskid);
+	    	    		$("form").data("taskid",taskid);
 	    	    	});
 	    	    	$("#dept").show();
-	    	    	$("#btn").click(function(){
-	    		    	$.post("task/reportcomplete/"+taskid,$("form").serialize(),function(a){
-	    		    		alert("处理成功");
-	    		    		LoadAjaxContent("reportback");
-	    		    	});
 	    	    	
-	    	    });
 	    	    });
 	    
 	    

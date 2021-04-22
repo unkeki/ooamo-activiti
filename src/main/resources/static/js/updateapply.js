@@ -28,13 +28,7 @@
 	    	    	$("#total").val(total);
 	    	    	$("#itemlist").val(itemlist);
 	    	    	$("#dept").show();
-	    	    	$("#btn").click(function(){
-	    		    	$.post("task/updateapplycomplete/"+taskid,$("form").serialize(),function(a){
-	    		    		alert("处理成功");
-	    		    		LoadAjaxContent("updateapply");
-	    		    	});
-	    	    	
-	    	    });
+	    	    	$("form").data("taskid",taskid);
 	    	    });
 	    
 	    

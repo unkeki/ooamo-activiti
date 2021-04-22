@@ -27,13 +27,7 @@ $(document).ready(function(){
 	    	    	$("#total").val(total);
 	    	    	$("#itemlist").val(itemlist);
 	    	    	$("#dept").show();
-	    	    	$("#btn").click(function(){
-	    		    	$.post("task/paycomplete/"+taskid,$("form").serialize(),function(a){
-	    		    		alert("处理成功");
-	    		    		LoadAjaxContent("pay");
-	    		    	});
-	    	    	
-	    	    });
+	    	    	$("form").data("taskid",taskid);
 	    	    });
 	    
 	    

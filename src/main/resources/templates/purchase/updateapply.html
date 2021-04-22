@@ -92,6 +92,16 @@
 
 </div>
             
-            
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#btn").click(function(){
+	    		    	$.post("task/updateapplycomplete/"+$("form").data("taskid"),$("form").serialize(),function(a){
+	    		    		alert("处理成功");
+	    		    		LoadAjaxContent("updateapply");
+	    		    	});
+	    	    	
+	    	    });
+});
+</script>             
             
  

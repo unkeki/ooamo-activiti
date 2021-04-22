@@ -1,5 +1,5 @@
 <script src="./js/hraudit.js"></script>
-     <!--Start Breadcrumb-->
+     <!--Start Breadcrumb -->
 <div class="row">
 	<div id="breadcrumb" class="col-xs-12">
 	<a href="#" class="show-sidebar">
@@ -109,7 +109,14 @@
 	</div>
 
 </div>
-            
-            
-            
-   
+
+<script type="text/javascript">
+$(document).ready(function(){
+	   $("#btn").click(function(){
+	    	$.post("task/hrcomplete/"+$("form").data("taskid"),$("form").serialize(),function(a){
+	    	alert("处理成功");
+	    	LoadAjaxContent("hraudit");
+	    	});
+	    }); 		    	
+});
+</script>

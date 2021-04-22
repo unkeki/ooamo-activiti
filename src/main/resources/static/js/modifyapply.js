@@ -35,13 +35,7 @@
 	    	    		$("form").attr("action","task/updatecomplete/"+taskid);
 	    	    	});
 	    	    	$("#dept").show();
-	    	    	$("#btn").click(function(){
-	    		    	$.post("task/updatecomplete/"+taskid,$("form").serialize(),function(a){
-	    		    		alert("处理成功");
-	    		    		LoadAjaxContent("modifyapply");
-	    		    	});
-	    	    	
-	    	    });
+	    	    	$("form").data("taskid",taskid);
 	    	    });
 	    
 	    

@@ -26,13 +26,7 @@
 	    	    	$("#total").val(total);
 	    	    	$("#itemlist").val(itemlist);
 	    	    	$("#dept").show();
-	    	    	$("#btn").click(function(){
-	    		    	$.post("task/managercomplete/"+taskid,$("form").serialize(),function(a){
-	    		    		alert("处理成功");
-	    		    		LoadAjaxContent("manager");
-	    		    	});
-	    	    	
-	    	    });
+	    	    	$("form").data("taskid",taskid);
 	    	    });
 	    
 	    

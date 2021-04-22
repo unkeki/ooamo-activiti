@@ -25,13 +25,7 @@
 	    	    	$("#total").val(total);
 	    	    	$("#itemlist").val(itemlist);
 	    	    	$("#dept").show();
-	    	    	$("#btn").click(function(){
-	    		    	$.post("task/purchasemanagercomplete/"+taskid,$("form").serialize(),function(a){
-	    		    		alert("处理成功");
-	    		    		LoadAjaxContent("purchasemanager");
-	    		    	});
-	    	    	
-	    	    });
+	    	    	$("form").data("taskid",taskid);
 	    	    });
 	    
 	    

@@ -29,15 +29,11 @@
 	    	    		$("#endtime").val(obj.end_time);
 	    	    		$("#applytime").val(obj.apply_time);
 	    	    		$("form").attr("action","task/hrcomplete/"+taskid);
+	    	    		$("form").data("taskid",taskid);
 	    	    	});
 	    	    	$("#dept").show();
-	    	    	$("#btn").click(function(){
-	    		    	$.post("task/hrcomplete/"+taskid,$("form").serialize(),function(a){
-	    		    		alert("处理成功");
-	    		    		LoadAjaxContent("hraudit");
-	    		    	});
 	    	    	
-	    	    });
+	    	    	
 	    	    });
 	    
 	    

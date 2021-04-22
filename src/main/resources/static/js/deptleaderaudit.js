@@ -30,15 +30,10 @@
 	    	    		$("#endtime").val(obj.end_time);
 	    	    		$("#applytime").val(obj.apply_time);
 	    	    		$("form").attr("action","task/deptcomplete/"+taskid);
+	    	    		$("form").data("taskid",taskid);
 	    	    	});
 	    	    	$("#dept").show();
-	    	    	$("#btn").click(function(){
-	    		    	$.post("task/deptcomplete/"+taskid,$("form").serialize(),function(a){
-	    		    		alert("处理成功");
-	    		    		LoadAjaxContent("deptleaderaudit");
-	    		    	});
 	    	    	
-	    	    });
 	    	    });
 	    
 	    
@@ -48,3 +43,5 @@
 function getLocalTime(nS) {  
  return new Date(parseInt(nS)).toLocaleString().replace(/:\d{1,2}$/,' ');  
 }
+
+
