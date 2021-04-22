@@ -33,7 +33,7 @@ mvn clean install
 
 12.效果图：
 
-![输入图片说明](https://images.gitee.com/uploads/images/2018/1211/082825_ac69fdda_1110335.gif "SSM.gif")
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0422/104928_60dfdd31_1110335.gif "1.gif")
 ![输入图片说明](https://images.gitee.com/uploads/images/2018/1211/091443_9ebd78b8_1110335.gif "user.gif")
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0422/103749_35d4a34f_1110335.png "1.png")
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0422/103800_372a4343_1110335.png "2.png")
