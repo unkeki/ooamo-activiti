@@ -15,8 +15,8 @@ public interface LeaveService {
 	public List<LeaveApply> getpagedepttask(String userid,int firstrow,int rowcount);
 	public int getalldepttask(String userid);
 	public LeaveApply getleave(int id);
-	public List<LeaveApply> getpagehrtask(String userid,int firstrow,int rowcount);
-	public int getallhrtask(String userid);
+	public List<LeaveApply> getpagehrtask(String username,int firstrow,int rowcount);
+	public int getallhrtask(String username);
 	public List<LeaveApply> getpageXJtask(String userid,int firstrow,int rowcount);
 	public int getallXJtask(String userid);
 	public List<LeaveApply> getpageupdateapplytask(String userid,int firstrow,int rowcount);
@@ -24,4 +24,7 @@ public interface LeaveService {
 	public void completereportback(String taskid, String realstart_time, String realend_time);
 	public void updatecomplete(String taskid, LeaveApply leave,String reappply);
 	public List<String> getHighLightedFlows(ProcessDefinitionEntity deployedProcessDefinition,List<HistoricActivityInstance> historicActivityInstances);
+	
+	public List<LeaveApply> getPageByApplyer(String username,int current,int rowCount);
+	public int getAllByApplyer(String username);
 }

@@ -58,4 +58,9 @@
 	    </set>
 	    where id = #{id,jdbcType=INTEGER}
 	</update>
+	
+	<select id="listLeaveApplyByApplyer" resultMap="BaseResultMap">
+		select * from leaveapply
+		where user_id = #{0}
+	</select>
 </mapper>

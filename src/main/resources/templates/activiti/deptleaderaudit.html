@@ -101,6 +101,11 @@
 											</select>
 										</div>
 						             </div> 
+						             <div class="form-group">
+										<label>请选择hr进行审批</label> 
+										<select id="hr" name="hr" class="form-control">
+										</select>
+									</div>
 						              <button id="btn" type="button" class="btn btn-default">完成</button>
                                 </form>
 				</div>
@@ -111,6 +116,17 @@
 
 </div>
             
+<script type="text/javascript">
+$(document).ready(function(){
+	$.get("/listUsers",function(data){
+		for (i=0;i<data.length;i++) {
+			$("#hr").append("<option value='"+ data[i].username +"'>" + data[i].username + "</option>");
+		}
+	});
+	
+});
+
+</script>
             
             
     

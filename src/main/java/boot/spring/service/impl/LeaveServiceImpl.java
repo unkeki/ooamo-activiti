@@ -21,6 +21,8 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.github.pagehelper.PageHelper;
+
 import boot.spring.mapper.LeaveApplyMapper;
 import boot.spring.po.LeaveApply;
 import boot.spring.service.LeaveService;
@@ -44,20 +46,21 @@ public class LeaveServiceImpl implements LeaveService{
 		String businesskey=String.valueOf(apply.getId());//使用leaveapply表的主键作为businesskey,连接业务数据和流程数据
 		identityservice.setAuthenticatedUserId(userid);
 		ProcessInstance instance=runtimeservice.startProcessInstanceByKey("leave",businesskey,variables);
-		System.out.println(businesskey);
 		String instanceid=instance.getId();
 		apply.setProcess_instance_id(instanceid);
 		leavemapper.updateByPrimaryKey(apply);
 		return instance;
 	}
 
-	public List<LeaveApply> getpagedepttask(String userid,int firstrow,int rowcount) {
+	public List<LeaveApply> getpagedepttask(String username,int firstrow,int rowcount) {
 		List<LeaveApply> results=new ArrayList<LeaveApply>();
-		List<Task> tasks=taskservice.createTaskQuery().taskCandidateGroup("部门经理").listPage(firstrow, rowcount);
+		// 使用任务候选人查询待办列表
+		List<Task> tasks=taskservice.createTaskQuery().taskAssignee(username).taskName("部门领导审批").listPage(firstrow, rowcount);
 		for(Task task:tasks){
 			String instanceid=task.getProcessInstanceId();
 			ProcessInstance ins=runtimeservice.createProcessInstanceQuery().processInstanceId(instanceid).singleResult();
 			String businesskey=ins.getBusinessKey();
+			// 使用业务号查出业务数据一起返回
 			LeaveApply a=leavemapper.getLeaveApply(Integer.parseInt(businesskey));
 			a.setTask(task);
 			results.add(a);
@@ -65,8 +68,8 @@ public class LeaveServiceImpl implements LeaveService{
 		return results;
 	}
 	
-	public int getalldepttask(String userid) {
-		List<Task> tasks=taskservice.createTaskQuery().taskCandidateGroup("部门经理").list();
+	public int getalldepttask(String username) {
+		List<Task> tasks=taskservice.createTaskQuery().taskAssignee(username).taskName("部门领导审批").list();
 		return tasks.size();
 	}
 
@@ -75,9 +78,9 @@ public class LeaveServiceImpl implements LeaveService{
 		return leave;
 	}
 
-	public List<LeaveApply> getpagehrtask(String userid,int firstrow,int rowcount) {
+	public List<LeaveApply> getpagehrtask(String username,int firstrow,int rowcount) {
 		List<LeaveApply> results=new ArrayList<LeaveApply>();
-		List<Task> tasks=taskservice.createTaskQuery().taskCandidateGroup("人事").listPage(firstrow, rowcount);
+		List<Task> tasks=taskservice.createTaskQuery().taskAssignee(username).taskName("人事审批").listPage(firstrow, rowcount);
 		for(Task task:tasks){
 			String instanceid=task.getProcessInstanceId();
 			ProcessInstance ins=runtimeservice.createProcessInstanceQuery().processInstanceId(instanceid).singleResult();
@@ -89,8 +92,8 @@ public class LeaveServiceImpl implements LeaveService{
 		return results;
 	}
 
-	public int getallhrtask(String userid) {
-		List<Task> tasks=taskservice.createTaskQuery().taskCandidateGroup("人事").list();
+	public int getallhrtask(String username) {
+		List<Task> tasks=taskservice.createTaskQuery().taskAssignee(username).taskName("人事审批").list();
 		return tasks.size();
 	}
 	
@@ -205,5 +208,17 @@ public class LeaveServiceImpl implements LeaveService{
 	        }  
 	    }  
 	    return highFlows;  
+	}
+
+	@Override
+	public List<LeaveApply> getPageByApplyer(String username, int current, int rowCount) {
+		PageHelper.startPage(current, rowCount);  
+		List<LeaveApply> list = leavemapper.listLeaveApplyByApplyer(username);
+		return list;
+	}
+
+	@Override
+	public int getAllByApplyer(String username) {
+		return leavemapper.listLeaveApplyByApplyer(username).size();
 	}  
 }

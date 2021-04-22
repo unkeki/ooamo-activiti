@@ -121,11 +121,13 @@
 								<i class="fa fa-bars"></i>
 								<span class="hidden-xs">请假待办</span>
 							</a>
-							<ul class="dropdown-menu">
+							<ul class="dropdown-menu" id="leave">
+							<!--  
 								<li><a class="ajax-link" href="deptleaderaudit">部门领导审批</a></li>
 								<li><a class="ajax-link" href="hraudit">人事审批</a></li>
 								<li><a class="ajax-link" href="reportback">销假</a></li>
 								<li><a class="ajax-link" href="modifyapply">调整申请</a></li>
+							-->
 							</ul>
 						</li>
 						<li class="dropdown">
@@ -133,13 +135,15 @@
 								<i class="fa fa-phone-square"></i>
 								<span class="hidden-xs">采购待办</span>
 							</a>
-							<ul class="dropdown-menu">
+							<ul class="dropdown-menu" id="purchase">
+								<!--  
 								<li><a class="ajax-link" href="purchasemanager">采购经理审批</a></li>
 								<li><a class="ajax-link" href="finance">财务审批</a></li>
 								<li><a class="ajax-link" href="manager">总经理审批</a></li>
 								<li><a class="ajax-link" href="pay">出纳付款</a></li>
-								<li><a class="ajax-link" href="updateapply">调整申请</a></li>
+								<li><a class="ajax-link" href="updateapply">调整采购申请</a></li>
 								<li><a class="ajax-link" href="receiveitem">收货确认</a></li>
+								-->
 							</ul>
 						</li>
 					</ul>
@@ -147,22 +151,11 @@
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle">
 						<i class="fa fa-truck"></i>
-						<span class="hidden-xs">运行流程进度追踪</span>
+						<span class="hidden-xs">流程进度追踪</span>
 					</a>
 					<ul class="dropdown-menu">
 						<li><a class="ajax-link" href="myleaves">我发起的请假流程</a></li>
-						<li><a class="ajax-link" href="myleaveprocess">我正在参与的请假流程</a></li>
 						<li><a class="ajax-link" href="mypurchase">我发起的采购流程</a></li>
-					</ul>
-				</li>
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle">
-						<i class="fa fa-power-off"></i>
-						<span class="hidden-xs">已结束流程数据查询</span>
-					</a>
-					<ul class="dropdown-menu">
-						<li><a class="ajax-link" href="historyprocess">我的请假历史</a></li>
-						<li><a class="ajax-link" href="historypurchaseprocess">我的采购历史</a></li>
 					</ul>
 				</li>
 				<li class="dropdown">
@@ -214,3 +207,40 @@
 <script src="js/devoops.js"></script>
 </body>
 </html>
+<script type="text/javascript">
+$(document).ready(function(){
+	$.get("/currentuserpermission",function(data){
+		if (data.indexOf("部门领导审批") >= 0) {
+			$("#leave").append('<li><a class="ajax-link" href="deptleaderaudit">部门领导审批</a></li>');
+		}
+		if (data.indexOf("人事审批") >= 0) {
+			$("#leave").append('<li><a class="ajax-link" href="hraudit">人事审批</a></li>');
+		}
+		if (data.indexOf("销假") >= 0) {
+			$("#leave").append('<li><a class="ajax-link" href="reportback">销假</a></li>');
+		}
+		if (data.indexOf("调整申请") >= 0) {
+			$("#leave").append('<li><a class="ajax-link" href="modifyapply">调整申请</a></li>');
+		}
+		if (data.indexOf("采购经理审批") >= 0) {
+			$("#purchase").append('<li><a class="ajax-link" href="purchasemanager">采购经理审批</a></li>');
+		}
+		if (data.indexOf("财务审批") >= 0) {
+			$("#purchase").append('<li><a class="ajax-link" href="finance">财务审批</a></li>');
+		}
+		if (data.indexOf("总经理审批") >= 0) {
+			$("#purchase").append('<li><a class="ajax-link" href="manager">总经理审批</a></li>');
+		}
+		if (data.indexOf("出纳付款") >= 0) {
+			$("#purchase").append('<li><a class="ajax-link" href="pay">出纳付款</a></li>');
+		}
+		if (data.indexOf("调整采购申请") >= 0) {
+			$("#purchase").append('<li><a class="ajax-link" href="updateapply">调整采购申请</a></li>');
+		}
+		if (data.indexOf("收货确认") >= 0) {
+			$("#purchase").append('<li><a class="ajax-link" href="receiveitem">收货确认</a></li>');
+		}
+	});
+	
+});
+</script>

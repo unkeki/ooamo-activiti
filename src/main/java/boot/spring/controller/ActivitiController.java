@@ -41,11 +41,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSON;
 import boot.spring.pagemodel.Process;
+import boot.spring.mapper.LeaveApplyMapper;
 import boot.spring.pagemodel.DataGrid;
 import boot.spring.pagemodel.HistoryProcess;
 import boot.spring.pagemodel.LeaveTask;
 import boot.spring.pagemodel.MSG;
-import boot.spring.pagemodel.RunningProcess;
 import boot.spring.po.LeaveApply;
 import boot.spring.po.Permission;
 import boot.spring.po.Role;
@@ -76,6 +76,9 @@ public class ActivitiController {
 	HistoryService histiryservice;
 	@Autowired
 	SystemService systemservice;
+	
+	@Autowired
+	LeaveApplyMapper leaveApplyMapper;
 
 	@RequestMapping(value = "/processlist", method = RequestMethod.GET)
 	String process() {
@@ -176,75 +179,46 @@ public class ActivitiController {
 		String userid = (String) session.getAttribute("username");
 		Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put("applyuserid", userid);
-		ProcessInstance ins = leaveservice.startWorkflow(apply, userid, variables);
+		variables.put("deptleader", apply.getDeptleader());
+		leaveservice.startWorkflow(apply, userid, variables);
 		return new MSG("sucess");
 	}
 
-	@ApiOperation("获取部门领导审批代办列表")
+	@ApiOperation("获取部门领导审批待办列表")
 	@RequestMapping(value = "/depttasklist", method = RequestMethod.POST)
 	@ResponseBody
 	public DataGrid<LeaveTask> getdepttasklist(HttpSession session, @RequestParam("current") int current,
 			@RequestParam("rowCount") int rowCount) {
+		String username = (String) session.getAttribute("username");
 		DataGrid<LeaveTask> grid = new DataGrid<LeaveTask>();
 		grid.setRowCount(rowCount);
 		grid.setCurrent(current);
-		grid.setTotal(0);
-		grid.setRows(new ArrayList<LeaveTask>());
-		// 先做权限检查，对于没有部门领导审批权限的用户,直接返回空
-		String userid = (String) session.getAttribute("username");
-		int uid = systemservice.getUidByusername(userid);
-		User user = systemservice.getUserByid(uid);
-		List<User_role> userroles = user.getUser_roles();
-		if (userroles == null)
-			return grid;
-		boolean flag = false;// 默认没有权限
-		for (int k = 0; k < userroles.size(); k++) {
-			User_role ur = userroles.get(k);
-			Role r = ur.getRole();
-			int roleid = r.getRid();
-			Role role = systemservice.getRolebyid(roleid);
-			List<Role_permission> p = role.getRole_permission();
-			for (int j = 0; j < p.size(); j++) {
-				Role_permission rp = p.get(j);
-				Permission permission = rp.getPermission();
-				if (permission.getPermissionname().equals("部门领导审批"))
-					flag = true;
-				else
-					continue;
-			}
+		int firstrow = (current - 1) * rowCount;
+		List<LeaveApply> results = leaveservice.getpagedepttask(username, firstrow, rowCount);
+		int totalsize = leaveservice.getalldepttask(username);
+		List<LeaveTask> tasks = new ArrayList<LeaveTask>();
+		for (LeaveApply apply : results) {
+			LeaveTask task = new LeaveTask();
+			task.setApply_time(apply.getApply_time());
+			task.setUser_id(apply.getUser_id());
+			task.setEnd_time(apply.getEnd_time());
+			task.setId(apply.getId());
+			task.setLeave_type(apply.getLeave_type());
+			task.setProcess_instance_id(apply.getProcess_instance_id());
+			task.setProcessdefid(apply.getTask().getProcessDefinitionId());
+			task.setReason(apply.getReason());
+			task.setStart_time(apply.getStart_time());
+			task.setTaskcreatetime(apply.getTask().getCreateTime());
+			task.setTaskid(apply.getTask().getId());
+			task.setTaskname(apply.getTask().getName());
+			tasks.add(task);
 		}
-		if (flag == false)// 无权限
-		{
-			return grid;
-		} else {
-			int firstrow = (current - 1) * rowCount;
-			List<LeaveApply> results = leaveservice.getpagedepttask(userid, firstrow, rowCount);
-			int totalsize = leaveservice.getalldepttask(userid);
-			List<LeaveTask> tasks = new ArrayList<LeaveTask>();
-			for (LeaveApply apply : results) {
-				LeaveTask task = new LeaveTask();
-				task.setApply_time(apply.getApply_time());
-				task.setUser_id(apply.getUser_id());
-				task.setEnd_time(apply.getEnd_time());
-				task.setId(apply.getId());
-				task.setLeave_type(apply.getLeave_type());
-				task.setProcess_instance_id(apply.getProcess_instance_id());
-				task.setProcessdefid(apply.getTask().getProcessDefinitionId());
-				task.setReason(apply.getReason());
-				task.setStart_time(apply.getStart_time());
-				task.setTaskcreatetime(apply.getTask().getCreateTime());
-				task.setTaskid(apply.getTask().getId());
-				task.setTaskname(apply.getTask().getName());
-				tasks.add(task);
-			}
-			grid.setRowCount(rowCount);
-			grid.setCurrent(current);
-			grid.setTotal(totalsize);
-			grid.setRows(tasks);
-			return grid;
-		}
+		grid.setTotal(totalsize);
+		grid.setRows(tasks);
+		return grid;
 	}
 
+	@ApiOperation("获取人事审批待办列表")
 	@RequestMapping(value = "/hrtasklist", method = RequestMethod.POST)
 	@ResponseBody
 	public DataGrid<LeaveTask> gethrtasklist(HttpSession session, @RequestParam("current") int current,
@@ -252,61 +226,32 @@ public class ActivitiController {
 		DataGrid<LeaveTask> grid = new DataGrid<LeaveTask>();
 		grid.setRowCount(rowCount);
 		grid.setCurrent(current);
-		grid.setTotal(0);
-		grid.setRows(new ArrayList<LeaveTask>());
-		// 先做权限检查，对于没有人事权限的用户,直接返回空
-		String userid = (String) session.getAttribute("username");
-		int uid = systemservice.getUidByusername(userid);
-		User user = systemservice.getUserByid(uid);
-		List<User_role> userroles = user.getUser_roles();
-		if (userroles == null)
-			return grid;
-		boolean flag = false;// 默认没有权限
-		for (int k = 0; k < userroles.size(); k++) {
-			User_role ur = userroles.get(k);
-			Role r = ur.getRole();
-			int roleid = r.getRid();
-			Role role = systemservice.getRolebyid(roleid);
-			List<Role_permission> p = role.getRole_permission();
-			for (int j = 0; j < p.size(); j++) {
-				Role_permission rp = p.get(j);
-				Permission permission = rp.getPermission();
-				if (permission.getPermissionname().equals("人事审批"))
-					flag = true;
-				else
-					continue;
-			}
+		String username = (String) session.getAttribute("username");
+		int firstrow = (current - 1) * rowCount;
+		List<LeaveApply> results = leaveservice.getpagehrtask(username, firstrow, rowCount);
+		int totalsize = leaveservice.getallhrtask(username);
+		List<LeaveTask> tasks = new ArrayList<LeaveTask>();
+		for (LeaveApply apply : results) {
+			LeaveTask task = new LeaveTask();
+			task.setApply_time(apply.getApply_time());
+			task.setUser_id(apply.getUser_id());
+			task.setEnd_time(apply.getEnd_time());
+			task.setId(apply.getId());
+			task.setLeave_type(apply.getLeave_type());
+			task.setProcess_instance_id(apply.getProcess_instance_id());
+			task.setProcessdefid(apply.getTask().getProcessDefinitionId());
+			task.setReason(apply.getReason());
+			task.setStart_time(apply.getStart_time());
+			task.setTaskcreatetime(apply.getTask().getCreateTime());
+			task.setTaskid(apply.getTask().getId());
+			task.setTaskname(apply.getTask().getName());
+			tasks.add(task);
 		}
-		if (flag == false)// 无权限
-		{
-			return grid;
-		} else {
-			int firstrow = (current - 1) * rowCount;
-			List<LeaveApply> results = leaveservice.getpagehrtask(userid, firstrow, rowCount);
-			int totalsize = leaveservice.getallhrtask(userid);
-			List<LeaveTask> tasks = new ArrayList<LeaveTask>();
-			for (LeaveApply apply : results) {
-				LeaveTask task = new LeaveTask();
-				task.setApply_time(apply.getApply_time());
-				task.setUser_id(apply.getUser_id());
-				task.setEnd_time(apply.getEnd_time());
-				task.setId(apply.getId());
-				task.setLeave_type(apply.getLeave_type());
-				task.setProcess_instance_id(apply.getProcess_instance_id());
-				task.setProcessdefid(apply.getTask().getProcessDefinitionId());
-				task.setReason(apply.getReason());
-				task.setStart_time(apply.getStart_time());
-				task.setTaskcreatetime(apply.getTask().getCreateTime());
-				task.setTaskid(apply.getTask().getId());
-				task.setTaskname(apply.getTask().getName());
-				tasks.add(task);
-			}
-			grid.setRowCount(rowCount);
-			grid.setCurrent(current);
-			grid.setTotal(totalsize);
-			grid.setRows(tasks);
-			return grid;
-		}
+		grid.setRowCount(rowCount);
+		grid.setCurrent(current);
+		grid.setTotal(totalsize);
+		grid.setRows(tasks);
+		return grid;
 	}
 
 	@RequestMapping(value = "/xjtasklist", method = RequestMethod.POST)
@@ -390,14 +335,17 @@ public class ActivitiController {
 		return "/activiti/task-deptleaderaudit";
 	}
 
+	@ApiOperation("部门领导审批")
 	@RequestMapping(value = "/task/deptcomplete/{taskid}", method = RequestMethod.POST)
 	@ResponseBody
 	public MSG deptcomplete(HttpSession session, @PathVariable("taskid") String taskid, HttpServletRequest req) {
-		String userid = (String) session.getAttribute("username");
+		String username = (String) session.getAttribute("username");
 		Map<String, Object> variables = new HashMap<String, Object>();
 		String approve = req.getParameter("deptleaderapprove");
+		String hr = req.getParameter("hr");
 		variables.put("deptleaderapprove", approve);
-		taskservice.claim(taskid, userid);
+		variables.put("hr", hr);
+		taskservice.claim(taskid, username);
 		taskservice.complete(taskid, variables);
 		return new MSG("success");
 	}
@@ -429,32 +377,6 @@ public class ActivitiController {
 			@RequestParam("reapply") String reapply) {
 		leaveservice.updatecomplete(taskid, leave, reapply);
 		return new MSG("success");
-	}
-
-	@RequestMapping(value = "involvedprocess", method = RequestMethod.POST) // 参与的正在运行的请假流程
-	@ResponseBody
-	public DataGrid<RunningProcess> allexeution(HttpSession session, @RequestParam("current") int current,
-			@RequestParam("rowCount") int rowCount) {
-		int firstrow = (current - 1) * rowCount;
-		String userid = (String) session.getAttribute("username");
-		ProcessInstanceQuery query = runservice.createProcessInstanceQuery();
-		int total = (int) query.count();
-		List<ProcessInstance> a = query.processDefinitionKey("leave").involvedUser(userid).listPage(firstrow, rowCount);
-		List<RunningProcess> list = new ArrayList<RunningProcess>();
-		for (ProcessInstance p : a) {
-			RunningProcess process = new RunningProcess();
-			process.setActivityid(p.getActivityId());
-			process.setBusinesskey(p.getBusinessKey());
-			process.setExecutionid(p.getId());
-			process.setProcessInstanceid(p.getProcessInstanceId());
-			list.add(process);
-		}
-		DataGrid<RunningProcess> grid = new DataGrid<RunningProcess>();
-		grid.setCurrent(current);
-		grid.setRowCount(rowCount);
-		grid.setTotal(total);
-		grid.setRows(list);
-		return grid;
 	}
 
 	@RequestMapping(value = "/getfinishprocess", method = RequestMethod.POST)
@@ -542,36 +464,30 @@ public class ActivitiController {
 	String myleaves() {
 		return "activiti/myleaves";
 	}
-
+	
+	@ApiOperation("我发起的请假流程")
 	@RequestMapping(value = "setupprocess", method = RequestMethod.POST)
 	@ResponseBody
-	public DataGrid<RunningProcess> setupprocess(HttpSession session, @RequestParam("current") int current,
+	public DataGrid<LeaveApply> setupprocess(HttpSession session, @RequestParam("current") int current,
 			@RequestParam("rowCount") int rowCount) {
-		int firstrow = (current - 1) * rowCount;
-		String userid = (String) session.getAttribute("username");
-		System.out.print(userid);
-		ProcessInstanceQuery query = runservice.createProcessInstanceQuery();
-		int total = (int) query.count();
-		List<ProcessInstance> a = query.processDefinitionKey("leave").involvedUser(userid).listPage(firstrow, rowCount);
-		List<RunningProcess> list = new ArrayList<RunningProcess>();
-		for (ProcessInstance p : a) {
-			RunningProcess process = new RunningProcess();
-			process.setActivityid(p.getActivityId());
-			process.setBusinesskey(p.getBusinessKey());
-			process.setExecutionid(p.getId());
-			process.setProcessInstanceid(p.getProcessInstanceId());
-			LeaveApply l = leaveservice.getleave(Integer.parseInt(p.getBusinessKey()));
-			if (l.getUser_id().equals(userid))
-				list.add(process);
-			else
-				continue;
+		String username = (String) session.getAttribute("username");
+		List<LeaveApply> list = leaveservice.getPageByApplyer(username, current, rowCount);
+		for (LeaveApply apply : list) {
+			ProcessInstance process = runservice.createProcessInstanceQuery().processInstanceId(apply.getProcess_instance_id()).singleResult();
+			if (process == null) {
+				apply.setState("已结束");
+				apply.setActivityid("无");
+			} else {
+				apply.setState("运行中");
+				apply.setActivityid(process.getActivityId());
+			}
 		}
-		DataGrid<RunningProcess> grid = new DataGrid<RunningProcess>();
+		DataGrid<LeaveApply> grid = new DataGrid<LeaveApply>();
 		grid.setCurrent(current);
 		grid.setRowCount(rowCount);
-		grid.setTotal(total);
+		grid.setTotal(leaveservice.getAllByApplyer(username));
 		grid.setRows(list);
 		return grid;
 	}
-
+	
 }

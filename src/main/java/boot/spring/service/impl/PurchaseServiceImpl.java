@@ -1,5 +1,6 @@
 package boot.spring.service.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import org.activiti.engine.IdentityService;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.github.pagehelper.PageHelper;
 
 import boot.spring.mapper.PurchaseApplyMapper;
 import boot.spring.po.PurchaseApply;
@@ -33,7 +36,9 @@ public class PurchaseServiceImpl implements PurchaseService{
 		String businesskey=String.valueOf(apply.getId());//使用leaveapply表的主键作为businesskey,连接业务数据和流程数据
 		identityservice.setAuthenticatedUserId(userid);
 		ProcessInstance instance=runtimeservice.startProcessInstanceByKey("purchase",businesskey,variables);
-//		String instanceid=instance.getId();
+		String instanceid=instance.getId();
+		apply.setProcessinstanceid(instanceid);
+		purchasemapper.updateByPrimaryKeySelective(apply);
 		return instance;
 	}
 
@@ -43,6 +48,18 @@ public class PurchaseServiceImpl implements PurchaseService{
 
 	public void updatePurchase(PurchaseApply a) {
 		purchasemapper.updateByPrimaryKeySelective(a);
+	}
+
+	@Override
+	public List<PurchaseApply> listPurchaseApplyByApplyer(String username) {
+		return purchasemapper.listPurchaseApplyByApplyer(username);
+	}
+
+	@Override
+	public List<PurchaseApply> listPurchaseApplyByApplyer(String username, int current, int rowCount) {
+		PageHelper.startPage(current, rowCount);
+		List<PurchaseApply> list = purchasemapper.listPurchaseApplyByApplyer(username);
+		return list;
 	}
 
 }

@@ -184,4 +184,11 @@ public class SystemController {
 		systemservice.deletepermission(pid);
 		return "system/permissionadmin";
 	}
+	
+	@RequestMapping(value = "listUsers", method = RequestMethod.GET)
+	@ResponseBody
+	public List<User> listUsers() {
+		List<User> users = systemservice.getallusers();
+		return users;
+	}
 }

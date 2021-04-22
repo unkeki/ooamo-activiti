@@ -1,5 +1,7 @@
 package boot.spring.mapper;
 
+import java.util.List;
+
 import boot.spring.po.PurchaseApply;
 
 public interface PurchaseApplyMapper {
@@ -8,4 +10,6 @@ public interface PurchaseApplyMapper {
 	PurchaseApply getPurchaseApply(int id);
 	
 	void updateByPrimaryKeySelective(PurchaseApply apply);
+	
+	List<PurchaseApply> listPurchaseApplyByApplyer(String username);
 }

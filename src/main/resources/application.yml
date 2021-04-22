@@ -17,8 +17,11 @@ spring:
     check-process-definitions: true
     process-definition-location-prefix: classpath:/process/
     history-level: full
+  thymeleaf:
+    mode: LEGACYHTML5
 
 logging:
   config: classpath:log4j2.xml
+  
 
-#spring.main.allow-bean-definition-overriding: true
+

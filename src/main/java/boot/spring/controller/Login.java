@@ -1,5 +1,8 @@
 package boot.spring.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,7 +12,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import boot.spring.pagemodel.MSG;
+import boot.spring.po.Role;
+import boot.spring.po.Role_permission;
+import boot.spring.po.User;
+import boot.spring.po.User_role;
 import boot.spring.service.LoginService;
+import boot.spring.service.SystemService;
 import io.swagger.annotations.Api;
 
 
@@ -18,6 +26,9 @@ import io.swagger.annotations.Api;
 public class Login {
 	@Autowired
 	LoginService loginservice;
+	
+	@Autowired
+	SystemService systemservice;
 	
 	@RequestMapping(value="/loginvalidate",method = RequestMethod.POST)
 	public String loginvalidate(@RequestParam("username") String username,@RequestParam("password") String pwd,HttpSession httpSession){
@@ -50,4 +61,22 @@ public class Login {
 		return new MSG(userid);
 	}	
 	
-  }
+	@RequestMapping(value="/currentuserpermission",method = RequestMethod.GET)
+	@ResponseBody
+	public List<String> currentuserpermission(HttpSession httpSession){
+		String username=(String) httpSession.getAttribute("username");
+		int uid = systemservice.getUidByusername(username);
+		User user = systemservice.getUserByid(uid);
+		List<User_role> roles = user.getUser_roles();
+		List<String> list = new ArrayList<>();
+		for (User_role ur : roles) {
+			int rid = ur.getRole().getRid();
+			Role role = systemservice.getRolebyid(rid);
+			List<Role_permission> rps = role.getRole_permission();
+			for (Role_permission rp : rps) {
+				list.add(rp.getPermission().getPermissionname());
+			}
+		}
+		return list;
+	}
+}

@@ -16,6 +16,7 @@ import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricProcessInstanceQuery;
+import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.runtime.ProcessInstanceQuery;
 import org.activiti.engine.task.Task;
@@ -34,7 +35,7 @@ import boot.spring.pagemodel.DataGrid;
 import boot.spring.pagemodel.HistoryProcess;
 import boot.spring.pagemodel.MSG;
 import boot.spring.pagemodel.PurchaseTask;
-import boot.spring.pagemodel.RunningProcess;
+import boot.spring.po.LeaveApply;
 import boot.spring.po.PurchaseApply;
 import boot.spring.po.Role;
 import boot.spring.po.User;
@@ -42,6 +43,7 @@ import boot.spring.po.User_role;
 import boot.spring.service.PurchaseService;
 import boot.spring.service.SystemService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @Api(value = "采购流程接口")
 @Controller
@@ -110,48 +112,34 @@ public class PurchaseController {
 		purchase.setItemlist(itemlist);
 		purchase.setTotal(total);
 		purchase.setApplytime(new Date());
-		purchaseservice.startWorkflow(purchase, userid, variables);
+	    purchaseservice.startWorkflow(purchase, userid, variables);
 		return new MSG("sucess");
 	}
-	//我发起的采购流程
+	
+	@ApiOperation("我发起的采购流程")
 	@RequestMapping(value="mypurchaseprocess",method=RequestMethod.POST)
 	@ResponseBody
-	public DataGrid<RunningProcess> mypurchaseprocess(HttpSession session,@RequestParam("current") int current,@RequestParam("rowCount") int rowCount){
-		int firstrow=(current-1)*rowCount;
-		String userid=(String) session.getAttribute("username");
-		ProcessInstanceQuery query = runservice.createProcessInstanceQuery();
-		int total= (int) query.count();
-		List<ProcessInstance> a = query.processDefinitionKey("purchase").involvedUser(userid).listPage(firstrow, rowCount);
-		List<RunningProcess> list=new ArrayList<RunningProcess>();
-		for(ProcessInstance p:a){
-			RunningProcess process=new RunningProcess();
-			if(p.getActivityId()==null)
-			{//有子流程
-				String father=p.getProcessInstanceId();
-				String sonactiveid=runservice.createExecutionQuery().parentId(father).singleResult().getActivityId();//子流程的活动节点
-				String sonexeid=runservice.createExecutionQuery().parentId(father).singleResult().getId();
-				process.setActivityid(sonactiveid);
-				//System.out.println(taskservice.createTaskQuery().executionId(sonexeid).singleResult().getName());
-			}else{
-				process.setActivityid(p.getActivityId());
-			}
-			process.setBusinesskey(p.getBusinessKey());
-			process.setExecutionid(p.getId());
-			process.setProcessInstanceid(p.getProcessInstanceId());
-			PurchaseApply l=purchaseservice.getPurchase(Integer.parseInt(p.getBusinessKey()));
-			if(l.getApplyer().equals(userid))
-			list.add(process);
-			else
-			continue;
-		}
-		DataGrid<RunningProcess> grid=new DataGrid<RunningProcess>();
+	public DataGrid<PurchaseApply> mypurchaseprocess(HttpSession session,@RequestParam("current") int current,@RequestParam("rowCount") int rowCount){
+		String username=(String) session.getAttribute("username");
+		DataGrid<PurchaseApply> grid=new DataGrid<PurchaseApply>();
 		grid.setCurrent(current);
 		grid.setRowCount(rowCount);
-		grid.setTotal(total);
+		List<PurchaseApply> list = purchaseservice.listPurchaseApplyByApplyer(username, current, rowCount);
+		for (PurchaseApply apply : list) {
+			ProcessInstance process = runservice.createProcessInstanceQuery().processDefinitionKey("purchase").processInstanceBusinessKey(String.valueOf(apply.getId())).singleResult();
+			if (process == null) {
+				apply.setState("已结束");
+				apply.setActivityid("无");
+			} else {
+				apply.setState("运行中");
+				apply.setActivityid(process.getActivityId());
+			}
+		}
+		grid.setTotal(purchaseservice.listPurchaseApplyByApplyer(username).size());
 		grid.setRows(list);
 		return grid;
 	}
-	
+
 	@RequestMapping(value="/mypurchase",method=RequestMethod.GET)
 	String mypurchase(){
 		return "purchase/mypurchase";
@@ -160,53 +148,36 @@ public class PurchaseController {
 	@RequestMapping(value="/puchasemanagertasklist",method=RequestMethod.POST)
 	@ResponseBody
 	DataGrid<PurchaseTask> puchasemanagertasklist(HttpSession session,@RequestParam("current") int current,@RequestParam("rowCount") int rowCount){
-		DataGrid<PurchaseTask> grid=new DataGrid<PurchaseTask>();
+		DataGrid<PurchaseTask> grid = new DataGrid<PurchaseTask>();
 		grid.setRowCount(rowCount);
 		grid.setCurrent(current);
 		grid.setTotal(0);
 		grid.setRows(new ArrayList<PurchaseTask>());
-		//先做权限检查，对于没有采购经理角色的用户,直接返回空
-		String userid=(String) session.getAttribute("username");
-		int uid=systemservice.getUidByusername(userid);
-		User user=systemservice.getUserByid(uid);
-		List<User_role> userroles=user.getUser_roles();
-		if(userroles==null||userroles.size()==0)
-			return grid;
-		boolean flag=false;
-		for(User_role ur:userroles)
-		{
-			Role r=ur.getRole();
-			if(r.getRolename().equals("采购经理")){
-				flag=true;
-			}
+		int firstrow = (current - 1) * rowCount;
+		List<PurchaseTask> results = new ArrayList<PurchaseTask>();
+		List<Task> tasks = taskservice.createTaskQuery().taskCandidateGroup("采购经理").listPage(firstrow, rowCount);
+		long totaltask = taskservice.createTaskQuery().taskCandidateGroup("采购经理").count();
+		for (Task task : tasks) {
+			PurchaseTask vo = new PurchaseTask();
+			String instanceid = task.getProcessInstanceId();
+			ProcessInstance ins = runservice.createProcessInstanceQuery().processInstanceId(instanceid).singleResult();
+			String businesskey = ins.getBusinessKey();
+			PurchaseApply a = purchaseservice.getPurchase(Integer.parseInt(businesskey));
+			vo.setApplyer(a.getApplyer());
+			vo.setApplytime(a.getApplytime());
+			vo.setBussinesskey(a.getId());
+			vo.setItemlist(a.getItemlist());
+			vo.setProcessdefid(task.getProcessDefinitionId());
+			vo.setProcessinstanceid(task.getProcessInstanceId());
+			vo.setTaskid(task.getId());
+			vo.setTaskname(task.getName());
+			vo.setTotal(a.getTotal());
+			results.add(vo);
 		}
-		if(flag){//有权限
-			int firstrow=(current-1)*rowCount;
-			List<PurchaseTask> results=new ArrayList<PurchaseTask>();
-			List<Task> tasks=taskservice.createTaskQuery().taskCandidateGroup("采购经理").listPage(firstrow, rowCount);
-			long totaltask=taskservice.createTaskQuery().taskCandidateGroup("采购经理").count();
-			for(Task task:tasks){
-				PurchaseTask vo=new PurchaseTask();
-				String instanceid=task.getProcessInstanceId();
-				ProcessInstance ins=runservice.createProcessInstanceQuery().processInstanceId(instanceid).singleResult();
-				String businesskey=ins.getBusinessKey();
-				PurchaseApply a=purchaseservice.getPurchase(Integer.parseInt(businesskey));
-				vo.setApplyer(a.getApplyer());
-				vo.setApplytime(a.getApplytime());
-				vo.setBussinesskey(a.getId());
-				vo.setItemlist(a.getItemlist());
-				vo.setProcessdefid(task.getProcessDefinitionId());
-				vo.setProcessinstanceid(task.getProcessInstanceId());
-				vo.setTaskid(task.getId());
-				vo.setTaskname(task.getName());
-				vo.setTotal(a.getTotal());
-				results.add(vo);
-			}
-			grid.setRowCount(rowCount);
-			grid.setCurrent(current);
-			grid.setTotal((int)totaltask);
-			grid.setRows(results);
-		}
+		grid.setRowCount(rowCount);
+		grid.setCurrent(current);
+		grid.setTotal((int) totaltask);
+		grid.setRows(results);
 		return grid;
 	}
 	
@@ -309,53 +280,34 @@ public class PurchaseController {
 	@RequestMapping(value="/financetasklist",method=RequestMethod.POST)
 	@ResponseBody
 	DataGrid<PurchaseTask> financetasklist(HttpSession session,@RequestParam("current") int current,@RequestParam("rowCount") int rowCount){
-		DataGrid<PurchaseTask> grid=new DataGrid<PurchaseTask>();
+		DataGrid<PurchaseTask> grid = new DataGrid<PurchaseTask>();
 		grid.setRowCount(rowCount);
 		grid.setCurrent(current);
-		grid.setTotal(0);
-		grid.setRows(new ArrayList<PurchaseTask>());
-		//先做权限检查，对于没有财务管理员角色的用户,直接返回空
-		String userid=(String) session.getAttribute("username");
-		int uid=systemservice.getUidByusername(userid);
-		User user=systemservice.getUserByid(uid);
-		List<User_role> userroles=user.getUser_roles();
-		if(userroles==null||userroles.size()==0)
-			return grid;
-		boolean flag=false;
-		for(User_role ur:userroles)
-		{
-			Role r=ur.getRole();
-			if(r.getRolename().equals("财务管理员")){
-				flag=true;
-			}
+		int firstrow = (current - 1) * rowCount;
+		List<PurchaseTask> results = new ArrayList<PurchaseTask>();
+		List<Task> tasks = taskservice.createTaskQuery().taskCandidateGroup("财务管理员").listPage(firstrow, rowCount);
+		long totaltask = taskservice.createTaskQuery().taskCandidateGroup("财务管理员").count();
+		for (Task task : tasks) {
+			PurchaseTask vo = new PurchaseTask();
+			String instanceid = task.getProcessInstanceId();
+			ProcessInstance ins = runservice.createProcessInstanceQuery().processInstanceId(instanceid).singleResult();
+			String businesskey = ins.getBusinessKey();
+			PurchaseApply a = purchaseservice.getPurchase(Integer.parseInt(businesskey));
+			vo.setApplyer(a.getApplyer());
+			vo.setApplytime(a.getApplytime());
+			vo.setBussinesskey(a.getId());
+			vo.setItemlist(a.getItemlist());
+			vo.setProcessdefid(task.getProcessDefinitionId());
+			vo.setProcessinstanceid(task.getProcessInstanceId());
+			vo.setTaskid(task.getId());
+			vo.setTaskname(task.getName());
+			vo.setTotal(a.getTotal());
+			results.add(vo);
 		}
-		if(flag){//有权限
-			int firstrow=(current-1)*rowCount;
-			List<PurchaseTask> results=new ArrayList<PurchaseTask>();
-			List<Task> tasks=taskservice.createTaskQuery().taskCandidateGroup("财务管理员").listPage(firstrow, rowCount);
-			long totaltask=taskservice.createTaskQuery().taskCandidateGroup("财务管理员").count();
-			for(Task task:tasks){
-				PurchaseTask vo=new PurchaseTask();
-				String instanceid=task.getProcessInstanceId();
-				ProcessInstance ins=runservice.createProcessInstanceQuery().processInstanceId(instanceid).singleResult();
-				String businesskey=ins.getBusinessKey();
-				PurchaseApply a=purchaseservice.getPurchase(Integer.parseInt(businesskey));
-				vo.setApplyer(a.getApplyer());
-				vo.setApplytime(a.getApplytime());
-				vo.setBussinesskey(a.getId());
-				vo.setItemlist(a.getItemlist());
-				vo.setProcessdefid(task.getProcessDefinitionId());
-				vo.setProcessinstanceid(task.getProcessInstanceId());
-				vo.setTaskid(task.getId());
-				vo.setTaskname(task.getName());
-				vo.setTotal(a.getTotal());
-				results.add(vo);
-			}
-			grid.setRowCount(rowCount);
-			grid.setCurrent(current);
-			grid.setTotal((int)totaltask);
-			grid.setRows(results);
-		}
+		grid.setRowCount(rowCount);
+		grid.setCurrent(current);
+		grid.setTotal((int) totaltask);
+		grid.setRows(results);
 		return grid;
 	}
 	
@@ -376,53 +328,34 @@ public class PurchaseController {
 	@RequestMapping(value="/managertasklist",method=RequestMethod.POST)
 	@ResponseBody
 	DataGrid<PurchaseTask> managertasklist(HttpSession session,@RequestParam("current") int current,@RequestParam("rowCount") int rowCount){
-		DataGrid<PurchaseTask> grid=new DataGrid<PurchaseTask>();
+		DataGrid<PurchaseTask> grid = new DataGrid<PurchaseTask>();
 		grid.setRowCount(rowCount);
 		grid.setCurrent(current);
-		grid.setTotal(0);
-		grid.setRows(new ArrayList<PurchaseTask>());
-		//先做权限检查，对于没有总经理角色的用户,直接返回空
-		String userid=(String) session.getAttribute("username");
-		int uid=systemservice.getUidByusername(userid);
-		User user=systemservice.getUserByid(uid);
-		List<User_role> userroles=user.getUser_roles();
-		if(userroles==null||userroles.size()==0)
-			return grid;
-		boolean flag=false;
-		for(User_role ur:userroles)
-		{
-			Role r=ur.getRole();
-			if(r.getRolename().equals("总经理")){
-				flag=true;
-			}
+		int firstrow = (current - 1) * rowCount;
+		List<PurchaseTask> results = new ArrayList<PurchaseTask>();
+		List<Task> tasks = taskservice.createTaskQuery().taskCandidateGroup("总经理").listPage(firstrow, rowCount);
+		long totaltask = taskservice.createTaskQuery().taskCandidateGroup("总经理").count();
+		for (Task task : tasks) {
+			PurchaseTask vo = new PurchaseTask();
+			String instanceid = task.getProcessInstanceId();
+			ProcessInstance ins = runservice.createProcessInstanceQuery().processInstanceId(instanceid).singleResult();
+			String businesskey = ins.getBusinessKey();
+			PurchaseApply a = purchaseservice.getPurchase(Integer.parseInt(businesskey));
+			vo.setApplyer(a.getApplyer());
+			vo.setApplytime(a.getApplytime());
+			vo.setBussinesskey(a.getId());
+			vo.setItemlist(a.getItemlist());
+			vo.setProcessdefid(task.getProcessDefinitionId());
+			vo.setProcessinstanceid(task.getProcessInstanceId());
+			vo.setTaskid(task.getId());
+			vo.setTaskname(task.getName());
+			vo.setTotal(a.getTotal());
+			results.add(vo);
 		}
-		if(flag){//有权限
-			int firstrow=(current-1)*rowCount;
-			List<PurchaseTask> results=new ArrayList<PurchaseTask>();
-			List<Task> tasks=taskservice.createTaskQuery().taskCandidateGroup("总经理").listPage(firstrow, rowCount);
-			long totaltask=taskservice.createTaskQuery().taskCandidateGroup("总经理").count();
-			for(Task task:tasks){
-				PurchaseTask vo=new PurchaseTask();
-				String instanceid=task.getProcessInstanceId();
-				ProcessInstance ins=runservice.createProcessInstanceQuery().processInstanceId(instanceid).singleResult();
-				String businesskey=ins.getBusinessKey();
-				PurchaseApply a=purchaseservice.getPurchase(Integer.parseInt(businesskey));
-				vo.setApplyer(a.getApplyer());
-				vo.setApplytime(a.getApplytime());
-				vo.setBussinesskey(a.getId());
-				vo.setItemlist(a.getItemlist());
-				vo.setProcessdefid(task.getProcessDefinitionId());
-				vo.setProcessinstanceid(task.getProcessInstanceId());
-				vo.setTaskid(task.getId());
-				vo.setTaskname(task.getName());
-				vo.setTotal(a.getTotal());
-				results.add(vo);
-			}
-			grid.setRowCount(rowCount);
-			grid.setCurrent(current);
-			grid.setTotal((int)totaltask);
-			grid.setRows(results);
-		}
+		grid.setRowCount(rowCount);
+		grid.setCurrent(current);
+		grid.setTotal((int) totaltask);
+		grid.setRows(results);
 		return grid;
 	}
 	
@@ -441,53 +374,34 @@ public class PurchaseController {
 	@RequestMapping(value="/paytasklist",method=RequestMethod.POST)
 	@ResponseBody
 	DataGrid<PurchaseTask> paytasklist(HttpSession session,@RequestParam("current") int current,@RequestParam("rowCount") int rowCount){
-		DataGrid<PurchaseTask> grid=new DataGrid<PurchaseTask>();
+		DataGrid<PurchaseTask> grid = new DataGrid<PurchaseTask>();
 		grid.setRowCount(rowCount);
 		grid.setCurrent(current);
-		grid.setTotal(0);
-		grid.setRows(new ArrayList<PurchaseTask>());
-		//先做权限检查，对于没有出纳角色的用户,直接返回空
-		String userid=(String) session.getAttribute("username");
-		int uid=systemservice.getUidByusername(userid);
-		User user=systemservice.getUserByid(uid);
-		List<User_role> userroles=user.getUser_roles();
-		if(userroles==null||userroles.size()==0)
-			return grid;
-		boolean flag=false;
-		for(User_role ur:userroles)
-		{
-			Role r=ur.getRole();
-			if(r.getRolename().equals("出纳员")){
-				flag=true;
-			}
+		int firstrow = (current - 1) * rowCount;
+		List<PurchaseTask> results = new ArrayList<PurchaseTask>();
+		List<Task> tasks = taskservice.createTaskQuery().taskCandidateGroup("出纳员").listPage(firstrow, rowCount);
+		long totaltask = taskservice.createTaskQuery().taskCandidateGroup("出纳员").count();
+		for (Task task : tasks) {
+			PurchaseTask vo = new PurchaseTask();
+			String instanceid = task.getProcessInstanceId();
+			ProcessInstance ins = runservice.createProcessInstanceQuery().processInstanceId(instanceid).singleResult();
+			String businesskey = ins.getBusinessKey();
+			PurchaseApply a = purchaseservice.getPurchase(Integer.parseInt(businesskey));
+			vo.setApplyer(a.getApplyer());
+			vo.setApplytime(a.getApplytime());
+			vo.setBussinesskey(a.getId());
+			vo.setItemlist(a.getItemlist());
+			vo.setProcessdefid(task.getProcessDefinitionId());
+			vo.setProcessinstanceid(task.getProcessInstanceId());
+			vo.setTaskid(task.getId());
+			vo.setTaskname(task.getName());
+			vo.setTotal(a.getTotal());
+			results.add(vo);
 		}
-		if(flag){//有权限
-			int firstrow=(current-1)*rowCount;
-			List<PurchaseTask> results=new ArrayList<PurchaseTask>();
-			List<Task> tasks=taskservice.createTaskQuery().taskCandidateGroup("出纳员").listPage(firstrow, rowCount);
-			long totaltask=taskservice.createTaskQuery().taskCandidateGroup("出纳员").count();
-			for(Task task:tasks){
-				PurchaseTask vo=new PurchaseTask();
-				String instanceid=task.getProcessInstanceId();
-				ProcessInstance ins=runservice.createProcessInstanceQuery().processInstanceId(instanceid).singleResult();
-				String businesskey=ins.getBusinessKey();
-				PurchaseApply a=purchaseservice.getPurchase(Integer.parseInt(businesskey));
-				vo.setApplyer(a.getApplyer());
-				vo.setApplytime(a.getApplytime());
-				vo.setBussinesskey(a.getId());
-				vo.setItemlist(a.getItemlist());
-				vo.setProcessdefid(task.getProcessDefinitionId());
-				vo.setProcessinstanceid(task.getProcessInstanceId());
-				vo.setTaskid(task.getId());
-				vo.setTaskname(task.getName());
-				vo.setTotal(a.getTotal());
-				results.add(vo);
-			}
-			grid.setRowCount(rowCount);
-			grid.setCurrent(current);
-			grid.setTotal((int)totaltask);
-			grid.setRows(results);
-		}
+		grid.setRowCount(rowCount);
+		grid.setCurrent(current);
+		grid.setTotal((int) totaltask);
+		grid.setRows(results);
 		return grid;
 	}
 	

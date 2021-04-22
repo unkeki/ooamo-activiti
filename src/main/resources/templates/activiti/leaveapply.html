@@ -51,6 +51,11 @@
 							<label>请假原因</label>
 							<textarea class="form-control" name="reason" rows="3"></textarea>
 						</div>
+						<div class="form-group">
+							<label>请选择部门经理进行审批</label> 
+							<select id="leader" name="deptleader" class="form-control">
+							</select>
+						</div>
 						<button id="btn" type="button" class="btn btn-primary">开始申请</button>
 						<button type="reset" class="btn btn-primary">重置</button>
 						
@@ -72,6 +77,12 @@ $(document).ready(function(){
 	
 	$('#start').datepicker({setDate: new Date(), dateFormat: 'yy-mm-dd'});
 	$('#end').datepicker({setDate: new Date(), dateFormat: 'yy-mm-dd'});
+	
+	$.get("/listUsers",function(data){
+		for (i=0;i<data.length;i++) {
+			$("#leader").append("<option value='"+ data[i].username +"'>" + data[i].username + "</option>");
+		}
+	});
 	
 });
 
