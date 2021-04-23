@@ -11,8 +11,7 @@ public class PurchaseApply {
 	Integer id;
 	String itemlist;
 	BigDecimal total;
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
-	Date applytime;
+	String applytime;
 	String applyer;
 	Task task;
 	
@@ -42,10 +41,11 @@ public class PurchaseApply {
 		this.total = total;
 	}
 	
-	public Date getApplytime() {
+	
+	public String getApplytime() {
 		return applytime;
 	}
-	public void setApplytime(Date applytime) {
+	public void setApplytime(String applytime) {
 		this.applytime = applytime;
 	}
 	public String getApplyer() {

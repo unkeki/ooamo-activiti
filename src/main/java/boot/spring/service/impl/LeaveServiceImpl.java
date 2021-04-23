@@ -1,5 +1,6 @@
 package boot.spring.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -40,7 +41,8 @@ public class LeaveServiceImpl implements LeaveService{
 	TaskService taskservice;
 	
 	public ProcessInstance startWorkflow(LeaveApply apply, String userid, Map<String, Object> variables) {
-		apply.setApply_time(new Date().toString());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		apply.setApply_time(sdf.format(new Date()));
 		apply.setUser_id(userid);
 		leavemapper.save(apply);
 		String businesskey=String.valueOf(apply.getId());//使用leaveapply表的主键作为businesskey,连接业务数据和流程数据

@@ -8,7 +8,7 @@ public class PurchaseTask {
 	String applyer;
 	String itemlist;
 	BigDecimal total;
-	Date applytime;
+	String applytime;
 	String taskid;
 	String taskname;
 	String processinstanceid;
@@ -37,11 +37,15 @@ public class PurchaseTask {
 	public void setTotal(BigDecimal total) {
 		this.total = total;
 	}
-	public Date getApplytime() {
+	
+	public String getApplytime() {
 		return applytime;
 	}
-	public void setApplytime(Date applytime) {
+	public void setApplytime(String applytime) {
 		this.applytime = applytime;
+	}
+	public void setBussinesskey(Integer bussinesskey) {
+		this.bussinesskey = bussinesskey;
 	}
 	public String getTaskid() {
 		return taskid;

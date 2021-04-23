@@ -1,6 +1,7 @@
 package boot.spring.controller;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -111,7 +112,8 @@ public class PurchaseController {
 		purchase.setApplyer(userid);
 		purchase.setItemlist(itemlist);
 		purchase.setTotal(total);
-		purchase.setApplytime(new Date());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		purchase.setApplytime(sdf.format(new Date()));
 	    purchaseservice.startWorkflow(purchase, userid, variables);
 		return new MSG("sucess");
 	}
