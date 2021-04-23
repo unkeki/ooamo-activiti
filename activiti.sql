@@ -11,7 +11,7 @@
  Target Server Version : 50731
  File Encoding         : 65001
 
- Date: 22/04/2021 09:58:43
+ Date: 23/04/2021 11:54:46
 */
 
 SET NAMES utf8mb4;
@@ -29,11 +29,11 @@ CREATE TABLE `leaveapply`  (
   `end_time` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `leave_type` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `reason` varchar(400) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `apply_time` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `apply_time` datetime(0) NULL DEFAULT NULL,
   `reality_start_time` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `reality_end_time` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of leaveapply
@@ -76,7 +76,7 @@ CREATE TABLE `purchase`  (
   `applyer` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `processinstanceid` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 35 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of purchase
@@ -110,7 +110,7 @@ CREATE TABLE `role_permission`  (
   PRIMARY KEY (`rpid`) USING BTREE,
   INDEX `a_idx`(`roleid`) USING BTREE,
   INDEX `b_idx`(`permissionid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 64 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 69 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of role_permission
@@ -125,11 +125,11 @@ INSERT INTO `role_permission` VALUES (55, 17, 3);
 INSERT INTO `role_permission` VALUES (56, 17, 1);
 INSERT INTO `role_permission` VALUES (57, 17, 18);
 INSERT INTO `role_permission` VALUES (58, 17, 16);
-INSERT INTO `role_permission` VALUES (59, 18, 9);
-INSERT INTO `role_permission` VALUES (60, 18, 22);
-INSERT INTO `role_permission` VALUES (61, 18, 17);
-INSERT INTO `role_permission` VALUES (62, 18, 21);
-INSERT INTO `role_permission` VALUES (63, 18, 16);
+INSERT INTO `role_permission` VALUES (64, 18, 9);
+INSERT INTO `role_permission` VALUES (65, 18, 22);
+INSERT INTO `role_permission` VALUES (66, 18, 17);
+INSERT INTO `role_permission` VALUES (67, 18, 21);
+INSERT INTO `role_permission` VALUES (68, 18, 16);
 
 -- ----------------------------
 -- Table structure for user
