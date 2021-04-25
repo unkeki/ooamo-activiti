@@ -62,18 +62,25 @@ import io.swagger.annotations.ApiOperation;
 public class ActivitiController {
 	@Autowired
 	RepositoryService rep;
+	
 	@Autowired
 	RuntimeService runservice;
+	
 	@Autowired
 	FormService formservice;
+	
 	@Autowired
 	IdentityService identityservice;
+	
 	@Autowired
 	LeaveService leaveservice;
+	
 	@Autowired
 	TaskService taskservice;
+	
 	@Autowired
 	HistoryService histiryservice;
+	
 	@Autowired
 	SystemService systemservice;
 	
@@ -84,7 +91,8 @@ public class ActivitiController {
 	String process() {
 		return "activiti/processlist";
 	}
-
+	
+	@ApiOperation("上传一个工作流文件")
 	@RequestMapping(value = "/uploadworkflow", method = RequestMethod.POST)
 	public String fileupload(@RequestParam MultipartFile uploadfile, HttpServletRequest request) {
 		try {
@@ -97,7 +105,8 @@ public class ActivitiController {
 		}
 		return "index";
 	}
-
+	
+	@ApiOperation("查询已部署工作流列表")
 	@RequestMapping(value = "/getprocesslists", method = RequestMethod.POST)
 	@ResponseBody
 	public DataGrid<Process> getlist(@RequestParam("current") int current, @RequestParam("rowCount") int rowCount) {
@@ -122,7 +131,8 @@ public class ActivitiController {
 		grid.setTotal(total);
 		return grid;
 	}
-
+	
+	@ApiOperation("查看工作流图片")
 	@RequestMapping(value = "/showresource", method = RequestMethod.GET)
 	public void export(@RequestParam("pdid") String pdid, @RequestParam("resource") String resource,
 			HttpServletResponse response) throws Exception {
@@ -172,7 +182,8 @@ public class ActivitiController {
 	public String modifyapply() {
 		return "activiti/modifyapply";
 	}
-
+	
+	@ApiOperation("发起一个请假流程")
 	@RequestMapping(value = "/startleave", method = RequestMethod.POST)
 	@ResponseBody
 	public MSG start_leave(LeaveApply apply, HttpSession session) {
@@ -254,6 +265,7 @@ public class ActivitiController {
 		return grid;
 	}
 
+	@ApiOperation("获取销假任务列表")
 	@RequestMapping(value = "/xjtasklist", method = RequestMethod.POST)
 	@ResponseBody
 	public DataGrid<LeaveTask> getXJtasklist(HttpSession session, @RequestParam("current") int current,
@@ -286,7 +298,8 @@ public class ActivitiController {
 		grid.setRows(tasks);
 		return grid;
 	}
-
+	
+	@ApiOperation("获取调整休假申请任务列表")
 	@RequestMapping(value = "/updatetasklist", method = RequestMethod.POST)
 	@ResponseBody
 	public DataGrid<LeaveTask> getupdatetasklist(HttpSession session, @RequestParam("current") int current,
@@ -320,6 +333,7 @@ public class ActivitiController {
 		return grid;
 	}
 
+	@ApiOperation("使用任务id获取请假业务数据")
 	@RequestMapping(value = "/dealtask", method = RequestMethod.POST)
 	@ResponseBody
 	public LeaveApply taskdeal(@RequestParam("taskid") String taskid, HttpServletResponse response) {
@@ -335,7 +349,7 @@ public class ActivitiController {
 		return "/activiti/task-deptleaderaudit";
 	}
 
-	@ApiOperation("部门领导审批")
+	@ApiOperation("完成部门领导审批待办")
 	@RequestMapping(value = "/task/deptcomplete/{taskid}", method = RequestMethod.POST)
 	@ResponseBody
 	public MSG deptcomplete(HttpSession session, @PathVariable("taskid") String taskid, HttpServletRequest req) {
@@ -349,7 +363,8 @@ public class ActivitiController {
 		taskservice.complete(taskid, variables);
 		return new MSG("success");
 	}
-
+	
+	@ApiOperation("完成hr审批待办")
 	@RequestMapping(value = "/task/hrcomplete/{taskid}", method = RequestMethod.POST)
 	@ResponseBody
 	public MSG hrcomplete(HttpSession session, @PathVariable("taskid") String taskid, HttpServletRequest req) {
@@ -361,7 +376,8 @@ public class ActivitiController {
 		taskservice.complete(taskid, variables);
 		return new MSG("success");
 	}
-
+	
+	@ApiOperation("完成销假待办")
 	@RequestMapping(value = "/task/reportcomplete/{taskid}", method = RequestMethod.POST)
 	@ResponseBody
 	public MSG reportbackcomplete(@PathVariable("taskid") String taskid, HttpServletRequest req) {
@@ -371,6 +387,7 @@ public class ActivitiController {
 		return new MSG("success");
 	}
 
+	@ApiOperation("完成调整申请待办")
 	@RequestMapping(value = "/task/updatecomplete/{taskid}", method = RequestMethod.POST)
 	@ResponseBody
 	public MSG updatecomplete(@PathVariable("taskid") String taskid, @ModelAttribute("leave") LeaveApply leave,
@@ -411,7 +428,8 @@ public class ActivitiController {
 	public String history() {
 		return "activiti/historyprocess";
 	}
-
+	
+	@ApiOperation("使用流程实例编号获取历史流程数据")
 	@RequestMapping(value = "/processinfo", method = RequestMethod.POST)
 	@ResponseBody
 	public List<HistoricActivityInstance> processinfo(@RequestParam("instanceid") String instanceid) {
@@ -419,7 +437,8 @@ public class ActivitiController {
 				.processInstanceId(instanceid).orderByHistoricActivityInstanceStartTime().asc().list();
 		return his;
 	}
-
+	
+	@ApiOperation("使用业务号获取历史流程数据")
 	@RequestMapping(value = "/processhis", method = RequestMethod.POST)
 	@ResponseBody
 	public List<HistoricActivityInstance> processhis(@RequestParam("ywh") String ywh) {
@@ -434,7 +453,8 @@ public class ActivitiController {
 	String myleaveprocess() {
 		return "activiti/myleaveprocess";
 	}
-
+	
+	@ApiOperation("使用executionid追踪流程图进度")
 	@RequestMapping(value = "traceprocess/{executionid}", method = RequestMethod.GET)
 	public void traceprocess(@PathVariable("executionid") String executionid, HttpServletResponse response)
 			throws Exception {

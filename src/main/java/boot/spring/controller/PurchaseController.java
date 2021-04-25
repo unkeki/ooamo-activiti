@@ -51,14 +51,19 @@ import io.swagger.annotations.ApiOperation;
 public class PurchaseController {
 	@Autowired
 	RepositoryService repositoryservice;
+	
 	@Autowired
 	RuntimeService runservice;
+	
 	@Autowired
 	TaskService taskservice;
+	
 	@Autowired
 	HistoryService histiryservice;
+	
 	@Autowired
 	SystemService systemservice;
+	
 	@Autowired
 	PurchaseService purchaseservice;
 	
@@ -102,6 +107,7 @@ public class PurchaseController {
 		return "purchase/receiveitem";
 	}
 	
+	@ApiOperation("发起一个采购流程")
 	@RequestMapping(value="startpurchase",method=RequestMethod.POST)
 	@ResponseBody
 	MSG startpurchase(@RequestParam("itemlist")String itemlist,@RequestParam("total")BigDecimal total,HttpSession session){
@@ -147,6 +153,7 @@ public class PurchaseController {
 		return "purchase/mypurchase";
 	}
 	
+	@ApiOperation("获取采购经理待办列表")
 	@RequestMapping(value="/puchasemanagertasklist",method=RequestMethod.POST)
 	@ResponseBody
 	DataGrid<PurchaseTask> puchasemanagertasklist(HttpSession session,@RequestParam("current") int current,@RequestParam("rowCount") int rowCount){
@@ -183,6 +190,7 @@ public class PurchaseController {
 		return grid;
 	}
 	
+	@ApiOperation("采购经理完成审批")
 	@RequestMapping(value="task/purchasemanagercomplete/{taskid}",method=RequestMethod.POST)
 	@ResponseBody
 	public MSG purchasemanagercomplete(HttpSession session,@PathVariable("taskid") String taskid,HttpServletRequest req){
@@ -195,6 +203,7 @@ public class PurchaseController {
 		return new MSG("ok");
 	}
 	
+	@ApiOperation("获取调整采购申请待办列表")
 	@RequestMapping(value="updatepurchaseapply",method=RequestMethod.POST)
 	@ResponseBody
 	public DataGrid<PurchaseTask> updateapply(HttpSession session,@RequestParam("current") int current,@RequestParam("rowCount") int rowCount){
@@ -229,6 +238,7 @@ public class PurchaseController {
 		return grid;
 	}
 	
+	@ApiOperation("完成调整采购申请待办")
 	@RequestMapping(value="task/updateapplycomplete/{taskid}",method=RequestMethod.POST)
 	@ResponseBody
 	public MSG updateapplycomplete(HttpSession session,@PathVariable("taskid") String taskid,HttpServletRequest req){
@@ -253,6 +263,7 @@ public class PurchaseController {
 		return new MSG("ok");
 	}
 	
+	@ApiOperation("获取已完成采购流程历史数据")
 	@RequestMapping(value="getfinishpurchaseprocess",method=RequestMethod.POST)
 	@ResponseBody
 	public DataGrid<HistoryProcess> getHistory(HttpSession session,@RequestParam("current") int current,@RequestParam("rowCount") int rowCount){
@@ -279,6 +290,7 @@ public class PurchaseController {
 		return grid;
 	}
 	
+	@ApiOperation("获取财务审批待办列表")
 	@RequestMapping(value="/financetasklist",method=RequestMethod.POST)
 	@ResponseBody
 	DataGrid<PurchaseTask> financetasklist(HttpSession session,@RequestParam("current") int current,@RequestParam("rowCount") int rowCount){
@@ -313,6 +325,7 @@ public class PurchaseController {
 		return grid;
 	}
 	
+	@ApiOperation("完成财务审批待办")
 	@RequestMapping(value="task/financecomplete/{taskid}",method=RequestMethod.POST)
 	@ResponseBody
 	public MSG financecomplete(HttpSession session,@RequestParam("total")String total,@PathVariable("taskid") String taskid,HttpServletRequest req){
@@ -327,6 +340,7 @@ public class PurchaseController {
 		return new MSG("ok");
 	}
 	
+	@ApiOperation("获取总经理审批待办列表")
 	@RequestMapping(value="/managertasklist",method=RequestMethod.POST)
 	@ResponseBody
 	DataGrid<PurchaseTask> managertasklist(HttpSession session,@RequestParam("current") int current,@RequestParam("rowCount") int rowCount){
@@ -361,6 +375,7 @@ public class PurchaseController {
 		return grid;
 	}
 	
+	@ApiOperation("完成总经理审批待办")
 	@RequestMapping(value="task/managercomplete/{taskid}",method=RequestMethod.POST)
 	@ResponseBody
 	public MSG managercomplete(HttpSession session,@RequestParam("total")String total,@PathVariable("taskid") String taskid,HttpServletRequest req){
@@ -373,6 +388,7 @@ public class PurchaseController {
 		return new MSG("ok");
 	}
 	
+	@ApiOperation("获取出纳付款待办列表")
 	@RequestMapping(value="/paytasklist",method=RequestMethod.POST)
 	@ResponseBody
 	DataGrid<PurchaseTask> paytasklist(HttpSession session,@RequestParam("current") int current,@RequestParam("rowCount") int rowCount){
@@ -407,6 +423,7 @@ public class PurchaseController {
 		return grid;
 	}
 	
+	@ApiOperation("完成出纳付款待办")
 	@RequestMapping(value="task/paycomplete/{taskid}",method=RequestMethod.POST)
 	@ResponseBody
 	public MSG paycomplete(HttpSession session,@PathVariable("taskid") String taskid,HttpServletRequest req){
@@ -416,7 +433,7 @@ public class PurchaseController {
 		return new MSG("ok");
 	}
 	
-	
+	@ApiOperation("获取收货确认待办列表")
 	@RequestMapping(value="/receivetasklist",method=RequestMethod.POST)
 	@ResponseBody
 	DataGrid<PurchaseTask> receivetasklist(HttpSession session,@RequestParam("current") int current,@RequestParam("rowCount") int rowCount){
@@ -451,6 +468,7 @@ public class PurchaseController {
 		return grid;
 	}
 	
+	@ApiOperation("完成收货确认待办任务")
 	@RequestMapping(value="task/receivecomplete/{taskid}",method=RequestMethod.POST)
 	@ResponseBody
 	public MSG receivecomplete(HttpSession session,@PathVariable("taskid") String taskid,HttpServletRequest req){

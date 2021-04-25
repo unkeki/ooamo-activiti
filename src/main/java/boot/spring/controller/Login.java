@@ -19,6 +19,7 @@ import boot.spring.po.User_role;
 import boot.spring.service.LoginService;
 import boot.spring.service.SystemService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 
 @Api(value = "登录登出接口")
@@ -30,6 +31,7 @@ public class Login {
 	@Autowired
 	SystemService systemservice;
 	
+	@ApiOperation("登录认证")
 	@RequestMapping(value="/loginvalidate",method = RequestMethod.POST)
 	public String loginvalidate(@RequestParam("username") String username,@RequestParam("password") String pwd,HttpSession httpSession){
 		if(username==null)
@@ -54,6 +56,7 @@ public class Login {
 		return "login";
 	}
 	
+	@ApiOperation("获取当前登录用户信息")
 	@RequestMapping(value="/currentuser",method = RequestMethod.GET)
 	@ResponseBody
 	public MSG currentuser(HttpSession httpSession){
@@ -61,6 +64,7 @@ public class Login {
 		return new MSG(userid);
 	}	
 	
+	@ApiOperation("获取当前用户的权限列表")
 	@RequestMapping(value="/currentuserpermission",method = RequestMethod.GET)
 	@ResponseBody
 	public List<String> currentuserpermission(HttpSession httpSession){
