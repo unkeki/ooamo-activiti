@@ -97,12 +97,6 @@ public class SystemServiceImpl implements SystemService {
 
 	}
 
-	public List<Role> getpageRoleinfo(int pagenum, int pagesize) {
-		PageHelper.startPage(pagenum, pagesize);
-		List<Role> l = rolemapper.getRoleinfo();
-		return l;
-	}
-
 	public List<Role> getRoleinfo() {
 		return rolemapper.getRoleinfo();
 	}

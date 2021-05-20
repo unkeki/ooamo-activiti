@@ -99,7 +99,14 @@ public class SystemController {
 	@ResponseBody
 	DataGrid<Role> getallroles(@RequestParam("current") int current,@RequestParam("rowCount") int rowCount){
 		List<Role> roles=systemservice.getRoleinfo();
-		List<Role> rows=systemservice.getpageRoleinfo(current, rowCount);
+		int from = (current-1) * rowCount;
+		int end = current * rowCount;
+		List<Role> rows ;
+		if (end >= roles.size()) {
+			rows = roles.subList(from, roles.size());
+		} else {
+			rows = roles.subList(from, end);
+		}
 		DataGrid<Role> grid=new DataGrid<Role>();
 		grid.setCurrent(current);
 		grid.setRowCount(rowCount);

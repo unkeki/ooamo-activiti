@@ -17,7 +17,6 @@ public interface SystemService {
 	void adduser(User user,String[] rolenames);
 	void adduser(User user);//只添加用户，无角色添加
 	void updateuser(int uid,User user,String[] rolenames);
-	List<Role> getpageRoleinfo(int pagenum, int pagesize);
 	List<Role> getRoleinfo();
 	List<Permission> getPermisions();
 	/**
