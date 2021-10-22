@@ -46,7 +46,6 @@ mvn clean install
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0422/103856_8b35cdd8_1110335.png "9.png")
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0422/103904_8e5819ad_1110335.png "10.png")
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0422/103911_751e6e83_1110335.png "11.png")
-### 附录：中央技术储备仓库（Central Technique Reserve Repository）
 
 ### 附录：中央技术储备仓库（Central Technique Reserve Repository）
 
