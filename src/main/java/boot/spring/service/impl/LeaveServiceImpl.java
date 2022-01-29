@@ -12,8 +12,6 @@ import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricActivityInstance;
 import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
-import org.activiti.engine.impl.pvm.PvmTransition;
-import org.activiti.engine.impl.pvm.process.ActivityImpl;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -167,7 +165,7 @@ public class LeaveServiceImpl implements LeaveService{
 		}else
 			taskservice.complete(taskid,variables);
 	}
-	
+	/**
 	public List<String> getHighLightedFlows(  
 	        ProcessDefinitionEntity processDefinitionEntity,  
 	        List<HistoricActivityInstance> historicActivityInstances) {  
@@ -211,7 +209,7 @@ public class LeaveServiceImpl implements LeaveService{
 	    }  
 	    return highFlows;  
 	}
-
+   **/
 	@Override
 	public List<LeaveApply> getPageByApplyer(String username, int current, int rowCount) {
 		PageHelper.startPage(current, rowCount);  
