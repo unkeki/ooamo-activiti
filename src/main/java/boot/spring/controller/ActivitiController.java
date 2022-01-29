@@ -453,7 +453,8 @@ public class ActivitiController {
 	String myleaveprocess() {
 		return "activiti/myleaveprocess";
 	}
-	
+
+	/**
 	@ApiOperation("使用executionid追踪流程图进度")
 	@RequestMapping(value = "traceprocess/{executionid}", method = RequestMethod.GET)
 	public void traceprocess(@PathVariable("executionid") String executionid, HttpServletResponse response)
@@ -479,6 +480,7 @@ public class ActivitiController {
 		ServletOutputStream output = response.getOutputStream();
 		IOUtils.copy(in, output);
 	}
+	**/
 
 	@RequestMapping(value = "myleaves", method = RequestMethod.GET)
 	String myleaves() {
