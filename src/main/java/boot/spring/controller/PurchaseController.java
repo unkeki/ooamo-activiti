@@ -140,7 +140,7 @@ public class PurchaseController {
 				apply.setActivityid("无");
 			} else {
 				apply.setState("运行中");
-				apply.setActivityid(process.getActivityId());
+				apply.setActivityid(taskservice.createTaskQuery().processInstanceId(process.getId()).singleResult().getName());
 			}
 		}
 		grid.setTotal(purchaseservice.listPurchaseApplyByApplyer(username).size());
