@@ -1,23 +1,16 @@
 package boot.spring.controller;
 
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import io.swagger.annotations.ApiParam;
 import org.activiti.bpmn.model.BpmnModel;
-import org.activiti.engine.FormService;
-import org.activiti.engine.HistoryService;
-import org.activiti.engine.IdentityService;
-import org.activiti.engine.RepositoryService;
-import org.activiti.engine.RuntimeService;
-import org.activiti.engine.TaskService;
+import org.activiti.engine.*;
 import org.activiti.engine.history.HistoricActivityInstance;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricProcessInstanceQuery;
@@ -27,9 +20,13 @@ import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.runtime.ProcessInstanceQuery;
 import org.activiti.engine.task.Task;
+import org.activiti.image.ProcessDiagramGenerator;
 import org.activiti.image.impl.DefaultProcessDiagramGenerator;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -86,6 +83,9 @@ public class ActivitiController {
 	
 	@Autowired
 	LeaveApplyMapper leaveApplyMapper;
+
+	@Autowired
+	ProcessEngineConfiguration configuration;
 
 	@RequestMapping(value = "/processlist", method = RequestMethod.GET)
 	String process() {
@@ -481,6 +481,29 @@ public class ActivitiController {
 		IOUtils.copy(in, output);
 	}
 	**/
+
+	@RequestMapping(value = {"/traceprocess/{processInstanceId}"}, method = {RequestMethod.GET})
+	@ResponseBody
+	public ResponseEntity<byte[]> traceprocess(@ApiParam(name = "processInstanceId",value = "The id of the process instance to get the diagram for.") @PathVariable String processInstanceId, HttpServletResponse response) {
+		ProcessInstance processInstance = runservice.createProcessInstanceQuery().processInstanceId(processInstanceId).active().singleResult();
+		ProcessDefinition pde = rep.getProcessDefinition(processInstance.getProcessDefinitionId());
+		if (pde != null && pde.hasGraphicalNotation()) {
+			BpmnModel bpmnModel = rep.getBpmnModel(pde.getId());
+			ProcessDiagramGenerator diagramGenerator = configuration.getProcessDiagramGenerator();
+			InputStream resource = diagramGenerator.generateDiagram(bpmnModel, "png", runservice.getActiveActivityIds(processInstance.getId()), Collections.emptyList(), "宋体", "宋体", "宋体", configuration.getClassLoader(), 1.0D);
+			HttpHeaders responseHeaders = new HttpHeaders();
+			responseHeaders.set("Content-Type", "image/png");
+
+			try {
+				return new ResponseEntity(IOUtils.toByteArray(resource), responseHeaders, HttpStatus.OK);
+			} catch (Exception var10) {
+				throw new ActivitiIllegalArgumentException("Error exporting diagram", var10);
+			}
+		} else {
+			throw new ActivitiIllegalArgumentException("Process instance with id '" + processInstance.getId() + "' has no graphical notation defined.");
+		}
+	}
+
 
 	@RequestMapping(value = "myleaves", method = RequestMethod.GET)
 	String myleaves() {
