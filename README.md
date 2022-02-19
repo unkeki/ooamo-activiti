@@ -21,13 +21,10 @@
 mvn clean install
 ```
 8. swagger入口：http://localhost:8888/swagger-ui.html
-9. 新增流程图设计器，将activiti-explorer.war放入Tomcat8.5的webapps目录下，启动Tomcat，访问http://localhost:8080/activiti-explorer ，即可进入登录页面，用户名和密码都是kermit：
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0419/164940_5fb4fee1_1110335.png "1618821418(1).png")
-点击流程->流程设计工作区->新建模型，填入模型名称，点击创建按钮即可开始流程图设计：
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0419/165212_01f3e2f0_1110335.png "1618821830(1).png")
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0419/165219_e3328ba1_1110335.png "1618821895(1).png")
-设计完后，可以导出源文件：
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0419/165618_55252965_1110335.png "1618822550(1).png")
+9. 新增流程图设计器，将activiti-app.war放入Tomcat8.5的webapps目录下，启动Tomcat，访问http://localhost:8080/activiti-app ，即可进入登录页面，用户名admin，密码是test：
+![输入图片说明](1.png)
+![输入图片说明](2.png)
+![输入图片说明](3.png)
 10. 新增动态菜单权限，通过给不同用户分配不同的角色，使他们看到不同的菜单。
 11. 请假流程直接分配到具体审批人，只有指定的审批人才能审批。采购流程按照候选者组进行任务签收，只要能拥有相关菜单的权限即可审批。
 
