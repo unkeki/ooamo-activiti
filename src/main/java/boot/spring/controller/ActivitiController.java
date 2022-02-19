@@ -454,34 +454,6 @@ public class ActivitiController {
 		return "activiti/myleaveprocess";
 	}
 
-	/**
-	@ApiOperation("使用executionid追踪流程图进度")
-	@RequestMapping(value = "traceprocess/{executionid}", method = RequestMethod.GET)
-	public void traceprocess(@PathVariable("executionid") String executionid, HttpServletResponse response)
-			throws Exception {
-		ProcessInstance process = runservice.createProcessInstanceQuery().processInstanceId(executionid).singleResult();
-		BpmnModel bpmnmodel = rep.getBpmnModel(process.getProcessDefinitionId());
-		List<String> activeActivityIds = runservice.getActiveActivityIds(executionid);
-		DefaultProcessDiagramGenerator gen = new DefaultProcessDiagramGenerator();
-		// 获得历史活动记录实体（通过启动时间正序排序，不然有的线可以绘制不出来）
-		List<HistoricActivityInstance> historicActivityInstances = histiryservice.createHistoricActivityInstanceQuery()
-				.executionId(executionid).orderByHistoricActivityInstanceStartTime().asc().list();
-		// 计算活动线
-		List<String> highLightedFlows = leaveservice
-				.getHighLightedFlows(
-						(ProcessDefinitionEntity) ((RepositoryServiceImpl) rep)
-								.getDeployedProcessDefinition(process.getProcessDefinitionId()),
-						historicActivityInstances);
-
-		InputStream in = gen.generateDiagram(bpmnmodel, "png", activeActivityIds, highLightedFlows, "宋体", "宋体", null,
-				null, 1.0);
-		// InputStream in=gen.generateDiagram(bpmnmodel, "png",
-		// activeActivityIds);
-		ServletOutputStream output = response.getOutputStream();
-		IOUtils.copy(in, output);
-	}
-	**/
-
 	@RequestMapping(value = {"/traceprocess/{processInstanceId}"}, method = {RequestMethod.GET})
 	@ResponseBody
 	public ResponseEntity<byte[]> traceprocess(@ApiParam(name = "processInstanceId",value = "The id of the process instance to get the diagram for.") @PathVariable String processInstanceId, HttpServletResponse response) {
