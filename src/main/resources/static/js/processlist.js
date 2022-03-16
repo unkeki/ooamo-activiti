@@ -27,7 +27,7 @@
 	        },
 	        "picname":function(column, row)
 	        {
-	        	return "<a target=\"_blank\" href=\"showresource?pdid="+row.id+"&resource="+row.diagramresourcename+"\">"  + row.diagramresourcename + "</a>";
+	        	return "<a target=\"_blank\" href=\"showresource?pdid="+row.id+"\">"  + row.diagramresourcename + "</a>";
 	        },
 	    	}
 	    }).on("loaded.rs.jquery.bootgrid", function()
