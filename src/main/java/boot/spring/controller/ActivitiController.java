@@ -134,12 +134,23 @@ public class ActivitiController {
 	
 	@ApiOperation("查看工作流图片")
 	@RequestMapping(value = "/showresource", method = RequestMethod.GET)
-	public void export(@RequestParam("pdid") String pdid, @RequestParam("resource") String resource,
+	public void export(@RequestParam("pdid") String pdid, @RequestParam(value="resource", required = false) String resource,
 			HttpServletResponse response) throws Exception {
-		ProcessDefinition def = rep.createProcessDefinitionQuery().processDefinitionId(pdid).singleResult();
-		InputStream is = rep.getResourceAsStream(def.getDeploymentId(), resource);
-		ServletOutputStream output = response.getOutputStream();
-		IOUtils.copy(is, output);
+		if (resource != null) {
+			// 获取XML定义
+			ProcessDefinition def = rep.createProcessDefinitionQuery().processDefinitionId(pdid).singleResult();
+			InputStream is = rep.getResourceAsStream(def.getDeploymentId(), resource);
+			ServletOutputStream output = response.getOutputStream();
+			IOUtils.copy(is, output);
+		} else {
+			// 获取流程图片
+			ProcessDefinition def = rep.createProcessDefinitionQuery().processDefinitionId(pdid).singleResult();
+			BpmnModel bpmnModel = rep.getBpmnModel(pdid);
+			ProcessDiagramGenerator diagramGenerator = configuration.getProcessDiagramGenerator();
+			InputStream is = diagramGenerator.generateDiagram(bpmnModel, "png", Collections.emptyList(), Collections.emptyList(), "宋体", "宋体", "宋体", configuration.getClassLoader(), 1.0D);
+			ServletOutputStream output = response.getOutputStream();
+			IOUtils.copy(is, output);
+		}
 	}
 
 	@RequestMapping(value = "/deletedeploy", method = RequestMethod.POST)
@@ -454,33 +465,6 @@ public class ActivitiController {
 		return "activiti/myleaveprocess";
 	}
 
-	/**
-	@ApiOperation("使用executionid追踪流程图进度")
-	@RequestMapping(value = "traceprocess/{executionid}", method = RequestMethod.GET)
-	public void traceprocess(@PathVariable("executionid") String executionid, HttpServletResponse response)
-			throws Exception {
-		ProcessInstance process = runservice.createProcessInstanceQuery().processInstanceId(executionid).singleResult();
-		BpmnModel bpmnmodel = rep.getBpmnModel(process.getProcessDefinitionId());
-		List<String> activeActivityIds = runservice.getActiveActivityIds(executionid);
-		DefaultProcessDiagramGenerator gen = new DefaultProcessDiagramGenerator();
-		// 获得历史活动记录实体（通过启动时间正序排序，不然有的线可以绘制不出来）
-		List<HistoricActivityInstance> historicActivityInstances = histiryservice.createHistoricActivityInstanceQuery()
-				.executionId(executionid).orderByHistoricActivityInstanceStartTime().asc().list();
-		// 计算活动线
-		List<String> highLightedFlows = leaveservice
-				.getHighLightedFlows(
-						(ProcessDefinitionEntity) ((RepositoryServiceImpl) rep)
-								.getDeployedProcessDefinition(process.getProcessDefinitionId()),
-						historicActivityInstances);
-
-		InputStream in = gen.generateDiagram(bpmnmodel, "png", activeActivityIds, highLightedFlows, "宋体", "宋体", null,
-				null, 1.0);
-		// InputStream in=gen.generateDiagram(bpmnmodel, "png",
-		// activeActivityIds);
-		ServletOutputStream output = response.getOutputStream();
-		IOUtils.copy(in, output);
-	}
-	**/
 
 	@RequestMapping(value = {"/traceprocess/{processInstanceId}"}, method = {RequestMethod.GET})
 	@ResponseBody
@@ -534,5 +518,6 @@ public class ActivitiController {
 		grid.setRows(list);
 		return grid;
 	}
+	
 	
 }
