@@ -5,10 +5,7 @@ import boot.spring.po.PurchaseApply;
 import boot.spring.po.WorkApply;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.activiti.engine.FormService;
-import org.activiti.engine.HistoryService;
-import org.activiti.engine.RuntimeService;
-import org.activiti.engine.TaskService;
+import org.activiti.engine.*;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricProcessInstance;
@@ -39,6 +36,9 @@ public class WorkApplyController {
     @Autowired
     HistoryService historyservice;
 
+    @Autowired
+    IdentityService identityservice;
+
     @RequestMapping(value="/workapply",method=RequestMethod.GET)
     String mypurchase(){
         return "work/workapply";
@@ -65,6 +65,8 @@ public class WorkApplyController {
     public MSG startWorkApply(WorkApply apply, HttpSession session){
         Map<String,Object> variables=new HashMap<String, Object>();
         variables.put("applyer", session.getAttribute("username"));
+        // 写入流程的发起人
+        identityservice.setAuthenticatedUserId((String)session.getAttribute("username"));
         ProcessInstance process = runservice.startProcessInstanceByKey("workapply", variables);
         Task t =  taskservice.createTaskQuery().processInstanceId(process.getId()).singleResult();
         taskservice.claim(t.getId(), apply.getApplyer());
@@ -257,5 +259,13 @@ public class WorkApplyController {
         grid.setTotal(tasks.size());
         grid.setRows(tasks.subList(from, to));
         return grid;
+    }
+    
+    @ApiOperation("发起一个ceshi流程")
+    @RequestMapping(value="startTest",method= RequestMethod.GET)
+    @ResponseBody
+    public MSG startTest(WorkApply apply, HttpSession session){
+        ProcessInstance process = runservice.startProcessInstanceByKey("test");
+        return new MSG("success");
     }
 }
