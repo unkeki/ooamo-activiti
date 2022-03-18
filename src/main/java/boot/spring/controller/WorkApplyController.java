@@ -76,6 +76,7 @@ public class WorkApplyController {
         variables2.put("endTime", apply.getEndTime());
         variables2.put("pm", apply.getPm());
         variables2.put("content", apply.getContent());
+        // 提交表单数据并完成用户任务
         formservice.submitTaskFormData(t.getId(), variables2);
         return new MSG("success");
     }
@@ -261,11 +262,4 @@ public class WorkApplyController {
         return grid;
     }
     
-    @ApiOperation("发起一个ceshi流程")
-    @RequestMapping(value="startTest",method= RequestMethod.GET)
-    @ResponseBody
-    public MSG startTest(WorkApply apply, HttpSession session){
-        ProcessInstance process = runservice.startProcessInstanceByKey("test");
-        return new MSG("success");
-    }
 }
