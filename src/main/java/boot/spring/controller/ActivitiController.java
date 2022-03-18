@@ -99,7 +99,11 @@ public class ActivitiController {
 			MultipartFile file = uploadfile;
 			String filename = file.getOriginalFilename();
 			InputStream is = file.getInputStream();
-			rep.createDeployment().addInputStream(filename, is).deploy();
+			if (filename.endsWith("zip")) {
+				rep.createDeployment().name(filename).addZipInputStream(new ZipInputStream(is)).deploy();
+			} else {
+				rep.createDeployment().addInputStream(filename, is).deploy();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
