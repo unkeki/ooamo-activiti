@@ -96,13 +96,12 @@ public class ActivitiController {
 	@RequestMapping(value = "/uploadworkflow", method = RequestMethod.POST)
 	public String fileupload(@RequestParam MultipartFile uploadfile, HttpServletRequest request) {
 		try {
-			MultipartFile file = uploadfile;
-			String filename = file.getOriginalFilename();
-			InputStream is = file.getInputStream();
+			String filename = uploadfile.getOriginalFilename();
+			InputStream is = uploadfile.getInputStream();
 			if (filename.endsWith("zip")) {
 				rep.createDeployment().name(filename).addZipInputStream(new ZipInputStream(is)).deploy();
 			} else {
-				rep.createDeployment().addInputStream(filename, is).deploy();
+				rep.createDeployment().name(filename).addInputStream(filename, is).deploy();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
