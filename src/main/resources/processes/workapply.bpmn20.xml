@@ -6,7 +6,7 @@
       <extensionElements>
         <activiti:formProperty id="projectName" name="项目名称" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="startTime" name="开始时间" type="date" datePattern="yyyy-MM-dd HH:mm:ss" required="true"></activiti:formProperty>
-        <activiti:formProperty id="endTime" name="结束时间" type="date" datePattern="yyyy-MM-dd hh:mm:ss" required="true"></activiti:formProperty>
+        <activiti:formProperty id="endTime" name="结束时间" type="date" datePattern="yyyy-MM-dd HH:mm:ss" required="true"></activiti:formProperty>
         <activiti:formProperty id="pm" name="项目经理" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="content" name="加班内容" type="string" required="true"></activiti:formProperty>
         <modeler:initiator-can-complete xmlns:modeler="http://activiti.com/modeler">false</modeler:initiator-can-complete>
