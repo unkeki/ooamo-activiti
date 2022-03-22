@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/processdef">
-  <process id="workapply" name="加班申请流程" isExecutable="true">
+  <process id="workapply" name="加班申请" isExecutable="true">
     <startEvent id="sid-BD372E3E-015E-4800-A2AE-612ACFB892E1"></startEvent>
     <userTask id="sid-6213B0D8-F310-47CF-8007-FC9F0C7A55F3" name="提交加班申请" activiti:assignee="${applyer}">
       <extensionElements>
@@ -15,11 +15,11 @@
     <sequenceFlow id="sid-8CD2B977-CD0D-449B-B81E-D648CFB1BFB4" sourceRef="sid-BD372E3E-015E-4800-A2AE-612ACFB892E1" targetRef="sid-6213B0D8-F310-47CF-8007-FC9F0C7A55F3"></sequenceFlow>
     <userTask id="sid-7047BE5F-96C9-47FC-9E17-6CB9A9DFC172" name="项目经理审批" activiti:assignee="${pm}">
       <extensionElements>
-        <activiti:formProperty id="projectName" name="项目名称" type="string" variable="${projectName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="startTime" name="开始时间" type="date" variable="${startTime}" datePattern="yyyy-MM-dd HH:mm:ss" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="endTime" name="结束时间" type="date" variable="${endTime}" datePattern="yyyy-MM-dd HH:mm:ss" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="pm" name="项目经理" type="string" variable="${pm}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="content" name="加班内容" type="string" variable="${加班内容}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="projectName" name="项目名称" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="startTime" name="开始时间" type="date" datePattern="yyyy-MM-dd HH:mm:ss" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="endTime" name="结束时间" type="date" datePattern="yyyy-MM-dd HH:mm:ss" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="pm" name="项目经理" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="content" name="加班内容" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="approve" name="是否通过" type="enum" required="true">
           <activiti:value id="true" name="同意"></activiti:value>
           <activiti:value id="false" name="不同意"></activiti:value>
