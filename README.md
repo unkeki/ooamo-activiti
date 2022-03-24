@@ -29,9 +29,8 @@ mvn clean install
 11. 请假流程直接分配到具体审批人，只有指定的审批人才能审批。采购流程按照候选者组进行任务签收，只要能拥有相关菜单的权限即可审批。
 
 12.效果图：
-
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0422/104928_60dfdd31_1110335.gif "1.gif")
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0422/105155_8e981bdd_1110335.gif "2.gif")
+![输入图片说明](1.gif)
+![输入图片说明](2.gif)
 ![输入图片说明](4.png)
 ![输入图片说明](5.png)
 ![输入图片说明](6.jpg)
