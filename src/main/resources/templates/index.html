@@ -109,6 +109,7 @@
 						<li><a class="ajax-link" href="leaveapply">请假申请</a></li>
 						<li><a class="ajax-link" href="purchase">物资采购</a></li>
 						<li><a class="ajax-link" href="workapply">加班申请</a></li>
+						<li><a class="ajax-link" href="startmeeting">发起会议</a></li>
 					</ul>
 				</li>
 				<li class="dropdown">
@@ -157,6 +158,15 @@
 
 							</ul>
 						</li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle">
+								<i class="fa fa-file"></i>
+								<span class="hidden-xs">参与会议待办</span>
+							</a>
+							<ul class="dropdown-menu" id="meeting">
+
+							</ul>
+						</li>
 					</ul>
 				</li>
 				<li class="dropdown">
@@ -177,6 +187,7 @@
 						<li><a class="ajax-link" href="myleaves">我发起的请假流程</a></li>
 						<li><a class="ajax-link" href="mypurchase">我发起的采购流程</a></li>
 						<li><a class="ajax-link" href="myworkapply">我发起的加班申请流程</a></li>
+						<li><a class="ajax-link" href="mymeeting">我发起的会议流程</a></li>
 					</ul>
 				</li>
 				<li class="dropdown">
@@ -266,6 +277,9 @@ $(document).ready(function(){
 		}
 		if (data.indexOf("重新提交加班申请") >= 0) {
 			$("#work").append('<li><a class="ajax-link" href="submitwork">重新提交加班申请</a></li>');
+		}
+		if (data.indexOf("会议待办任务") >= 0) {
+			$("#meeting").append('<li><a class="ajax-link" href="meetingtask">会议待办</a></li>');
 		}
 	});
 	
