@@ -2,11 +2,11 @@
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="purchase" name="采购流程" isExecutable="true">
     <startEvent id="startevent1" name="Start" activiti:initiator="${starter}"></startEvent>
-    <userTask id="purchaseAuditi" name="采购经理审批" activiti:candidateGroups="采购经理"></userTask>
+    <userTask id="purchaseAuditi" name="采购经理审批" activiti:assignee="${purchasemanager}" activiti:candidateGroups="采购经理" activiti:formKey="purchase/purchasemanager"></userTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="purchaseAuditi"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow2" sourceRef="purchaseAuditi" targetRef="exclusivegateway1"></sequenceFlow>
-    <userTask id="updateapply" name="调整采购申请" activiti:assignee="${starter}"></userTask>
+    <userTask id="updateapply" name="调整采购申请" activiti:assignee="${starter}" activiti:formKey="purchase/updateapply"></userTask>
     <sequenceFlow id="flow4" name="不通过" sourceRef="exclusivegateway1" targetRef="updateapply">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${purchaseauditi=='false'}]]></conditionExpression>
     </sequenceFlow>
@@ -21,7 +21,7 @@
     </sequenceFlow>
     <subProcess id="pay" name="付费子流程">
       <startEvent id="startevent2" name="Start"></startEvent>
-      <userTask id="financeaudit" name="财务审批" activiti:candidateGroups="财务管理员"></userTask>
+      <userTask id="financeaudit" name="财务审批" activiti:assignee="${finance}" activiti:candidateGroups="财务管理员" activiti:formKey="purchase/finance"></userTask>
       <sequenceFlow id="flow9" sourceRef="startevent2" targetRef="financeaudit"></sequenceFlow>
       <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
       <sequenceFlow id="flow10" sourceRef="financeaudit" targetRef="exclusivegateway3"></sequenceFlow>
@@ -29,11 +29,11 @@
       <sequenceFlow id="flow11" name="通过" sourceRef="exclusivegateway3" targetRef="exclusivegateway4">
         <conditionExpression xsi:type="tFormalExpression"><![CDATA[${finance=='true'}]]></conditionExpression>
       </sequenceFlow>
-      <userTask id="manageraudit" name="总经理审批" activiti:candidateGroups="总经理"></userTask>
+      <userTask id="manageraudit" name="总经理审批" activiti:assignee="${manager}" activiti:candidateGroups="总经理" activiti:formKey="purchase/manager"></userTask>
       <sequenceFlow id="flow12" name="金额大于1万" sourceRef="exclusivegateway4" targetRef="manageraudit">
         <conditionExpression xsi:type="tFormalExpression"><![CDATA[${money>10000}]]></conditionExpression>
       </sequenceFlow>
-      <userTask id="paymoney" name="出纳付款" activiti:candidateGroups="出纳员"></userTask>
+      <userTask id="paymoney" name="出纳付款" activiti:assignee="${pay}" activiti:candidateGroups="出纳员" activiti:formKey="purchase/pay"></userTask>
       <sequenceFlow id="flow13" name="金额小于1万" sourceRef="exclusivegateway4" targetRef="paymoney">
         <conditionExpression xsi:type="tFormalExpression"><![CDATA[${money<10000}]]></conditionExpression>
       </sequenceFlow>
@@ -64,7 +64,7 @@
     <sequenceFlow id="flow20" name="进入付费子流程" sourceRef="exclusivegateway1" targetRef="pay">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${purchaseauditi=='true'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="receiveitem" name="收货确认" activiti:assignee="${starter}"></userTask>
+    <userTask id="receiveitem" name="收货确认" activiti:assignee="${starter}" activiti:formKey="purchase/receiveitem"></userTask>
     <sequenceFlow id="flow21" sourceRef="pay" targetRef="receiveitem"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow22" sourceRef="receiveitem" targetRef="endevent3"></sequenceFlow>
@@ -220,7 +220,7 @@
         <omgdi:waypoint x="458.0" y="268.0"></omgdi:waypoint>
         <omgdi:waypoint x="358.0" y="267.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="84.0" x="316.0" y="181.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="84.0" x="398.0" y="295.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">

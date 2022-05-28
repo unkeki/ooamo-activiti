@@ -80,7 +80,7 @@ public class LeaveapplyServiceImpl implements ILeaveapplyService
         HashMap<String, Object> variables = new HashMap<>();
         variables.put("applyuserid", leaveapply.getUserId());
         variables.put("deptleader", leaveapply.getDeptleader());
-        ProcessInstance instance = runtimeService.startProcessInstanceByKey("leave", String.valueOf(leaveapply.getId()), variables);
+        runtimeService.startProcessInstanceByKey("leave", String.valueOf(leaveapply.getId()), variables);
         return rows;
     }
 
@@ -107,7 +107,7 @@ public class LeaveapplyServiceImpl implements ILeaveapplyService
     {
         String[] keys = Convert.toStrArray(ids);
         for (String key : keys) {
-            ProcessInstance process = runtimeService.createProcessInstanceQuery().processInstanceBusinessKey(key).singleResult();
+            ProcessInstance process = runtimeService.createProcessInstanceQuery().processDefinitionKey("leave").processInstanceBusinessKey(key).singleResult();
             try {
                 runtimeService.deleteProcessInstance(process.getId(),"删除");
             } catch (Exception e) {
