@@ -13,6 +13,7 @@ import com.ruoyi.system.mapper.PurchaseMapper;
 import com.ruoyi.system.domain.Purchase;
 import com.ruoyi.system.service.IPurchaseService;
 import com.ruoyi.common.core.text.Convert;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -23,6 +24,7 @@ import javax.annotation.Resource;
  * @date 2022-05-28
  */
 @Service
+@Transactional
 public class PurchaseServiceImpl implements IPurchaseService 
 {
     @Autowired

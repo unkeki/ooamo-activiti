@@ -4,7 +4,9 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.utils.bean.BeanUtils;
 import com.ruoyi.system.domain.FlowInfo;
+import com.ruoyi.system.domain.VariableInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.activiti.bpmn.model.BpmnModel;
@@ -110,9 +112,17 @@ public class FlowMonitorController extends BaseController {
             info.setSuspended(p.isSuspended());
             info.setEnded(p.isEnded());
             // 查看当前活动任务
-            Task task =  taskService.createTaskQuery().processInstanceId(p.getProcessInstanceId()).singleResult();
-            info.setCurrentTask(task.getName());
-            info.setAssignee(task.getAssignee());
+            List<Task> tasks =  taskService.createTaskQuery().processInstanceId(p.getProcessInstanceId()).list();
+            String taskName = "";
+            String assignee = "";
+            for (Task t : tasks) {
+                taskName += t.getName() + ",";
+                assignee += t.getAssignee() + ",";
+            }
+            taskName = taskName.substring(0, taskName.length() -1);
+            assignee = assignee.substring(0, assignee.length() -1);
+            info.setCurrentTask(taskName);
+            info.setAssignee(assignee);
             flows.add(info);
         });
         TableDataInfo rspData = new TableDataInfo();
@@ -149,9 +159,17 @@ public class FlowMonitorController extends BaseController {
             if (p.getEndTime() == null) {
                 info.setEnded(false);
                 // 查看当前活动任务
-                Task task =  taskService.createTaskQuery().processInstanceId(p.getId()).singleResult();
-                info.setCurrentTask(task.getName());
-                info.setAssignee(task.getAssignee());
+                List<Task> tasks =  taskService.createTaskQuery().processInstanceId(p.getId()).list();
+                String taskName = "";
+                String assignee = "";
+                for (Task t : tasks) {
+                    taskName += t.getName() + ",";
+                    assignee += t.getAssignee() + ",";
+                }
+                taskName = taskName.substring(0, taskName.length() -1);
+                assignee = assignee.substring(0, assignee.length() -1);
+                info.setCurrentTask(taskName);
+                info.setAssignee(assignee);
             } else {
                 info.setEnded(true);
             }
@@ -247,9 +265,16 @@ public class FlowMonitorController extends BaseController {
         int start = (pageNum - 1) * pageSize;
         List<HistoricVariableInstance> variables = historyService.createHistoricVariableInstanceQuery().processInstanceId(processInstanceId).orderByVariableName().asc().listPage(start, pageSize);
         int total = historyService.createHistoricVariableInstanceQuery().processInstanceId(processInstanceId).orderByVariableName().asc().list().size();
+        List<VariableInfo> infos = new ArrayList<>();
+        variables.forEach(v->{
+            VariableInfo info = new VariableInfo();
+            BeanUtils.copyBeanProp(info, v);
+            info.setValue(v.getValue().toString());
+            infos.add(info);
+        });
         TableDataInfo rspData = new TableDataInfo();
         rspData.setCode(0);
-        rspData.setRows(variables);
+        rspData.setRows(infos);
         rspData.setTotal(total);
         return rspData;
     }
