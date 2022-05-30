@@ -1,10 +1,16 @@
 package com.ruoyi.web.controller.activiti;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.system.domain.Leaveapply;
 import com.ruoyi.system.service.ISysUserService;
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
+import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Task;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +29,8 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.page.TableDataInfo;
 
+import javax.annotation.Resource;
+
 /**
  * 采购Controller
  * 
@@ -40,6 +48,12 @@ public class PurchaseController extends BaseController
 
     @Autowired
     private ISysUserService userService;
+
+    @Resource
+    private RuntimeService runtimeService;
+
+    @Resource
+    private TaskService taskService;
 
     @GetMapping()
     public String purchase()
@@ -104,5 +118,107 @@ public class PurchaseController extends BaseController
     public AjaxResult remove(String ids)
     {
         return toAjax(purchaseService.deletePurchaseByIds(ids));
+    }
+
+    /**
+     * 采购经理审批
+     */
+    @GetMapping("/purchasemanager")
+    public String purchasemanager(String taskid, ModelMap mmap)
+    {
+        Task t = taskService.createTaskQuery().taskId(taskid).singleResult();
+        String processId = t.getProcessInstanceId();
+        ProcessInstance p = runtimeService.createProcessInstanceQuery().processInstanceId(processId).singleResult();
+        if (p != null) {
+            Purchase apply = purchaseService.selectPurchaseById(Long.parseLong(p.getBusinessKey()));
+            mmap.put("apply", apply);
+            mmap.put("taskid", taskid);
+        }
+        return prefix + "/purchasemanager";
+    }
+
+    /**
+     * 财务审批
+     */
+    @GetMapping("/finance")
+    public String finance(String taskid, ModelMap mmap)
+    {
+        Task t = taskService.createTaskQuery().taskId(taskid).singleResult();
+        String processId = t.getProcessInstanceId();
+        ProcessInstance p = runtimeService.createProcessInstanceQuery().processInstanceId(processId).singleResult();
+        if (p != null) {
+            Purchase apply = purchaseService.selectPurchaseById(Long.parseLong(p.getBusinessKey()));
+            mmap.put("apply", apply);
+            mmap.put("taskid", taskid);
+        }
+        return prefix + "/finance";
+    }
+
+    /**
+     * 总经理审批
+     */
+    @GetMapping("/manager")
+    public String manager(String taskid, ModelMap mmap)
+    {
+        Task t = taskService.createTaskQuery().taskId(taskid).singleResult();
+        String processId = t.getProcessInstanceId();
+        ProcessInstance p = runtimeService.createProcessInstanceQuery().processInstanceId(processId).singleResult();
+        if (p != null) {
+            Purchase apply = purchaseService.selectPurchaseById(Long.parseLong(p.getBusinessKey()));
+            mmap.put("apply", apply);
+            mmap.put("taskid", taskid);
+        }
+        return prefix + "/manager";
+    }
+
+    /**
+     * 出纳付款
+     */
+    @GetMapping("/pay")
+    public String pay(String taskid, ModelMap mmap)
+    {
+        Task t = taskService.createTaskQuery().taskId(taskid).singleResult();
+        String processId = t.getProcessInstanceId();
+        ProcessInstance p = runtimeService.createProcessInstanceQuery().processInstanceId(processId).singleResult();
+        if (p != null) {
+            Purchase apply = purchaseService.selectPurchaseById(Long.parseLong(p.getBusinessKey()));
+            mmap.put("apply", apply);
+            mmap.put("taskid", taskid);
+        }
+        return prefix + "/pay";
+    }
+
+    /**
+     * 收货确认
+     */
+    @GetMapping("/receiveitem")
+    public String receiveitem(String taskid, ModelMap mmap)
+    {
+        Task t = taskService.createTaskQuery().taskId(taskid).singleResult();
+        String processId = t.getProcessInstanceId();
+        ProcessInstance p = runtimeService.createProcessInstanceQuery().processInstanceId(processId).singleResult();
+        if (p != null) {
+            Purchase apply = purchaseService.selectPurchaseById(Long.parseLong(p.getBusinessKey()));
+            mmap.put("apply", apply);
+            mmap.put("taskid", taskid);
+        }
+        return prefix + "/receiveitem";
+    }
+
+    /**
+     * 调整申请
+     */
+    @GetMapping("/updateapply")
+    public String updateapply(String taskid, ModelMap mmap)
+    {
+        Task t = taskService.createTaskQuery().taskId(taskid).singleResult();
+        String processId = t.getProcessInstanceId();
+        ProcessInstance p = runtimeService.createProcessInstanceQuery().processInstanceId(processId).singleResult();
+        if (p != null) {
+            Purchase apply = purchaseService.selectPurchaseById(Long.parseLong(p.getBusinessKey()));
+            mmap.put("apply", apply);
+            mmap.put("taskid", taskid);
+        }
+        return prefix + "/updateapply";
     }
 }

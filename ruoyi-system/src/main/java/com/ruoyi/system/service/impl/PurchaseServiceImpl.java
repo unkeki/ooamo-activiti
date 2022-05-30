@@ -76,6 +76,10 @@ public class PurchaseServiceImpl implements IPurchaseService
         HashMap<String, Object> variables = new HashMap<>();
         variables.put("starter", purchase.getApplyer());
         variables.put("purchasemanager", purchase.getPurchasemanager());
+        variables.put("finance", purchase.getFinance());
+        variables.put("pay", purchase.getPay());
+        variables.put("manager", purchase.getManager());
+        variables.put("money", Double.parseDouble(purchase.getTotal()));
         runtimeService.startProcessInstanceByKey("purchase", String.valueOf(purchase.getId()), variables);
         return row;
     }

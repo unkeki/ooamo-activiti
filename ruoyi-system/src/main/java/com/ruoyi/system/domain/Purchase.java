@@ -40,6 +40,15 @@ public class Purchase extends BaseEntity
     // 采购经理
     private String purchasemanager;
 
+    // 财务
+    private String finance;
+
+    // 出纳
+    private String pay;
+
+    // 总经理
+    private String manager;
+
     public void setId(Long id) 
     {
         this.id = id;
@@ -92,6 +101,30 @@ public class Purchase extends BaseEntity
 
     public void setPurchasemanager(String purchasemanager) {
         this.purchasemanager = purchasemanager;
+    }
+
+    public String getFinance() {
+        return finance;
+    }
+
+    public void setFinance(String finance) {
+        this.finance = finance;
+    }
+
+    public String getPay() {
+        return pay;
+    }
+
+    public void setPay(String pay) {
+        this.pay = pay;
+    }
+
+    public String getManager() {
+        return manager;
+    }
+
+    public void setManager(String manager) {
+        this.manager = manager;
     }
 
     @Override
