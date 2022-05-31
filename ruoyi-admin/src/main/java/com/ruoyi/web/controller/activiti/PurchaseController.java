@@ -109,6 +109,13 @@ public class PurchaseController extends BaseController
         return toAjax(purchaseService.insertPurchase(purchase));
     }
 
+    @PostMapping("/edit")
+    @ResponseBody
+    public AjaxResult edit(Purchase purchase)
+    {
+        return toAjax(purchaseService.updatePurchase(purchase));
+    }
+
     /**
      * 删除采购
      */
@@ -131,6 +138,8 @@ public class PurchaseController extends BaseController
         ProcessInstance p = runtimeService.createProcessInstanceQuery().processInstanceId(processId).singleResult();
         if (p != null) {
             Purchase apply = purchaseService.selectPurchaseById(Long.parseLong(p.getBusinessKey()));
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            mmap.put("applyTime", sdf.format(apply.getApplytime()));
             mmap.put("apply", apply);
             mmap.put("taskid", taskid);
         }
@@ -148,6 +157,8 @@ public class PurchaseController extends BaseController
         ProcessInstance p = runtimeService.createProcessInstanceQuery().processInstanceId(processId).singleResult();
         if (p != null) {
             Purchase apply = purchaseService.selectPurchaseById(Long.parseLong(p.getBusinessKey()));
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            mmap.put("applyTime", sdf.format(apply.getApplytime()));
             mmap.put("apply", apply);
             mmap.put("taskid", taskid);
         }
@@ -165,6 +176,8 @@ public class PurchaseController extends BaseController
         ProcessInstance p = runtimeService.createProcessInstanceQuery().processInstanceId(processId).singleResult();
         if (p != null) {
             Purchase apply = purchaseService.selectPurchaseById(Long.parseLong(p.getBusinessKey()));
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            mmap.put("applyTime", sdf.format(apply.getApplytime()));
             mmap.put("apply", apply);
             mmap.put("taskid", taskid);
         }
@@ -182,6 +195,8 @@ public class PurchaseController extends BaseController
         ProcessInstance p = runtimeService.createProcessInstanceQuery().processInstanceId(processId).singleResult();
         if (p != null) {
             Purchase apply = purchaseService.selectPurchaseById(Long.parseLong(p.getBusinessKey()));
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            mmap.put("applyTime", sdf.format(apply.getApplytime()));
             mmap.put("apply", apply);
             mmap.put("taskid", taskid);
         }
@@ -199,6 +214,8 @@ public class PurchaseController extends BaseController
         ProcessInstance p = runtimeService.createProcessInstanceQuery().processInstanceId(processId).singleResult();
         if (p != null) {
             Purchase apply = purchaseService.selectPurchaseById(Long.parseLong(p.getBusinessKey()));
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            mmap.put("applyTime", sdf.format(apply.getApplytime()));
             mmap.put("apply", apply);
             mmap.put("taskid", taskid);
         }
@@ -216,6 +233,8 @@ public class PurchaseController extends BaseController
         ProcessInstance p = runtimeService.createProcessInstanceQuery().processInstanceId(processId).singleResult();
         if (p != null) {
             Purchase apply = purchaseService.selectPurchaseById(Long.parseLong(p.getBusinessKey()));
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            mmap.put("applyTime", sdf.format(apply.getApplytime()));
             mmap.put("apply", apply);
             mmap.put("taskid", taskid);
         }

@@ -6,10 +6,13 @@ import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.Meeting;
+import com.ruoyi.system.domain.Purchase;
 import com.ruoyi.system.service.IMeetingService;
 import com.ruoyi.system.service.ISysUserService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Controller
@@ -93,6 +97,13 @@ public class MeetingController extends BaseController {
         return toAjax(meetingService.insertMeeting(meeting));
     }
 
+    @PostMapping("/edit")
+    @ResponseBody
+    public AjaxResult edit(Meeting meeting)
+    {
+        return toAjax(meetingService.updateMeeting(meeting));
+    }
+
     /**
      * 删除会议
      */
@@ -101,5 +112,45 @@ public class MeetingController extends BaseController {
     public AjaxResult remove(String ids)
     {
         return toAjax(meetingService.deleteMeetingByIds(ids));
+    }
+
+    /**
+     * 会议签到
+     */
+    @GetMapping("/signate")
+    public String signate(String taskid, ModelMap mmap)
+    {
+        Task t = taskService.createTaskQuery().taskId(taskid).singleResult();
+        String processId = t.getProcessInstanceId();
+        ProcessInstance p = runtimeService.createProcessInstanceQuery().processInstanceId(processId).singleResult();
+        if (p != null) {
+            Meeting apply = meetingService.selectMeetingById(Long.parseLong(p.getBusinessKey()));
+            mmap.put("apply", apply);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            mmap.put("startTime", sdf.format(apply.getStartTime()));
+            mmap.put("endTime", sdf.format(apply.getEndTime()));
+            mmap.put("taskid", taskid);
+        }
+        return prefix + "/signate";
+    }
+
+    /**
+     * 填写会议纪要
+     */
+    @GetMapping("/input")
+    public String input(String taskid, ModelMap mmap)
+    {
+        Task t = taskService.createTaskQuery().taskId(taskid).singleResult();
+        String processId = t.getProcessInstanceId();
+        ProcessInstance p = runtimeService.createProcessInstanceQuery().processInstanceId(processId).singleResult();
+        if (p != null) {
+            Meeting apply = meetingService.selectMeetingById(Long.parseLong(p.getBusinessKey()));
+            mmap.put("apply", apply);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            mmap.put("startTime", sdf.format(apply.getStartTime()));
+            mmap.put("endTime", sdf.format(apply.getEndTime()));
+            mmap.put("taskid", taskid);
+        }
+        return prefix + "/input";
     }
 }

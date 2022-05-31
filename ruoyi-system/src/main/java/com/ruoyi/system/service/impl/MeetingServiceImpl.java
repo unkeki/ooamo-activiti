@@ -85,7 +85,6 @@ public class MeetingServiceImpl implements IMeetingService
         variables.put("host", meeting.getHost());
         String[] person = meeting.getPeoplelist().split(",");
         variables.put("people", Arrays.asList(person));
-        variables.put("peoplelist", meeting.getPeoplelist());
         runtimeService.startProcessInstanceByKey("meeting", String.valueOf(meeting.getId()), variables);
         return row;
     }

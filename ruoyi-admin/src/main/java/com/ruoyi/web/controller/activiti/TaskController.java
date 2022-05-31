@@ -1,10 +1,12 @@
 package com.ruoyi.web.controller.activiti;
 
+import com.alibaba.fastjson.JSON;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.framework.web.domain.server.Sys;
 import com.ruoyi.system.domain.TaskInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -156,7 +158,7 @@ public class TaskController extends BaseController {
     @ApiOperation("办理一个用户任务")
     @RequestMapping(value = "/completeTask/{taskId}", method = RequestMethod.POST)
     @ResponseBody
-    public AjaxResult completeTask(@PathVariable("taskId") String taskId, @RequestParam(required=false) Map<String, Object> variables) {
+    public AjaxResult completeTask(@PathVariable("taskId") String taskId, @RequestBody(required=false) Map<String, Object> variables) {
         SysUser user = getSysUser();
         String username = user.getLoginName();
         taskService.setAssignee(taskId, username);
@@ -167,4 +169,5 @@ public class TaskController extends BaseController {
         }
         return AjaxResult.success();
     }
+
 }

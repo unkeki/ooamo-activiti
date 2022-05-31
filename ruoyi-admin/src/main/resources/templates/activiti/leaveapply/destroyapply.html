@@ -91,17 +91,25 @@
 
     function submitHandler() {
         var taskid = $("#taskid").val();
-        $.operate.save("/leaveapply/update", $('#form-leaveapply-add').serialize(), function(){
-            $.operate.save(prefix + "/completeTask/" + taskid, $('#form-leaveapply-add').serialize(), function (){
-                $.modal.msg("办理成功");
-                const parent = window.parent;
-                // 我的待办
-                const myToDoIframe = parent.document.querySelector("iframe[src='/task/manage/mytask']");
-                // 我的全部待办
-                const myAllToDoIframe = parent.document.querySelector("iframe[src='/task/manage/alltasks']");
-                myToDoIframe && myToDoIframe.contentWindow.location.reload(true);
-                myAllToDoIframe && myAllToDoIframe.contentWindow.location.reload(true);
-                $.modal.closeTab();
+        $.operate.save("update", $('#form-leaveapply-add').serialize(), function(){
+            var json = {};
+            $.ajax({
+                url : prefix + "/completeTask/" + taskid,
+                type : "POST",
+                data : JSON.stringify(json), //转JSON字符串
+                dataType: 'json',
+                contentType:'application/json;charset=UTF-8', //contentType很重要
+                success : function(result) {
+                    $.modal.msg("办理成功");
+                    const parent = window.parent;
+                    // 我的待办
+                    const myToDoIframe = parent.document.querySelector("iframe[src='/task/manage/mytask']");
+                    // 我的全部待办
+                    const myAllToDoIframe = parent.document.querySelector("iframe[src='/task/manage/alltasks']");
+                    myToDoIframe && myToDoIframe.contentWindow.location.reload(true);
+                    myAllToDoIframe && myAllToDoIframe.contentWindow.location.reload(true);
+                    $.modal.closeTab();
+                }
             });
         });
     }

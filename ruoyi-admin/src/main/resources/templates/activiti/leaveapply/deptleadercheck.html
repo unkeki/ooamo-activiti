@@ -46,7 +46,7 @@
         <div class="form-group">
             <label class="col-xs-3 control-label">人事：</label>
             <div class="col-xs-8">
-                <select id="post" class="form-control" name="hr">
+                <select class="form-control" id="hr" name="hr">
                     <option th:each="ul:${userlist}" th:value="${ul.loginName}" th:text="${ul.userName}" th:disabled="${ul.status == '1'}"></option>
                 </select>
             </div>
@@ -79,16 +79,25 @@
 
     function submitHandler() {
         var taskid = $("#taskid").val();
-        $.operate.save(prefix + "/completeTask/" + taskid, $('#form-leaveapply-add').serialize(), function (){
-            $.modal.msg("办理成功");
-            const parent = window.parent;
-            // 我的待办
-            const myToDoIframe = parent.document.querySelector("iframe[src='/task/manage/mytask']");
-            // 我的全部待办
-            const myAllToDoIframe = parent.document.querySelector("iframe[src='/task/manage/alltasks']");
-            myToDoIframe && myToDoIframe.contentWindow.location.reload(true);
-            myAllToDoIframe && myAllToDoIframe.contentWindow.location.reload(true);
-            $.modal.closeTab();
+        var check = document.querySelector("input[name='deptleaderapprove']:checked").value;
+        var json = {"deptleaderapprove": check, "hr": $("#hr").val()};
+        $.ajax({
+            url : prefix + "/completeTask/" + taskid,
+            type : "POST",
+            data : JSON.stringify(json), //转JSON字符串
+            dataType: 'json',
+            contentType:'application/json;charset=UTF-8', //contentType很重要
+            success : function(result) {
+                $.modal.msg("办理成功");
+                const parent = window.parent;
+                // 我的待办
+                const myToDoIframe = parent.document.querySelector("iframe[src='/task/manage/mytask']");
+                // 我的全部待办
+                const myAllToDoIframe = parent.document.querySelector("iframe[src='/task/manage/alltasks']");
+                myToDoIframe && myToDoIframe.contentWindow.location.reload(true);
+                myAllToDoIframe && myAllToDoIframe.contentWindow.location.reload(true);
+                $.modal.closeTab();
+            }
         });
     }
 </script>
