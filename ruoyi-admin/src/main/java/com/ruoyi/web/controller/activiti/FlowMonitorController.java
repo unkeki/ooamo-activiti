@@ -7,6 +7,7 @@ import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.bean.BeanUtils;
 import com.ruoyi.system.domain.FlowInfo;
 import com.ruoyi.system.domain.VariableInfo;
+import com.ruoyi.web.util.ActivitiTracingChart;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.activiti.bpmn.model.BpmnModel;
@@ -61,6 +62,9 @@ public class FlowMonitorController extends BaseController {
 
     @Resource
     ProcessEngineConfiguration configuration;
+
+    @Resource
+    private ActivitiTracingChart activitiTracingChart;
 
     private String prefix = "activiti/monitor";
 
@@ -220,26 +224,10 @@ public class FlowMonitorController extends BaseController {
         return rspData;
     }
 
-    @ApiOperation("流程图进度追踪")
+    @ApiOperation("流程图进度追踪,已结束标红，运行中标绿")
     @RequestMapping(value = {"/traceProcess/{processInstanceId}"}, method = RequestMethod.GET)
-    public ResponseEntity<byte[]> traceprocess(@PathVariable String processInstanceId, HttpServletResponse response) {
-        ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).active().singleResult();
-        ProcessDefinition pde = repositoryService.getProcessDefinition(processInstance.getProcessDefinitionId());
-        if (pde != null && pde.hasGraphicalNotation()) {
-            BpmnModel bpmnModel = repositoryService.getBpmnModel(pde.getId());
-            ProcessDiagramGenerator diagramGenerator = configuration.getProcessDiagramGenerator();
-            InputStream resource = diagramGenerator.generateDiagram(bpmnModel, "png", runtimeService.getActiveActivityIds(processInstance.getId()), Collections.emptyList(), "宋体", "宋体", "宋体", configuration.getClassLoader(), 1.0D);
-            HttpHeaders responseHeaders = new HttpHeaders();
-            responseHeaders.set("Content-Type", "image/png");
-
-            try {
-                return new ResponseEntity(IOUtils.toByteArray(resource), responseHeaders, HttpStatus.OK);
-            } catch (Exception var10) {
-                throw new ActivitiIllegalArgumentException("Error exporting diagram", var10);
-            }
-        } else {
-            throw new ActivitiIllegalArgumentException("Process instance with id '" + processInstance.getId() + "' has no graphical notation defined.");
-        }
+    public void traceprocess(@PathVariable String processInstanceId, HttpServletResponse response) throws IOException {
+        activitiTracingChart.generateFlowChart(processInstanceId, response.getOutputStream());
     }
 
     @ApiOperation("挂起一个流程实例")

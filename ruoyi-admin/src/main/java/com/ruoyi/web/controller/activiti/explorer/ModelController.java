@@ -36,7 +36,11 @@ public class ModelController {
     private ObjectMapper objectMapper;
 
 
-
+    /**
+     * 打开在线编辑器时加载指定模型到页面
+     * @param modelId
+     * @return
+     */
     @RequestMapping(value="/model/{modelId}/json", method = RequestMethod.GET, produces = "application/json")
     public ObjectNode getEditorJson(@PathVariable String modelId) {
         ObjectNode modelNode = null;
@@ -102,6 +106,10 @@ public class ModelController {
         }
     }
 
+    /**
+     * 获取流程图编辑器的汉化文件
+     * @return
+     */
     @RequestMapping(value = "/editor/stencilset", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
     @ResponseBody
     public String getStencilset() {
