@@ -5,7 +5,7 @@
 
 #### 安装教程
 
-1. 新建mysql数据库ry-activiti，导入SQL脚本ry-activiti.sql。
+1. 新建mysql数据库ry-activiti，导入SQL脚本ry-activiti.sql。Mysql版本为5.7，字符集选择utf8mb4，排序规则选择utf8mb4_general_ci。
 2. 编译打包工程，运行java -jar ruoyi-admin.jar。
 3. 打开http://localhost访问登录页面。
 
