@@ -6,6 +6,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.bean.BeanUtils;
 import com.ruoyi.system.domain.FlowInfo;
+import com.ruoyi.system.domain.TaskInfo;
 import com.ruoyi.system.domain.VariableInfo;
 import com.ruoyi.web.util.ActivitiTracingChart;
 import io.swagger.annotations.Api;
@@ -21,6 +22,7 @@ import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.runtime.ProcessInstanceQuery;
+import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
 import org.activiti.image.ProcessDiagramGenerator;
 import org.apache.commons.io.IOUtils;
@@ -36,6 +38,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -193,13 +196,29 @@ public class FlowMonitorController extends BaseController {
         int start = (pageNum - 1) * pageSize;
         List<HistoricActivityInstance> history = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstanceId).activityType("userTask").orderByHistoricActivityInstanceStartTime().asc().listPage(start, pageSize);
         int total = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstanceId).activityType("userTask").orderByHistoricActivityInstanceStartTime().asc().list().size();
+        List<TaskInfo> infos  = new ArrayList<>();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        history.stream().forEach(h->{
+            TaskInfo info = new TaskInfo();
+            info.setProcessInstanceId(h.getProcessInstanceId());
+            info.setStartTime(sdf.format(h.getStartTime()));
+            if (h.getEndTime() != null) {
+                info.setEndTime(sdf.format(h.getEndTime()));
+            }
+            info.setAssignee(h.getAssignee());
+            info.setTaskName(h.getActivityName());
+            List<Comment> comments = taskService.getTaskComments(h.getTaskId());
+            if (comments.size() > 0) {
+                info.setComment(comments.get(0).getFullMessage());
+            }
+            infos.add(info);
+        });
         TableDataInfo rspData = new TableDataInfo();
         rspData.setCode(0);
-        rspData.setRows(history);
+        rspData.setRows(infos);
         rspData.setTotal(total);
         return rspData;
     }
-
 
     @ApiOperation("查询所有正在运行的执行实例列表")
     @RequestMapping(value = "/listExecutions", method = RequestMethod.POST)

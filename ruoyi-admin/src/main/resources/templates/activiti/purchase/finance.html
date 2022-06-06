@@ -41,6 +41,12 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="col-sm-3 control-label">审批意见：</label>
+            <div class="col-sm-8">
+                <textarea rows="5" name="comment" class="form-control" required></textarea>
+            </div>
+        </div>
+        <div class="form-group">
             <div class="col-sm-3 col-sm-offset-3">
                 <input type="hidden"  name="taskid" id="taskid" th:value="${taskid}">
                 <button class="btn btn-primary" onclick="submitHandler()" type="button"><i class="fa fa-check"></i>&nbsp;提交</button>
@@ -60,7 +66,8 @@
     function submitHandler() {
         var taskid = $("#taskid").val();
         var finance = document.querySelector("input[name='finance']:checked").value;
-        var json = {"finance":finance};
+        var comment = $("textarea[name=comment]").val();
+        var json = {"finance":finance, "comment": comment};
         $.ajax({
             url : prefix + "/completeTask/" + taskid,
             type : "POST",

@@ -19,10 +19,14 @@ public class TaskInfo {
 	String assignee;
 	
 	String startTime;
+
+	String endTime;
 	
 	String createTime;
 
 	String formKey;
+
+	String comment;
 
 	Integer pageSize;
 
@@ -130,5 +134,21 @@ public class TaskInfo {
 
 	public void setPageNum(Integer pageNum) {
 		this.pageNum = pageNum;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public String getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
 	}
 }

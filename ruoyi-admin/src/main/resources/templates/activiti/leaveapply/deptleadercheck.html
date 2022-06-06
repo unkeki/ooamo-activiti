@@ -53,11 +53,17 @@
         </div>
         <div class="form-group">
             <label class="col-sm-3 control-label">审批结果：</label>
-            <div class="col-sm-9">
+            <div class="col-sm-8">
                 <label class="radio-box">
                     <input type="radio" checked="" value="true" name="deptleaderapprove">同意</label>
                 <label class="radio-box">
                     <input type="radio" value="false" name="deptleaderapprove">拒绝</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">审批意见：</label>
+            <div class="col-sm-8">
+                <textarea rows="5" name="comment" class="form-control" required></textarea>
             </div>
         </div>
         <div class="form-group">
@@ -80,7 +86,8 @@
     function submitHandler() {
         var taskid = $("#taskid").val();
         var check = document.querySelector("input[name='deptleaderapprove']:checked").value;
-        var json = {"deptleaderapprove": check, "hr": $("#hr").val()};
+        var comment = $("textarea[name=comment]").val();
+        var json = {"deptleaderapprove": check, "hr": $("#hr").val(), "comment": comment};
         $.ajax({
             url : prefix + "/completeTask/" + taskid,
             type : "POST",

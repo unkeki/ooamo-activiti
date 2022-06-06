@@ -70,6 +70,7 @@ public class TaskController extends BaseController {
         if (StringUtils.isNotEmpty(param.getProcessName())) {
             condition.processDefinitionName(param.getProcessName());
         }
+        // 过滤掉流程挂起的待办任务
         int total = condition.active().orderByTaskCreateTime().desc().list().size();
         int start = (param.getPageNum()-1) * param.getPageSize();
         List<Task> taskList = condition.active().orderByTaskCreateTime().desc().listPage(start, param.getPageSize());
@@ -162,9 +163,16 @@ public class TaskController extends BaseController {
         SysUser user = getSysUser();
         String username = user.getLoginName();
         taskService.setAssignee(taskId, username);
+        // 查出流程实例id
+        String processInstanceId = taskService.createTaskQuery().taskId(taskId).singleResult().getProcessInstanceId();
         if (variables == null) {
             taskService.complete(taskId);
         } else {
+            // 添加审批意见
+            if (variables.get("comment") != null) {
+                taskService.addComment(taskId, processInstanceId, (String) variables.get("comment"));
+                variables.remove("comment");
+            }
             taskService.complete(taskId, variables);
         }
         return AjaxResult.success();
