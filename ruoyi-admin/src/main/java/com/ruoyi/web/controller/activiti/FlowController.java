@@ -1,5 +1,7 @@
 package com.ruoyi.web.controller.activiti;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
@@ -7,10 +9,13 @@ import com.ruoyi.common.utils.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.activiti.bpmn.model.BpmnModel;
+import org.activiti.editor.constants.ModelDataJsonConstants;
+import org.activiti.editor.language.json.converter.BpmnJsonConverter;
 import org.activiti.engine.ProcessEngineConfiguration;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.repository.Model;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.repository.ProcessDefinitionQuery;
 import org.activiti.image.ProcessDiagramGenerator;
@@ -25,6 +30,7 @@ import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipInputStream;
@@ -146,4 +152,37 @@ public class FlowController extends BaseController {
         IOUtils.copy(is, output);
     }
 
+    @ApiOperation("将流程定义转为模型")
+    @RequestMapping(value = "/exchangeProcessToModel/{pdid}", method = RequestMethod.GET)
+    @ResponseBody
+    public String exchangeProcessToModel(@PathVariable("pdid") String pdid, HttpServletResponse response) throws Exception {
+        ProcessDefinition definition = repositoryService.createProcessDefinitionQuery().processDefinitionId(pdid).singleResult();
+        BpmnModel bpmnModel = repositoryService.getBpmnModel(definition.getId());
+        ObjectNode objectNode = new BpmnJsonConverter().convertToJson(bpmnModel);
+        Model modelData = repositoryService.newModel();
+        modelData.setKey(definition.getKey());
+        modelData.setName(definition.getName());
+        modelData.setCategory(definition.getCategory());
+        ObjectNode modelJson = new ObjectMapper().createObjectNode();
+        modelJson.put(ModelDataJsonConstants.MODEL_NAME, definition.getName());
+        modelJson.put(ModelDataJsonConstants.MODEL_DESCRIPTION, definition.getDescription());
+        List<Model> models = repositoryService.createModelQuery().modelKey(definition.getKey()).list();
+        if (models.size() > 0) {
+            Integer version = models.get(0).getVersion();
+            version++;
+            modelJson.put(ModelDataJsonConstants.MODEL_REVISION, version);
+            // 删除旧模型
+            repositoryService.deleteModel(models.get(0).getId());
+            modelData.setVersion(version);
+        } else {
+            modelJson.put(ModelDataJsonConstants.MODEL_REVISION, 1);
+        }
+        modelData.setMetaInfo(modelJson.toString());
+        modelData.setDeploymentId(definition.getDeploymentId());
+        // 保存新模型
+        repositoryService.saveModel(modelData);
+        // 保存模型json
+        repositoryService.addModelEditorSource(modelData.getId(), objectNode.toString().getBytes(StandardCharsets.UTF_8));
+        return objectNode.toString();
+    }
 }

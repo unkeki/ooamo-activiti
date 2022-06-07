@@ -25,7 +25,6 @@ import java.util.Map;
 
 /**
  * 流程追踪图
- *
  */
 @Component
 public class ActivitiTracingChart {

@@ -87,6 +87,9 @@ public class ModelController {
             model.setMetaInfo(modelJson.toString());
             model.setName(name);
             model.setDeploymentId(null);
+            Integer version = model.getVersion();
+            version++;
+            model.setVersion(version);
             repositoryService.saveModel(model);
             repositoryService.addModelEditorSource(model.getId(), json_xml.getBytes("utf-8"));
             InputStream svgStream = new ByteArrayInputStream(svg_xml.getBytes("utf-8"));
