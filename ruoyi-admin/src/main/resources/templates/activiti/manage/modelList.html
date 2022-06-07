@@ -88,6 +88,7 @@
 						if (row.deploymentId == null) {
 							actions.push('<a class="btn btn-success btn-xs" href="#" onclick="deploy(\'' + row.id + '\')"><i class="fa fa-location-arrow"></i>发布</a> ');
 						}
+						actions.push('<a class="btn btn-info btn-xs" href="javascript:void(0);" onclick="exportXml(\'' + row.key + '\',\'' + row.id + '\');return false"><i class="fa fa-mail-forward"></i>导出</a> ');
 						actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
 						return actions.join('');
 					}
@@ -100,6 +101,15 @@
 			$.operate.get(prefix + "/deploy/" + modelid, function (data){
 				$.modal.alert(data.msg);
 			});
+		}
+
+		function exportXml(key, id) {
+			if (!id)return;
+			const a = document.createElement("a");
+			a.href = prefix + "/export/" + id;
+			// 这里设置下载的名字
+			a.download = key + ".bpmn20.xml";
+			a.click();
 		}
 	</script>
 </body>

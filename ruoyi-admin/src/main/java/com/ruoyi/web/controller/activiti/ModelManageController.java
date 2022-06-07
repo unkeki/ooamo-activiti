@@ -15,22 +15,30 @@ import com.ruoyi.system.domain.Leaveapply;
 import com.ruoyi.system.domain.ModelParam;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.activiti.bpmn.converter.BpmnXMLConverter;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.editor.constants.ModelDataJsonConstants;
 import org.activiti.editor.language.json.converter.BpmnJsonConverter;
+import org.activiti.engine.ActivitiIllegalArgumentException;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.query.QueryProperty;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.Model;
 import org.activiti.engine.repository.ModelQuery;
+import org.apache.poi.util.IOUtils;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 @Api(value = "模型管理接口")
@@ -143,10 +151,27 @@ public class ModelManageController extends BaseController {
         }
     }
 
-    @RequestMapping("/remove/{modelId}")
+    @GetMapping("/remove/{modelId}")
     @ResponseBody
     public AjaxResult removeModel(@PathVariable String modelId) {
         repositoryService.deleteModel(modelId);
         return AjaxResult.success("删除成功");
     }
+
+    @GetMapping("/export/{modelId}")
+    public void modelExport(@PathVariable String modelId, HttpServletResponse response) throws IOException {
+        Model model = repositoryService.getModel(modelId);
+        byte[] modelData = repositoryService.getModelEditorSource(modelId);
+        JsonNode jsonNode = objectMapper.readTree(modelData);
+        BpmnModel bpmnModel = (new BpmnJsonConverter()).convertToBpmnModel(jsonNode);
+        byte[] xmlBytes = (new BpmnXMLConverter()).convertToXML(bpmnModel, "UTF-8");
+        ByteArrayInputStream in = new ByteArrayInputStream(xmlBytes);
+        IOUtils.copy(in, response.getOutputStream());
+        String filename = bpmnModel.getMainProcess().getId() + ".bpmn20.xml";
+        response.setHeader("Content-Disposition","attachment;filename=" + filename);
+        response.setHeader("content-Type", "application/xml");
+        response.flushBuffer();
+    }
+
+
 }
