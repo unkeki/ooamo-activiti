@@ -1,11 +1,11 @@
 package com.ruoyi.web.util;
 
-import com.ruoyi.system.service.impl.ActivitiService;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowNode;
 import org.activiti.bpmn.model.SequenceFlow;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.ProcessEngineConfiguration;
+import org.activiti.engine.RepositoryService;
 import org.activiti.engine.history.HistoricActivityInstance;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.image.ProcessDiagramGenerator;
@@ -32,11 +32,13 @@ public class ActivitiTracingChart {
 
     private static final Logger logger = LoggerFactory.getLogger(ActivitiTracingChart.class);
 
-    @Resource
-    private ActivitiService activitiService;
 
     @Resource
     private HistoryService historyService;
+
+    @Resource
+    private RepositoryService repositoryService;
+
     @Resource
     private ProcessEngineConfiguration processEngineConfiguration;
 
@@ -77,7 +79,7 @@ public class ActivitiTracingChart {
                 processDiagramGenerator = new CustomProcessDiagramGenerator();
             }
 
-            BpmnModel bpmnModel = activitiService.getRuntimeBpmnModel(historicProcessInstance.getProcessDefinitionId());
+            BpmnModel bpmnModel = repositoryService.getBpmnModel(historicProcessInstance.getProcessDefinitionId());
             // 高亮流程已发生流转的线id集合
             List<String> highLightedFlowIds = getHighLightedFlows(bpmnModel, historicActivityInstances);
 
