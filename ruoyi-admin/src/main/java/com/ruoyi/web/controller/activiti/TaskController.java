@@ -11,15 +11,19 @@ import com.ruoyi.system.domain.TaskInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.activiti.engine.FormService;
+import org.activiti.engine.HistoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.history.HistoricActivityInstance;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +42,9 @@ public class TaskController extends BaseController {
 
     @Autowired
     FormService formService;
+
+    @Resource
+    private HistoryService historyService;
 
     private String prefix = "activiti/task";
 
@@ -178,4 +185,29 @@ public class TaskController extends BaseController {
         return AjaxResult.success();
     }
 
+    @ApiOperation("任务办理时间轴")
+    @RequestMapping(value = "/history/{taskId}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<TaskInfo> history(@PathVariable String taskId) {
+        String processInstanceId = taskService.createTaskQuery().taskId(taskId).singleResult().getProcessInstanceId();
+        List<HistoricActivityInstance> history = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstanceId).activityType("userTask").orderByHistoricActivityInstanceStartTime().asc().list();
+        List<TaskInfo> infos  = new ArrayList<>();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        history.stream().forEach(h->{
+            TaskInfo info = new TaskInfo();
+            info.setProcessInstanceId(h.getProcessInstanceId());
+            info.setStartTime(sdf.format(h.getStartTime()));
+            if (h.getEndTime() != null) {
+                info.setEndTime(sdf.format(h.getEndTime()));
+            }
+            info.setAssignee(h.getAssignee());
+            info.setTaskName(h.getActivityName());
+            List<Comment> comments = taskService.getTaskComments(h.getTaskId());
+            if (comments.size() > 0) {
+                info.setComment(comments.get(0).getFullMessage());
+            }
+            infos.add(info);
+        });
+        return infos;
+    }
 }

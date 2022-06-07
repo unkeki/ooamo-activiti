@@ -6,6 +6,7 @@
     <th:block th:include="include :: select2-css" />
 </head>
 <body class="white-bg">
+<div class="col-sm-8">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
         <form class="form-horizontal m" id="form-meeting-add">
             <div class="form-group">    
@@ -65,6 +66,12 @@
             </div>
         </form>
     </div>
+</div>
+<div id="ibox-content" class="col-sm-4">
+    <div id="vertical-timeline" class="vertical-container dark-timeline">
+    </div>
+</div>
+</body>
     <th:block th:include="include :: footer" />
     <th:block th:include="include :: datetimepicker-js" />
     <th:block th:include="include :: select2-js" />
@@ -99,6 +106,23 @@
                 }
             });
         }
+
+        $(document).ready(function(){
+            // 获取时间轴
+            $.get(prefix + "/history/" + $("#taskid").val(), function(data){
+                for (var a = 0; a < data.length ; a++) {
+                    $("#vertical-timeline").append("<div class=\"vertical-timeline-block\"><div class=\"vertical-timeline-icon lazur-bg\">" +
+                        "<i class=\"fa fa-briefcase\"></i></div>" +
+                        "<div class=\"vertical-timeline-content\">" +
+                        "<span class=\"vertical-date\">开始 <small>" + data[a].startTime + "</small></span><br>" +
+                        "<h2><b>" + data[a].assignee + ":</b>" + data[a].taskName + "</h2>" +
+                        "<p>" + (data[a].comment || "-") + "</p>" +
+                        "<span class=\"vertical-date\">结束 <small>" + (data[a].endTime || "-") + "</small></span>" +
+                        "</div>" +
+                        "</div>");
+                }
+            });
+        });
     </script>
 </body>
 </html>
