@@ -151,7 +151,7 @@ public class ModelManageController extends BaseController {
         }
     }
 
-    @GetMapping("/remove/{modelId}")
+    @PostMapping("/remove/{modelId}")
     @ResponseBody
     public AjaxResult removeModel(@PathVariable String modelId) {
         repositoryService.deleteModel(modelId);
@@ -160,7 +160,6 @@ public class ModelManageController extends BaseController {
 
     @GetMapping("/export/{modelId}")
     public void modelExport(@PathVariable String modelId, HttpServletResponse response) throws IOException {
-        Model model = repositoryService.getModel(modelId);
         byte[] modelData = repositoryService.getModelEditorSource(modelId);
         JsonNode jsonNode = objectMapper.readTree(modelData);
         BpmnModel bpmnModel = (new BpmnJsonConverter()).convertToBpmnModel(jsonNode);
