@@ -11,6 +11,7 @@ import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricActivityInstance;
+import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.task.Task;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -71,13 +72,9 @@ public class DynamicFlowController {
         String processDefinitionId = runtimeService.createProcessInstanceQuery().processInstanceId(t.getProcessInstanceId()).singleResult().getProcessDefinitionId();
         BpmnModel bpmnModel = repositoryService.getBpmnModel(processDefinitionId);
         // 寻找流程实例当前任务的activeId
-        List<HistoricActivityInstance> actives = historyService.createHistoricActivityInstanceQuery().executionId(t.getExecutionId()).list();
-        FlowNode currentNode = null;
-        for (HistoricActivityInstance active : actives) {
-            if (active.getActivityName().equals(t.getName())) {
-                currentNode = (FlowNode)bpmnModel.getMainProcess().getFlowElement(active.getActivityId());
-            }
-        }
+        Execution execution = runtimeService.createExecutionQuery().executionId(t.getExecutionId()).singleResult();
+        String activityId = execution.getActivityId();
+        FlowNode currentNode = (FlowNode)bpmnModel.getMainProcess().getFlowElement(activityId);
         // 创建结束节点和连接线
         EndEvent end = new EndEvent();
         end.setName("强制结束");
@@ -98,6 +95,41 @@ public class DynamicFlowController {
         currentNode.setOutgoingFlows(newSequenceFlowList);
         // 完成当前任务
         taskService.addComment(taskId, t.getProcessInstanceId(), "comment", "撤销流程");
+        taskService.complete(taskId);
+        // 恢复原有方向
+        currentNode.setOutgoingFlows(oriSequenceFlows);
+        return AjaxResult.success();
+    }
+
+    @ApiOperation("驳回或跳转到指定节点")
+    @GetMapping(value = "/jump/{taskId}/{sid}")
+    @ResponseBody
+    public AjaxResult jump(@PathVariable String taskId, @PathVariable String sid) {
+        Task t = taskService.createTaskQuery().taskId(taskId).singleResult();
+        String processDefinitionId = runtimeService.createProcessInstanceQuery().processInstanceId(t.getProcessInstanceId()).singleResult().getProcessDefinitionId();
+        BpmnModel bpmnModel = repositoryService.getBpmnModel(processDefinitionId);
+        // 寻找流程实例当前任务的activeId
+        Execution execution = runtimeService.createExecutionQuery().executionId(t.getExecutionId()).singleResult();
+        String activityId = execution.getActivityId();
+        FlowNode currentNode = (FlowNode)bpmnModel.getMainProcess().getFlowElement(activityId);
+        FlowNode targetNode = (FlowNode)bpmnModel.getMainProcess().getFlowElement(sid);
+        // 创建连接线
+        List<SequenceFlow> newSequenceFlowList = new ArrayList<SequenceFlow>();
+        SequenceFlow newSequenceFlow = new SequenceFlow();
+        newSequenceFlow.setId("newFlow");
+        newSequenceFlow.setSourceFlowElement(currentNode);
+        newSequenceFlow.setTargetFlowElement(targetNode);
+        newSequenceFlowList.add(newSequenceFlow);
+        // 备份原有方向
+        List<SequenceFlow> dataflows = currentNode.getOutgoingFlows();
+        List<SequenceFlow> oriSequenceFlows = new ArrayList<SequenceFlow>();
+        oriSequenceFlows.addAll(dataflows);
+        // 清空原有方向
+        currentNode.getOutgoingFlows().clear();
+        // 设置新方向
+        currentNode.setOutgoingFlows(newSequenceFlowList);
+        // 完成当前任务
+        taskService.addComment(taskId, t.getProcessInstanceId(), "comment", "跳转节点");
         taskService.complete(taskId);
         // 恢复原有方向
         currentNode.setOutgoingFlows(oriSequenceFlows);
