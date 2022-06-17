@@ -9,6 +9,7 @@ import org.activiti.engine.IdentityService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.mapper.LeaveapplyMapper;
@@ -81,6 +82,9 @@ public class LeaveapplyServiceImpl implements ILeaveapplyService
         variables.put("applyuserid", leaveapply.getUserId());
         variables.put("deptleader", leaveapply.getDeptleader());
         runtimeService.startProcessInstanceByKey("leave", String.valueOf(leaveapply.getId()), variables);
+        // 自动完成第一个任务
+        Task autoTask = taskService.createTaskQuery().processDefinitionKey("leave").processInstanceBusinessKey(String.valueOf(leaveapply.getId())).singleResult();
+        taskService.complete(autoTask.getId());
         return rows;
     }
 

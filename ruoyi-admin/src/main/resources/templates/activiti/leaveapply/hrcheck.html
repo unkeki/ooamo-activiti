@@ -60,9 +60,11 @@
             </div>
         </div>
         <div class="form-group">
-            <div class="col-sm-3 col-sm-offset-3">
+            <div class="col-sm-6 col-sm-offset-3">
                 <input type="hidden"  name="taskid" id="taskid" th:value="${taskid}">
                 <button class="btn btn-primary" onclick="submitHandler()" type="button"><i class="fa fa-check"></i>&nbsp;提交</button>
+                <button class="btn btn-danger" onclick="forceEnd()" type="button"><i class="fa fa-close"></i>&nbsp;撤销</button>
+                <button class="btn btn-warning" onclick="rebut()" type="button"><i class="fa fa-reply"></i>&nbsp;驳回</button>
             </div>
         </div>
     </form>
@@ -103,6 +105,36 @@
                 myAllToDoIframe && myAllToDoIframe.contentWindow.location.reload(true);
                 $.modal.closeTab();
             }
+        });
+    }
+
+    function forceEnd() {
+        var taskid = $("#taskid").val();
+        $.get("/dynamic/flow/forceEnd/" + taskid, function() {
+            $.modal.msg("办理成功");
+            const parent = window.parent;
+            // 我的待办
+            const myToDoIframe = parent.document.querySelector("iframe[src='/task/manage/mytask']");
+            // 我的全部待办
+            const myAllToDoIframe = parent.document.querySelector("iframe[src='/task/manage/alltasks']");
+            myToDoIframe && myToDoIframe.contentWindow.location.reload(true);
+            myAllToDoIframe && myAllToDoIframe.contentWindow.location.reload(true);
+            $.modal.closeTab();
+        });
+    }
+
+    function rebut() {
+        var taskid = $("#taskid").val();
+        $.get("/dynamic/flow/jump/" + taskid + "/applyleave", function() {
+            $.modal.msg("办理成功");
+            const parent = window.parent;
+            // 我的待办
+            const myToDoIframe = parent.document.querySelector("iframe[src='/task/manage/mytask']");
+            // 我的全部待办
+            const myAllToDoIframe = parent.document.querySelector("iframe[src='/task/manage/alltasks']");
+            myToDoIframe && myToDoIframe.contentWindow.location.reload(true);
+            myAllToDoIframe && myAllToDoIframe.contentWindow.location.reload(true);
+            $.modal.closeTab();
         });
     }
 

@@ -146,6 +146,28 @@ public class LeaveapplyController extends BaseController
     }
 
     /**
+     * 发起请假申请
+     * 驳回后使用
+     * @return
+     */
+    @GetMapping("/addleave")
+    public String addLeave(String taskid, ModelMap mmap)
+    {
+        Task t = taskService.createTaskQuery().taskId(taskid).singleResult();
+        String processId = t.getProcessInstanceId();
+        ProcessInstance p = runtimeService.createProcessInstanceQuery().processInstanceId(processId).singleResult();
+        if (p != null) {
+            Leaveapply apply = leaveapplyService.selectLeaveapplyById(Long.parseLong(p.getBusinessKey()));
+            mmap.put("apply", apply);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            mmap.put("startTime", sdf.format(apply.getStartTime()));
+            mmap.put("endTime", sdf.format(apply.getEndTime()));
+            mmap.put("taskid", taskid);
+        }
+        return prefix + "/addleave";
+    }
+
+    /**
      * 查询请假列表
      */
     @PostMapping("/list")
