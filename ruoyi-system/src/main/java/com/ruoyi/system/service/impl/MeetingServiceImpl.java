@@ -6,9 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.ruoyi.system.mapper.PurchaseMapper;
+import org.activiti.engine.HistoryService;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,6 +46,9 @@ public class MeetingServiceImpl implements IMeetingService
 
     @Resource
     IdentityService identityService;
+
+    @Resource
+    HistoryService historyService;
 
     /**
      * 查询会议
@@ -114,7 +119,12 @@ public class MeetingServiceImpl implements IMeetingService
         for (String key : keys) {
             ProcessInstance process = runtimeService.createProcessInstanceQuery().processDefinitionKey("meeting").processInstanceBusinessKey(key).singleResult();
             try {
-                runtimeService.deleteProcessInstance(process.getId(),"删除");
+                if (process != null) {
+                    runtimeService.deleteProcessInstance(process.getId(), "删除");
+                } else {
+                    HistoricProcessInstance history = historyService.createHistoricProcessInstanceQuery().processDefinitionKey("meeting").processInstanceBusinessKey(key).singleResult();
+                    historyService.deleteHistoricProcessInstance(history.getId());
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

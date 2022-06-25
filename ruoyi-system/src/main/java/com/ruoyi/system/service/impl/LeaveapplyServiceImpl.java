@@ -5,9 +5,11 @@ import java.util.List;
 
 import com.ruoyi.common.core.domain.entity.SysUser;
 
+import org.activiti.engine.HistoryService;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,9 @@ public class LeaveapplyServiceImpl implements ILeaveapplyService
 
     @Resource
     IdentityService identityService;
+
+    @Resource
+    HistoryService historyService;
 
     /**
      * 查询请假
@@ -113,7 +118,12 @@ public class LeaveapplyServiceImpl implements ILeaveapplyService
         for (String key : keys) {
             ProcessInstance process = runtimeService.createProcessInstanceQuery().processDefinitionKey("leave").processInstanceBusinessKey(key).singleResult();
             try {
-                runtimeService.deleteProcessInstance(process.getId(),"删除");
+                if (process != null) {
+                    runtimeService.deleteProcessInstance(process.getId(), "删除");
+                } else {
+                    HistoricProcessInstance history = historyService.createHistoricProcessInstanceQuery().processDefinitionKey("leave").processInstanceBusinessKey(key).singleResult();
+                    historyService.deleteHistoricProcessInstance(history.getId());
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
