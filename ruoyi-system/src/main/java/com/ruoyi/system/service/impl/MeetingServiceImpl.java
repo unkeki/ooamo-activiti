@@ -118,15 +118,13 @@ public class MeetingServiceImpl implements IMeetingService
         String[] keys = Convert.toStrArray(ids);
         for (String key : keys) {
             ProcessInstance process = runtimeService.createProcessInstanceQuery().processDefinitionKey("meeting").processInstanceBusinessKey(key).singleResult();
-            try {
-                if (process != null) {
-                    runtimeService.deleteProcessInstance(process.getId(), "删除");
-                } else {
-                    HistoricProcessInstance history = historyService.createHistoricProcessInstanceQuery().processDefinitionKey("meeting").processInstanceBusinessKey(key).singleResult();
-                    historyService.deleteHistoricProcessInstance(history.getId());
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (process != null) {
+                runtimeService.deleteProcessInstance(process.getId(), "删除");
+            }
+            // 删除历史数据
+            HistoricProcessInstance history = historyService.createHistoricProcessInstanceQuery().processDefinitionKey("meeting").processInstanceBusinessKey(key).singleResult();
+            if (history != null) {
+                historyService.deleteHistoricProcessInstance(history.getId());
             }
             meetingMapper.deleteMeetingByIds(Convert.toStrArray(ids));
         }
