@@ -106,8 +106,8 @@ public class FlowMonitorController extends BaseController {
         if (StringUtils.isNotEmpty(name)) {
             condition.processDefinitionName(name);
         }
-        List<ProcessInstance> processList = condition.orderByProcessDefinitionId().desc().listPage(start, pageSize);
         int total = condition.orderByProcessDefinitionId().desc().list().size();
+        List<ProcessInstance> processList = condition.orderByProcessDefinitionId().desc().listPage(start, pageSize);
         List<FlowInfo> flows = new ArrayList<>();
         processList.stream().forEach(p -> {
             FlowInfo info = new FlowInfo();
