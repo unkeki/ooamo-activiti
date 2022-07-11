@@ -150,21 +150,19 @@ public class DynamicFlowController {
     @GetMapping(value = "/createProcess")
     @ResponseBody
     public AjaxResult createProcess() {
-        // 创建模型和流程对象
-        BpmnModel bpmnModel=new BpmnModel();
-        //开始节点的属性
+        // 开始节点的属性
         StartEvent startEvent=new StartEvent();
         startEvent.setId("start");
         startEvent.setName("start");
-        //普通的UserTask节点
+        // 普通UserTask节点
         UserTask userTask=new UserTask();
         userTask.setId("userTask");
         userTask.setName("审批任务");
-        //结束节点属性
+        // 结束节点属性
         EndEvent endEvent=new EndEvent();
         endEvent.setId("end");
         endEvent.setName("end");
-        //连线信息
+        // 连线信息
         List<SequenceFlow> flows=new ArrayList<SequenceFlow>();
         List<SequenceFlow> toEnd=new ArrayList<SequenceFlow>();
         SequenceFlow s1=new SequenceFlow();
@@ -192,18 +190,25 @@ public class DynamicFlowController {
         process.addFlowElement(userTask);
         process.addFlowElement(s2);
         process.addFlowElement(endEvent);
+        // 创建模型对象
+        BpmnModel bpmnModel=new BpmnModel();
         bpmnModel.addProcess(process);
         // 流程图自动布局
         new BpmnAutoLayout(bpmnModel).execute();
 
-        // 部署流程
-        Deployment deploy = repositoryService.createDeployment().category("dynamic")
-                .key("dynamicProcess")
-                .addBpmnModel("dynamicProcess.bpmn20.xml", bpmnModel)
-                .deploy();
+
         // 模型合法性校验
         List<ValidationError> validationErrorList = repositoryService.validateProcess(bpmnModel);
-        return AjaxResult.success(validationErrorList.size());
+        if (validationErrorList.size() == 0) {
+            // 模型合法就部署流程
+            Deployment deploy = repositoryService.createDeployment().category("dynamic")
+                    .key("dynamicProcess")
+                    .addBpmnModel("dynamicProcess.bpmn20.xml", bpmnModel)
+                    .deploy();
+            return AjaxResult.success("success");
+        } else {
+            return AjaxResult.error("fail");
+        }
     }
 
 }
