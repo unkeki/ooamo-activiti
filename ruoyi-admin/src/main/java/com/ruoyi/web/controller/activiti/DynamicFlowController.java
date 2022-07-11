@@ -5,18 +5,26 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.utils.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.activiti.bpmn.BpmnAutoLayout;
 import org.activiti.bpmn.model.*;
+import org.activiti.bpmn.model.Process;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricActivityInstance;
+import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.task.Task;
+import org.activiti.validation.ProcessValidator;
+import org.activiti.validation.ProcessValidatorFactory;
+import org.activiti.validation.ValidationError;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -37,6 +45,8 @@ public class DynamicFlowController {
 
     @Resource
     private HistoryService historyService;
+
+
 
     @ApiOperation("遍历流程信息")
     @GetMapping(value = "/info/{processInstanceId}")
@@ -134,6 +144,66 @@ public class DynamicFlowController {
         // 恢复原有方向
         currentNode.setOutgoingFlows(oriSequenceFlows);
         return AjaxResult.success();
+    }
+
+    @ApiOperation("动态创建流程")
+    @GetMapping(value = "/createProcess")
+    @ResponseBody
+    public AjaxResult createProcess() {
+        // 创建模型和流程对象
+        BpmnModel bpmnModel=new BpmnModel();
+        //开始节点的属性
+        StartEvent startEvent=new StartEvent();
+        startEvent.setId("start");
+        startEvent.setName("start");
+        //普通的UserTask节点
+        UserTask userTask=new UserTask();
+        userTask.setId("userTask");
+        userTask.setName("审批任务");
+        //结束节点属性
+        EndEvent endEvent=new EndEvent();
+        endEvent.setId("end");
+        endEvent.setName("end");
+        //连线信息
+        List<SequenceFlow> flows=new ArrayList<SequenceFlow>();
+        List<SequenceFlow> toEnd=new ArrayList<SequenceFlow>();
+        SequenceFlow s1=new SequenceFlow();
+        s1.setId("flow1");
+        s1.setName("flow1");
+        s1.setSourceRef(startEvent.getId());
+        s1.setTargetRef(userTask.getId());
+        flows.add(s1);
+
+        SequenceFlow s2=new SequenceFlow();
+        s2.setId("flow2");
+        s2.setName("flow2");
+        s2.setSourceRef(userTask.getId());
+        s2.setTargetRef(endEvent.getId());
+        toEnd.add(s2);
+        startEvent.setOutgoingFlows(flows);
+        userTask.setOutgoingFlows(toEnd);
+
+        // 给流程对象添加元素
+        Process process=new Process();
+        process.setId("dynamicProcess");
+        process.setName("动态流程");
+        process.addFlowElement(startEvent);
+        process.addFlowElement(s1);
+        process.addFlowElement(userTask);
+        process.addFlowElement(s2);
+        process.addFlowElement(endEvent);
+        bpmnModel.addProcess(process);
+        // 流程图自动布局
+        new BpmnAutoLayout(bpmnModel).execute();
+
+        // 部署流程
+        Deployment deploy = repositoryService.createDeployment().category("dynamic")
+                .key("dynamicProcess")
+                .addBpmnModel("dynamicProcess.bpmn20.xml", bpmnModel)
+                .deploy();
+        // 模型合法性校验
+        List<ValidationError> validationErrorList = repositoryService.validateProcess(bpmnModel);
+        return AjaxResult.success(validationErrorList.size());
     }
 
 }
