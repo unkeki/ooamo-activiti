@@ -11,7 +11,7 @@
  Target Server Version : 50731
  File Encoding         : 65001
 
- Date: 07/06/2022 15:21:41
+ Date: 12/07/2022 16:11:17
 */
 
 SET NAMES utf8mb4;
@@ -113,7 +113,7 @@ CREATE TABLE `leaveapply`  (
   `reality_start_time` datetime(0) NULL DEFAULT NULL COMMENT '实际起始时间',
   `reality_end_time` datetime(0) NULL DEFAULT NULL COMMENT '实际结束时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 76 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '请假表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '请假表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of leaveapply
@@ -133,7 +133,7 @@ CREATE TABLE `meeting`  (
   `end_time` datetime(0) NULL DEFAULT NULL COMMENT '结束时间',
   `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '会议纪要',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of meeting
@@ -150,7 +150,7 @@ CREATE TABLE `purchase`  (
   `applytime` datetime(0) NULL DEFAULT NULL,
   `applyer` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 39 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 49 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of purchase
@@ -389,7 +389,7 @@ CREATE TABLE `sys_config`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`config_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '参数配置表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '参数配置表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_config
@@ -425,7 +425,7 @@ CREATE TABLE `sys_dept`  (
   `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`dept_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 200 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '部门表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 110 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '部门表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_dept
@@ -461,7 +461,7 @@ CREATE TABLE `sys_dict_data`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`dict_code`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '字典数据表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 30 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '字典数据表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_dict_data
@@ -512,7 +512,7 @@ CREATE TABLE `sys_dict_type`  (
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`dict_id`) USING BTREE,
   UNIQUE INDEX `dict_type`(`dict_type`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '字典类型表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '字典类型表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_dict_type
@@ -547,7 +547,7 @@ CREATE TABLE `sys_job`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '备注信息',
   PRIMARY KEY (`job_id`, `job_name`, `job_group`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '定时任务调度表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '定时任务调度表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_job
@@ -591,7 +591,7 @@ CREATE TABLE `sys_logininfor`  (
   `msg` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '提示消息',
   `login_time` datetime(0) NULL DEFAULT NULL COMMENT '访问时间',
   PRIMARY KEY (`info_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 375 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统访问记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 495 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统访问记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_logininfor
@@ -871,6 +871,126 @@ INSERT INTO `sys_logininfor` VALUES (371, 'admin', '127.0.0.1', '内网IP', 'Chr
 INSERT INTO `sys_logininfor` VALUES (372, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-07 15:10:28');
 INSERT INTO `sys_logininfor` VALUES (373, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-07 15:11:41');
 INSERT INTO `sys_logininfor` VALUES (374, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-07 15:15:44');
+INSERT INTO `sys_logininfor` VALUES (375, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-07 17:29:06');
+INSERT INTO `sys_logininfor` VALUES (376, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-07 17:32:34');
+INSERT INTO `sys_logininfor` VALUES (377, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-07 18:21:49');
+INSERT INTO `sys_logininfor` VALUES (378, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-07 18:23:02');
+INSERT INTO `sys_logininfor` VALUES (379, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-07 18:26:23');
+INSERT INTO `sys_logininfor` VALUES (380, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-07 18:27:17');
+INSERT INTO `sys_logininfor` VALUES (381, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-07 18:28:08');
+INSERT INTO `sys_logininfor` VALUES (382, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-07 18:31:59');
+INSERT INTO `sys_logininfor` VALUES (383, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '退出成功', '2022-06-07 18:35:06');
+INSERT INTO `sys_logininfor` VALUES (384, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '1', '验证码错误', '2022-06-07 18:35:09');
+INSERT INTO `sys_logininfor` VALUES (385, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-07 18:35:11');
+INSERT INTO `sys_logininfor` VALUES (386, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-07 18:38:28');
+INSERT INTO `sys_logininfor` VALUES (387, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-07 18:39:25');
+INSERT INTO `sys_logininfor` VALUES (388, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-07 18:41:37');
+INSERT INTO `sys_logininfor` VALUES (389, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-07 18:43:13');
+INSERT INTO `sys_logininfor` VALUES (390, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-07 19:23:22');
+INSERT INTO `sys_logininfor` VALUES (391, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-07 19:27:37');
+INSERT INTO `sys_logininfor` VALUES (392, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-08 08:26:28');
+INSERT INTO `sys_logininfor` VALUES (393, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-08 08:29:01');
+INSERT INTO `sys_logininfor` VALUES (394, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '退出成功', '2022-06-08 08:37:16');
+INSERT INTO `sys_logininfor` VALUES (395, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-08 08:37:47');
+INSERT INTO `sys_logininfor` VALUES (396, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-10 10:33:06');
+INSERT INTO `sys_logininfor` VALUES (397, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-11 08:31:29');
+INSERT INTO `sys_logininfor` VALUES (398, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '退出成功', '2022-06-11 08:31:41');
+INSERT INTO `sys_logininfor` VALUES (399, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-11 08:31:52');
+INSERT INTO `sys_logininfor` VALUES (400, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-16 16:02:48');
+INSERT INTO `sys_logininfor` VALUES (401, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-16 16:05:21');
+INSERT INTO `sys_logininfor` VALUES (402, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '1', '验证码错误', '2022-06-16 16:20:24');
+INSERT INTO `sys_logininfor` VALUES (403, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '1', '验证码错误', '2022-06-16 16:20:27');
+INSERT INTO `sys_logininfor` VALUES (404, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-16 16:20:29');
+INSERT INTO `sys_logininfor` VALUES (405, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-16 16:26:33');
+INSERT INTO `sys_logininfor` VALUES (406, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-16 16:33:08');
+INSERT INTO `sys_logininfor` VALUES (407, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-16 16:40:57');
+INSERT INTO `sys_logininfor` VALUES (408, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-16 16:45:57');
+INSERT INTO `sys_logininfor` VALUES (409, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-16 16:55:49');
+INSERT INTO `sys_logininfor` VALUES (410, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '1', '验证码错误', '2022-06-17 08:47:31');
+INSERT INTO `sys_logininfor` VALUES (411, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-17 08:47:33');
+INSERT INTO `sys_logininfor` VALUES (412, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-17 09:21:27');
+INSERT INTO `sys_logininfor` VALUES (413, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-17 09:38:20');
+INSERT INTO `sys_logininfor` VALUES (414, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-17 10:06:56');
+INSERT INTO `sys_logininfor` VALUES (415, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-17 10:10:28');
+INSERT INTO `sys_logininfor` VALUES (416, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-17 10:11:40');
+INSERT INTO `sys_logininfor` VALUES (417, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-17 10:15:41');
+INSERT INTO `sys_logininfor` VALUES (418, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-17 13:26:49');
+INSERT INTO `sys_logininfor` VALUES (419, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-17 13:44:56');
+INSERT INTO `sys_logininfor` VALUES (420, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-17 13:49:52');
+INSERT INTO `sys_logininfor` VALUES (421, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-17 15:37:23');
+INSERT INTO `sys_logininfor` VALUES (422, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '退出成功', '2022-06-17 15:38:36');
+INSERT INTO `sys_logininfor` VALUES (423, 'ry', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-17 15:39:01');
+INSERT INTO `sys_logininfor` VALUES (424, 'ry', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '退出成功', '2022-06-17 15:39:20');
+INSERT INTO `sys_logininfor` VALUES (425, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '1', '验证码错误', '2022-06-17 15:39:23');
+INSERT INTO `sys_logininfor` VALUES (426, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-17 15:39:25');
+INSERT INTO `sys_logininfor` VALUES (427, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '退出成功', '2022-06-17 15:40:02');
+INSERT INTO `sys_logininfor` VALUES (428, 'ry', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-17 15:40:08');
+INSERT INTO `sys_logininfor` VALUES (429, 'ry', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '退出成功', '2022-06-17 15:40:36');
+INSERT INTO `sys_logininfor` VALUES (430, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-17 15:40:40');
+INSERT INTO `sys_logininfor` VALUES (431, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-20 13:17:41');
+INSERT INTO `sys_logininfor` VALUES (432, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-20 13:22:00');
+INSERT INTO `sys_logininfor` VALUES (433, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '1', '验证码错误', '2022-06-20 13:23:28');
+INSERT INTO `sys_logininfor` VALUES (434, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-20 13:23:34');
+INSERT INTO `sys_logininfor` VALUES (435, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-20 13:31:53');
+INSERT INTO `sys_logininfor` VALUES (436, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-20 13:36:13');
+INSERT INTO `sys_logininfor` VALUES (437, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-25 11:12:19');
+INSERT INTO `sys_logininfor` VALUES (438, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-25 11:19:42');
+INSERT INTO `sys_logininfor` VALUES (439, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-25 11:28:46');
+INSERT INTO `sys_logininfor` VALUES (440, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-27 08:34:36');
+INSERT INTO `sys_logininfor` VALUES (441, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-27 08:39:29');
+INSERT INTO `sys_logininfor` VALUES (442, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-06-27 16:26:11');
+INSERT INTO `sys_logininfor` VALUES (443, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-08 15:27:03');
+INSERT INTO `sys_logininfor` VALUES (444, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-08 15:32:06');
+INSERT INTO `sys_logininfor` VALUES (445, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-08 15:48:59');
+INSERT INTO `sys_logininfor` VALUES (446, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '1', '验证码错误', '2022-07-08 15:56:50');
+INSERT INTO `sys_logininfor` VALUES (447, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-08 15:56:53');
+INSERT INTO `sys_logininfor` VALUES (448, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-08 16:03:04');
+INSERT INTO `sys_logininfor` VALUES (449, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-08 16:25:14');
+INSERT INTO `sys_logininfor` VALUES (450, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-08 16:27:19');
+INSERT INTO `sys_logininfor` VALUES (451, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-08 16:29:53');
+INSERT INTO `sys_logininfor` VALUES (452, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-11 10:22:25');
+INSERT INTO `sys_logininfor` VALUES (453, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-11 10:24:59');
+INSERT INTO `sys_logininfor` VALUES (454, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-11 10:29:41');
+INSERT INTO `sys_logininfor` VALUES (455, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-11 10:34:34');
+INSERT INTO `sys_logininfor` VALUES (456, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-11 10:39:54');
+INSERT INTO `sys_logininfor` VALUES (457, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '1', '验证码错误', '2022-07-11 10:41:10');
+INSERT INTO `sys_logininfor` VALUES (458, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-11 10:41:12');
+INSERT INTO `sys_logininfor` VALUES (459, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-11 10:46:32');
+INSERT INTO `sys_logininfor` VALUES (460, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-11 11:12:44');
+INSERT INTO `sys_logininfor` VALUES (461, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-11 11:15:07');
+INSERT INTO `sys_logininfor` VALUES (462, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-11 11:27:56');
+INSERT INTO `sys_logininfor` VALUES (463, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-11 13:12:27');
+INSERT INTO `sys_logininfor` VALUES (464, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-11 13:15:15');
+INSERT INTO `sys_logininfor` VALUES (465, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-11 13:20:36');
+INSERT INTO `sys_logininfor` VALUES (466, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-11 13:30:21');
+INSERT INTO `sys_logininfor` VALUES (467, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '1', '验证码错误', '2022-07-11 13:31:38');
+INSERT INTO `sys_logininfor` VALUES (468, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-11 13:31:41');
+INSERT INTO `sys_logininfor` VALUES (469, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-11 13:40:27');
+INSERT INTO `sys_logininfor` VALUES (470, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '1', '验证码错误', '2022-07-11 13:42:06');
+INSERT INTO `sys_logininfor` VALUES (471, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '1', '验证码错误', '2022-07-11 13:42:08');
+INSERT INTO `sys_logininfor` VALUES (472, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-11 13:42:12');
+INSERT INTO `sys_logininfor` VALUES (473, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-11 14:01:14');
+INSERT INTO `sys_logininfor` VALUES (474, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-11 14:04:17');
+INSERT INTO `sys_logininfor` VALUES (475, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '退出成功', '2022-07-11 14:05:53');
+INSERT INTO `sys_logininfor` VALUES (476, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '1', '验证码错误', '2022-07-11 14:06:00');
+INSERT INTO `sys_logininfor` VALUES (477, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-11 14:06:03');
+INSERT INTO `sys_logininfor` VALUES (478, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-11 14:31:07');
+INSERT INTO `sys_logininfor` VALUES (479, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '1', '验证码错误', '2022-07-11 14:48:51');
+INSERT INTO `sys_logininfor` VALUES (480, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-11 14:48:54');
+INSERT INTO `sys_logininfor` VALUES (481, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-12 08:48:04');
+INSERT INTO `sys_logininfor` VALUES (482, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '1', '验证码错误', '2022-07-12 08:52:25');
+INSERT INTO `sys_logininfor` VALUES (483, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-12 08:52:28');
+INSERT INTO `sys_logininfor` VALUES (484, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-12 08:56:27');
+INSERT INTO `sys_logininfor` VALUES (485, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-12 10:18:01');
+INSERT INTO `sys_logininfor` VALUES (486, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-12 10:47:34');
+INSERT INTO `sys_logininfor` VALUES (487, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '1', '验证码错误', '2022-07-12 15:39:24');
+INSERT INTO `sys_logininfor` VALUES (488, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-12 15:39:27');
+INSERT INTO `sys_logininfor` VALUES (489, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-12 15:40:33');
+INSERT INTO `sys_logininfor` VALUES (490, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-12 15:46:00');
+INSERT INTO `sys_logininfor` VALUES (491, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-12 15:48:18');
+INSERT INTO `sys_logininfor` VALUES (492, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-12 15:51:13');
+INSERT INTO `sys_logininfor` VALUES (493, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-12 16:05:08');
+INSERT INTO `sys_logininfor` VALUES (494, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-12 16:07:35');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -894,7 +1014,7 @@ CREATE TABLE `sys_menu`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT '' COMMENT '备注',
   PRIMARY KEY (`menu_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2014 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '菜单权限表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2015 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '菜单权限表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_menu
@@ -993,9 +1113,10 @@ INSERT INTO `sys_menu` VALUES (2006, '请假申请', 2000, 1, '/leaveapply', 'me
 INSERT INTO `sys_menu` VALUES (2007, '我的待办', 2001, 1, '/task/manage/mytask', 'menuItem', 'C', '0', '1', '', '#', 'admin', '2022-04-02 08:44:00', 'admin', '2022-04-13 14:10:52', '');
 INSERT INTO `sys_menu` VALUES (2008, '全部待办', 2001, 2, '/task/manage/alltasks', 'menuItem', 'C', '0', '1', '', '#', 'admin', '2022-04-02 08:44:24', 'admin', '2022-04-29 11:08:52', '');
 INSERT INTO `sys_menu` VALUES (2009, '流程实例', 2002, 1, '/flow/monitor/instance', 'menuItem', 'C', '0', '1', '', '#', 'admin', '2022-05-09 18:52:00', 'admin', '2022-05-13 16:31:12', '');
-INSERT INTO `sys_menu` VALUES (2011, '运行历史', 2002, 2, '/flow/monitor/history', 'menuItem', 'C', '0', '1', '', '#', 'admin', '2022-05-13 14:49:07', 'admin', '2022-05-14 13:45:10', '');
+INSERT INTO `sys_menu` VALUES (2011, '运行历史', 2002, 3, '/flow/monitor/history', 'menuItem', 'C', '0', '1', '', '#', 'admin', '2022-05-13 14:49:07', 'admin', '2022-07-12 08:49:05', '');
 INSERT INTO `sys_menu` VALUES (2012, '采购申请', 2000, 2, '/purchase', 'menuItem', 'C', '0', '1', '', '#', 'admin', '2022-05-28 10:39:32', 'admin', '2022-05-28 10:39:40', '');
 INSERT INTO `sys_menu` VALUES (2013, '发起会议', 2000, 3, '/meeting', 'menuItem', 'C', '0', '1', NULL, '#', 'admin', '2022-05-30 16:49:20', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2014, '执行实例', 2002, 2, '/flow/monitor/execution', 'menuItem', 'C', '0', '1', '', '#', 'admin', '2022-07-12 08:48:44', 'admin', '2022-07-12 08:51:18', '');
 
 -- ----------------------------
 -- Table structure for sys_notice
@@ -1013,7 +1134,7 @@ CREATE TABLE `sys_notice`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`notice_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '通知公告表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '通知公告表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_notice
@@ -1043,7 +1164,7 @@ CREATE TABLE `sys_oper_log`  (
   `error_msg` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '错误消息',
   `oper_time` datetime(0) NULL DEFAULT NULL COMMENT '操作时间',
   PRIMARY KEY (`oper_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 168 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '操作日志记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 220 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '操作日志记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_oper_log
@@ -1116,6 +1237,58 @@ INSERT INTO `sys_oper_log` VALUES (164, '采购', 1, 'com.ruoyi.web.controller.a
 INSERT INTO `sys_oper_log` VALUES (165, '请假', 1, 'com.ruoyi.web.controller.activiti.LeaveapplyController.addSave()', 'POST', 1, 'admin', '研发部门', '/leaveapply/add', '127.0.0.1', '内网IP', '{\"userId\":[\"admin\"],\"leaveType\":[\"事假\"],\"startTime\":[\"2022-06-02 06:30:59\"],\"endTime\":[\"2022-05-31 05:25:59\"],\"reason\":[\"个\"],\"deptleader\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-06 16:57:07');
 INSERT INTO `sys_oper_log` VALUES (166, '请假', 1, 'com.ruoyi.web.controller.activiti.LeaveapplyController.addSave()', 'POST', 1, 'admin', '研发部门', '/leaveapply/add', '127.0.0.1', '内网IP', '{\"userId\":[\"admin\"],\"leaveType\":[\"事假\"],\"startTime\":[\"2022-06-01 06:05:52\"],\"endTime\":[\"2022-06-08 06:30:52\"],\"reason\":[\"dsf\"],\"deptleader\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-07 09:12:00');
 INSERT INTO `sys_oper_log` VALUES (167, '请假', 1, 'com.ruoyi.web.controller.activiti.LeaveapplyController.addSave()', 'POST', 1, 'admin', '研发部门', '/leaveapply/add', '127.0.0.1', '内网IP', '{\"userId\":[\"admin\"],\"leaveType\":[\"事假\"],\"startTime\":[\"2022-06-08 06:30:11\"],\"endTime\":[\"2022-06-01 06:30:11\"],\"reason\":[\"的\"],\"deptleader\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-07 14:35:19');
+INSERT INTO `sys_oper_log` VALUES (168, '请假', 1, 'com.ruoyi.web.controller.activiti.LeaveapplyController.addSave()', 'POST', 1, 'admin', '研发部门', '/leaveapply/add', '127.0.0.1', '内网IP', '{\"userId\":[\"admin\"],\"leaveType\":[\"事假\"],\"startTime\":[\"2022-06-08 06:30:19\"],\"endTime\":[\"2022-06-16 10:30:19\"],\"reason\":[\"asd\"],\"deptleader\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-08 08:32:27');
+INSERT INTO `sys_oper_log` VALUES (169, '请假', 1, 'com.ruoyi.web.controller.activiti.LeaveapplyController.addSave()', 'POST', 1, 'admin', '研发部门', '/leaveapply/add', '127.0.0.1', '内网IP', '{\"userId\":[\"admin\"],\"leaveType\":[\"事假\"],\"startTime\":[\"2022-06-01 02:10:19\"],\"endTime\":[\"2022-06-08 06:30:19\"],\"reason\":[\"有事\"],\"deptleader\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-08 08:43:30');
+INSERT INTO `sys_oper_log` VALUES (170, '采购', 1, 'com.ruoyi.web.controller.activiti.PurchaseController.addSave()', 'POST', 1, 'admin', '研发部门', '/purchase/add', '127.0.0.1', '内网IP', '{\"itemlist\":[\"笔\"],\"total\":[\"22\"],\"applyer\":[\"admin\"],\"purchasemanager\":[\"admin\"],\"finance\":[\"admin\"],\"pay\":[\"admin\"],\"manager\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-08 08:46:22');
+INSERT INTO `sys_oper_log` VALUES (171, '请假', 1, 'com.ruoyi.web.controller.activiti.LeaveapplyController.addSave()', 'POST', 1, 'admin', '研发部门', '/leaveapply/add', '127.0.0.1', '内网IP', '{\"userId\":[\"admin\"],\"leaveType\":[\"事假\"],\"startTime\":[\"2022-06-01 02:10:06\"],\"endTime\":[\"2022-06-09 06:30:06\"],\"reason\":[\"ads\"],\"deptleader\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-16 16:03:14');
+INSERT INTO `sys_oper_log` VALUES (172, '请假', 1, 'com.ruoyi.web.controller.activiti.LeaveapplyController.addSave()', 'POST', 1, 'admin', '研发部门', '/leaveapply/add', '127.0.0.1', '内网IP', '{\"userId\":[\"admin\"],\"leaveType\":[\"事假\"],\"startTime\":[\"2022-06-08 02:10:05\"],\"endTime\":[\"2022-06-08 06:30:05\"],\"reason\":[\"asd\"],\"deptleader\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-16 16:27:11');
+INSERT INTO `sys_oper_log` VALUES (173, '请假', 1, 'com.ruoyi.web.controller.activiti.LeaveapplyController.addSave()', 'POST', 1, 'admin', '研发部门', '/leaveapply/add', '127.0.0.1', '内网IP', '{\"userId\":[\"admin\"],\"leaveType\":[\"事假\"],\"startTime\":[\"2022-06-08 02:30:29\"],\"endTime\":[\"2022-06-09 06:30:29\"],\"reason\":[\"释放掉\"],\"deptleader\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-16 16:33:36');
+INSERT INTO `sys_oper_log` VALUES (174, '请假', 1, 'com.ruoyi.web.controller.activiti.LeaveapplyController.addSave()', 'POST', 1, 'admin', '研发部门', '/leaveapply/add', '127.0.0.1', '内网IP', '{\"userId\":[\"admin\"],\"leaveType\":[\"事假\"],\"startTime\":[\"2022-06-09 06:30:42\"],\"endTime\":[\"2022-06-15 16:30:42\"],\"reason\":[\"ad\"],\"deptleader\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-16 16:34:47');
+INSERT INTO `sys_oper_log` VALUES (175, '请假', 1, 'com.ruoyi.web.controller.activiti.LeaveapplyController.addSave()', 'POST', 1, 'admin', '研发部门', '/leaveapply/add', '127.0.0.1', '内网IP', '{\"userId\":[\"admin\"],\"leaveType\":[\"事假\"],\"startTime\":[\"2022-06-08 06:30:27\"],\"endTime\":[\"2022-06-17 11:55:27\"],\"reason\":[\"方法\"],\"deptleader\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-16 16:37:34');
+INSERT INTO `sys_oper_log` VALUES (176, '请假', 1, 'com.ruoyi.web.controller.activiti.LeaveapplyController.addSave()', 'POST', 1, 'admin', '研发部门', '/leaveapply/add', '127.0.0.1', '内网IP', '{\"userId\":[\"admin\"],\"leaveType\":[\"事假\"],\"startTime\":[\"2022-06-02 06:30:00\"],\"endTime\":[\"2022-06-16 06:30:00\"],\"reason\":[\"订单\"],\"deptleader\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-16 16:41:07');
+INSERT INTO `sys_oper_log` VALUES (177, '请假', 1, 'com.ruoyi.web.controller.activiti.LeaveapplyController.addSave()', 'POST', 1, 'admin', '研发部门', '/leaveapply/add', '127.0.0.1', '内网IP', '{\"userId\":[\"admin\"],\"leaveType\":[\"事假\"],\"startTime\":[\"2022-06-09 06:30:06\"],\"endTime\":[\"2022-06-17 11:55:06\"],\"reason\":[\"sad\"],\"deptleader\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-16 16:46:14');
+INSERT INTO `sys_oper_log` VALUES (178, '请假', 1, 'com.ruoyi.web.controller.activiti.LeaveapplyController.addSave()', 'POST', 1, 'admin', '研发部门', '/leaveapply/add', '127.0.0.1', '内网IP', '{\"userId\":[\"admin\"],\"leaveType\":[\"事假\"],\"startTime\":[\"2022-05-31 01:05:01\"],\"endTime\":[\"2022-06-08 06:30:01\"],\"reason\":[\"撤销\"],\"deptleader\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-16 16:56:09');
+INSERT INTO `sys_oper_log` VALUES (179, '采购', 1, 'com.ruoyi.web.controller.activiti.PurchaseController.addSave()', 'POST', 1, 'admin', '研发部门', '/purchase/add', '127.0.0.1', '内网IP', '{\"itemlist\":[\"dd\"],\"total\":[\"111\"],\"applyer\":[\"admin\"],\"purchasemanager\":[\"admin\"],\"finance\":[\"admin\"],\"pay\":[\"admin\"],\"manager\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-17 08:47:47');
+INSERT INTO `sys_oper_log` VALUES (180, '请假', 1, 'com.ruoyi.web.controller.activiti.LeaveapplyController.addSave()', 'POST', 1, 'admin', '研发部门', '/leaveapply/add', '127.0.0.1', '内网IP', '{\"userId\":[\"admin\"],\"leaveType\":[\"事假\"],\"startTime\":[\"2022-06-02 02:10:21\"],\"endTime\":[\"2022-06-08 06:30:21\"],\"reason\":[\"g\"],\"deptleader\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-17 08:49:29');
+INSERT INTO `sys_oper_log` VALUES (181, '请假', 1, 'com.ruoyi.web.controller.activiti.LeaveapplyController.addSave()', 'POST', 1, 'admin', '研发部门', '/leaveapply/add', '127.0.0.1', '内网IP', '{\"userId\":[\"admin\"],\"leaveType\":[\"事假\"],\"startTime\":[\"2022-06-09 02:10:41\"],\"endTime\":[\"2022-06-08 05:25:41\"],\"reason\":[\"f\"],\"deptleader\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-17 08:52:50');
+INSERT INTO `sys_oper_log` VALUES (182, '采购', 1, 'com.ruoyi.web.controller.activiti.PurchaseController.addSave()', 'POST', 1, 'admin', '研发部门', '/purchase/add', '127.0.0.1', '内网IP', '{\"itemlist\":[\"ff\"],\"total\":[\"11\"],\"applyer\":[\"admin\"],\"purchasemanager\":[\"admin\"],\"finance\":[\"admin\"],\"pay\":[\"admin\"],\"manager\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-17 09:25:52');
+INSERT INTO `sys_oper_log` VALUES (183, '请假', 1, 'com.ruoyi.web.controller.activiti.LeaveapplyController.addSave()', 'POST', 1, 'admin', '研发部门', '/leaveapply/add', '127.0.0.1', '内网IP', '{\"userId\":[\"admin\"],\"leaveType\":[\"事假\"],\"startTime\":[\"2022-06-07 05:25:48\"],\"endTime\":[\"2022-06-08 06:30:48\"],\"reason\":[\"dd\"],\"deptleader\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-17 09:38:55');
+INSERT INTO `sys_oper_log` VALUES (184, '请假', 1, 'com.ruoyi.web.controller.activiti.LeaveapplyController.addSave()', 'POST', 1, 'admin', '研发部门', '/leaveapply/add', '127.0.0.1', '内网IP', '{\"userId\":[\"admin\"],\"leaveType\":[\"事假\"],\"startTime\":[\"2022-06-08 06:10:13\"],\"endTime\":[\"2022-06-02 06:30:13\"],\"reason\":[\"kk\"],\"deptleader\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-17 10:08:21');
+INSERT INTO `sys_oper_log` VALUES (185, '请假', 1, 'com.ruoyi.web.controller.activiti.LeaveapplyController.addSave()', 'POST', 1, 'admin', '研发部门', '/leaveapply/add', '127.0.0.1', '内网IP', '{\"userId\":[\"admin\"],\"leaveType\":[\"事假\"],\"startTime\":[\"2022-06-02 07:30:49\"],\"endTime\":[\"2022-06-08 06:30:49\"],\"reason\":[\"f\"],\"deptleader\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-17 10:15:56');
+INSERT INTO `sys_oper_log` VALUES (186, '请假', 1, 'com.ruoyi.web.controller.activiti.LeaveapplyController.addSave()', 'POST', 1, 'admin', '研发部门', '/leaveapply/add', '127.0.0.1', '内网IP', '{\"userId\":[\"admin\"],\"leaveType\":[\"事假\"],\"startTime\":[\"2022-06-01 02:10:49\"],\"endTime\":[\"2022-06-08 06:30:49\"],\"reason\":[\"dd\"],\"deptleader\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-17 13:45:57');
+INSERT INTO `sys_oper_log` VALUES (187, '请假', 1, 'com.ruoyi.web.controller.activiti.LeaveapplyController.addSave()', 'POST', 1, 'admin', '研发部门', '/leaveapply/add', '127.0.0.1', '内网IP', '{\"userId\":[\"admin\"],\"leaveType\":[\"事假\"],\"startTime\":[\"2022-06-01 13:10:35\"],\"endTime\":[\"2022-06-08 05:25:35\"],\"reason\":[\"f\"],\"deptleader\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-17 13:47:42');
+INSERT INTO `sys_oper_log` VALUES (188, '请假', 1, 'com.ruoyi.web.controller.activiti.LeaveapplyController.addSave()', 'POST', 1, 'admin', '研发部门', '/leaveapply/add', '127.0.0.1', '内网IP', '{\"userId\":[\"admin\"],\"leaveType\":[\"事假\"],\"startTime\":[\"2022-06-01 02:10:47\"],\"endTime\":[\"2022-06-08 06:30:47\"],\"reason\":[\"f\"],\"deptleader\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-17 13:53:55');
+INSERT INTO `sys_oper_log` VALUES (189, '角色管理', 2, 'com.ruoyi.web.controller.system.SysRoleController.editSave()', 'POST', 1, 'admin', '研发部门', '/system/role/edit', '127.0.0.1', '内网IP', '{\"roleId\":[\"2\"],\"roleName\":[\"普通角色\"],\"roleKey\":[\"common\"],\"roleSort\":[\"2\"],\"status\":[\"0\"],\"remark\":[\"普通角色\"],\"menuIds\":[\"2003,2005,2004,2000,2006,2012,2013,2001,2007,2002,2009,2011,1,100,1000,1001,1002,1003,1004,1005,1006,101,1007,1008,1009,1010,1011,102,1012,1013,1014,1015,103,1016,1017,1018,1019,104,1020,1021,1022,1023,1024,105,1025,1026,1027,1028,1029,106,1030,1031,1032,1033,1034,107,1035,1036,1037,1038,108,500,1039,1040,1041,1042,501,1043,1044,1045,1046,2,109,1047,1048,1049,110,1050,1051,1052,1053,1054,1055,1056,111,112,113,3,114,115,1057,1058,1059,1060,1061,116\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-17 15:40:00');
+INSERT INTO `sys_oper_log` VALUES (190, '请假', 3, 'com.ruoyi.web.controller.activiti.LeaveapplyController.remove()', 'POST', 1, 'admin', '研发部门', '/leaveapply/remove', '127.0.0.1', '内网IP', '{\"ids\":[\"77\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-25 11:12:30');
+INSERT INTO `sys_oper_log` VALUES (191, '请假', 3, 'com.ruoyi.web.controller.activiti.LeaveapplyController.remove()', 'POST', 1, 'admin', '研发部门', '/leaveapply/remove', '127.0.0.1', '内网IP', '{\"ids\":[\"87,88,89,90,91,92,93\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-25 11:13:22');
+INSERT INTO `sys_oper_log` VALUES (192, '请假', 3, 'com.ruoyi.web.controller.activiti.LeaveapplyController.remove()', 'POST', 1, 'admin', '研发部门', '/leaveapply/remove', '127.0.0.1', '内网IP', '{\"ids\":[\"76,78,79,80,81,82,83,84,85,86\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-25 11:13:26');
+INSERT INTO `sys_oper_log` VALUES (193, '请假', 1, 'com.ruoyi.web.controller.activiti.LeaveapplyController.addSave()', 'POST', 1, 'admin', '研发部门', '/leaveapply/add', '127.0.0.1', '内网IP', '{\"userId\":[\"admin\"],\"leaveType\":[\"事假\"],\"startTime\":[\"2022-06-01 06:05:58\"],\"endTime\":[\"2022-06-08 06:25:58\"],\"reason\":[\"f\"],\"deptleader\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-25 11:14:05');
+INSERT INTO `sys_oper_log` VALUES (194, '请假', 3, 'com.ruoyi.web.controller.activiti.LeaveapplyController.remove()', 'POST', 1, 'admin', '研发部门', '/leaveapply/remove', '127.0.0.1', '内网IP', '{\"ids\":[\"94\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-25 11:14:35');
+INSERT INTO `sys_oper_log` VALUES (195, '请假', 1, 'com.ruoyi.web.controller.activiti.LeaveapplyController.addSave()', 'POST', 1, 'admin', '研发部门', '/leaveapply/add', '127.0.0.1', '内网IP', '{\"userId\":[\"admin\"],\"leaveType\":[\"事假\"],\"startTime\":[\"2022-06-07 11:25:46\"],\"endTime\":[\"2022-05-31 05:25:46\"],\"reason\":[\"ddd\"],\"deptleader\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-25 11:19:53');
+INSERT INTO `sys_oper_log` VALUES (196, '请假', 3, 'com.ruoyi.web.controller.activiti.LeaveapplyController.remove()', 'POST', 1, 'admin', '研发部门', '/leaveapply/remove', '127.0.0.1', '内网IP', '{\"ids\":[\"95\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-25 11:20:34');
+INSERT INTO `sys_oper_log` VALUES (197, '请假', 1, 'com.ruoyi.web.controller.activiti.LeaveapplyController.addSave()', 'POST', 1, 'admin', '研发部门', '/leaveapply/add', '127.0.0.1', '内网IP', '{\"userId\":[\"admin\"],\"leaveType\":[\"事假\"],\"startTime\":[\"2022-06-09 06:30:49\"],\"endTime\":[\"2022-06-15 10:45:49\"],\"reason\":[\"d\"],\"deptleader\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-25 11:28:56');
+INSERT INTO `sys_oper_log` VALUES (198, '请假', 3, 'com.ruoyi.web.controller.activiti.LeaveapplyController.remove()', 'POST', 1, 'admin', '研发部门', '/leaveapply/remove', '127.0.0.1', '内网IP', '{\"ids\":[\"96\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-25 11:29:29');
+INSERT INTO `sys_oper_log` VALUES (199, '请假', 1, 'com.ruoyi.web.controller.activiti.LeaveapplyController.addSave()', 'POST', 1, 'admin', '研发部门', '/leaveapply/add', '127.0.0.1', '内网IP', '{\"userId\":[\"admin\"],\"leaveType\":[\"事假\"],\"startTime\":[\"2022-06-08 05:25:39\"],\"endTime\":[\"2022-06-15 10:50:39\"],\"reason\":[\"//\"],\"deptleader\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-27 08:34:49');
+INSERT INTO `sys_oper_log` VALUES (200, '请假', 3, 'com.ruoyi.web.controller.activiti.LeaveapplyController.remove()', 'POST', 1, 'admin', '研发部门', '/leaveapply/remove', '127.0.0.1', '内网IP', '{\"ids\":[\"1\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-27 08:36:24');
+INSERT INTO `sys_oper_log` VALUES (201, '请假', 1, 'com.ruoyi.web.controller.activiti.LeaveapplyController.addSave()', 'POST', 1, 'admin', '研发部门', '/leaveapply/add', '127.0.0.1', '内网IP', '{\"userId\":[\"admin\"],\"leaveType\":[\"事假\"],\"startTime\":[\"2022-06-09 06:30:40\"],\"endTime\":[\"2022-06-15 10:50:40\"],\"reason\":[\"ddd\"],\"deptleader\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-27 08:39:46');
+INSERT INTO `sys_oper_log` VALUES (202, '请假', 3, 'com.ruoyi.web.controller.activiti.LeaveapplyController.remove()', 'POST', 1, 'admin', '研发部门', '/leaveapply/remove', '127.0.0.1', '内网IP', '{\"ids\":[\"2\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-27 08:40:11');
+INSERT INTO `sys_oper_log` VALUES (203, '请假', 1, 'com.ruoyi.web.controller.activiti.LeaveapplyController.addSave()', 'POST', 1, 'admin', '研发部门', '/leaveapply/add', '127.0.0.1', '内网IP', '{\"userId\":[\"admin\"],\"leaveType\":[\"事假\"],\"startTime\":[\"2022-06-16 06:30:28\"],\"endTime\":[\"2022-06-16 10:50:28\"],\"reason\":[\"ggg\"],\"deptleader\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-27 08:40:41');
+INSERT INTO `sys_oper_log` VALUES (204, '请假', 3, 'com.ruoyi.web.controller.activiti.LeaveapplyController.remove()', 'POST', 1, 'admin', '研发部门', '/leaveapply/remove', '127.0.0.1', '内网IP', '{\"ids\":[\"3\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-06-27 08:41:44');
+INSERT INTO `sys_oper_log` VALUES (205, '请假', 1, 'com.ruoyi.web.controller.activiti.LeaveapplyController.addSave()', 'POST', 1, 'admin', '研发部门', '/leaveapply/add', '127.0.0.1', '内网IP', '{\"userId\":[\"admin\"],\"leaveType\":[\"事假\"],\"startTime\":[\"2022-07-07 10:30:26\"],\"endTime\":[\"2022-07-15 15:45:26\"],\"reason\":[\"d\"],\"deptleader\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-07-08 15:27:36');
+INSERT INTO `sys_oper_log` VALUES (206, '请假', 1, 'com.ruoyi.web.controller.activiti.LeaveapplyController.addSave()', 'POST', 1, 'admin', '研发部门', '/leaveapply/add', '127.0.0.1', '内网IP', '{\"userId\":[\"admin\"],\"leaveType\":[\"事假\"],\"startTime\":[\"2022-07-14 06:25:38\"],\"endTime\":[\"2022-07-07 06:30:38\"],\"reason\":[\"d\"],\"deptleader\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-07-08 15:27:44');
+INSERT INTO `sys_oper_log` VALUES (207, '采购', 1, 'com.ruoyi.web.controller.activiti.PurchaseController.addSave()', 'POST', 1, 'admin', '研发部门', '/purchase/add', '127.0.0.1', '内网IP', '{\"itemlist\":[\"d\"],\"total\":[\"111\"],\"applyer\":[\"admin\"],\"purchasemanager\":[\"admin\"],\"finance\":[\"admin\"],\"pay\":[\"admin\"],\"manager\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-07-08 15:27:50');
+INSERT INTO `sys_oper_log` VALUES (208, '采购', 1, 'com.ruoyi.web.controller.activiti.PurchaseController.addSave()', 'POST', 1, 'admin', '研发部门', '/purchase/add', '127.0.0.1', '内网IP', '{\"itemlist\":[\"d\"],\"total\":[\"22\"],\"applyer\":[\"admin\"],\"purchasemanager\":[\"admin\"],\"finance\":[\"admin\"],\"pay\":[\"admin\"],\"manager\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-07-08 15:27:58');
+INSERT INTO `sys_oper_log` VALUES (209, '采购', 1, 'com.ruoyi.web.controller.activiti.PurchaseController.addSave()', 'POST', 1, 'admin', '研发部门', '/purchase/add', '127.0.0.1', '内网IP', '{\"itemlist\":[\"44\"],\"total\":[\"44\"],\"applyer\":[\"admin\"],\"purchasemanager\":[\"admin\"],\"finance\":[\"admin\"],\"pay\":[\"admin\"],\"manager\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-07-08 15:28:03');
+INSERT INTO `sys_oper_log` VALUES (210, '采购', 1, 'com.ruoyi.web.controller.activiti.PurchaseController.addSave()', 'POST', 1, 'admin', '研发部门', '/purchase/add', '127.0.0.1', '内网IP', '{\"itemlist\":[\"gg\"],\"total\":[\"33\"],\"applyer\":[\"admin\"],\"purchasemanager\":[\"admin\"],\"finance\":[\"admin\"],\"pay\":[\"admin\"],\"manager\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-07-08 15:28:07');
+INSERT INTO `sys_oper_log` VALUES (211, '采购', 1, 'com.ruoyi.web.controller.activiti.PurchaseController.addSave()', 'POST', 1, 'admin', '研发部门', '/purchase/add', '127.0.0.1', '内网IP', '{\"itemlist\":[\"sf\"],\"total\":[\"54\"],\"applyer\":[\"admin\"],\"purchasemanager\":[\"admin\"],\"finance\":[\"admin\"],\"pay\":[\"admin\"],\"manager\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-07-08 15:28:18');
+INSERT INTO `sys_oper_log` VALUES (212, '采购', 1, 'com.ruoyi.web.controller.activiti.PurchaseController.addSave()', 'POST', 1, 'admin', '研发部门', '/purchase/add', '127.0.0.1', '内网IP', '{\"itemlist\":[\"d\"],\"total\":[\"3434\"],\"applyer\":[\"admin\"],\"purchasemanager\":[\"admin\"],\"finance\":[\"admin\"],\"pay\":[\"admin\"],\"manager\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-07-08 15:28:23');
+INSERT INTO `sys_oper_log` VALUES (213, '采购', 1, 'com.ruoyi.web.controller.activiti.PurchaseController.addSave()', 'POST', 1, 'admin', '研发部门', '/purchase/add', '127.0.0.1', '内网IP', '{\"itemlist\":[\"dg\"],\"total\":[\"3223\"],\"applyer\":[\"admin\"],\"purchasemanager\":[\"admin\"],\"finance\":[\"admin\"],\"pay\":[\"admin\"],\"manager\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-07-08 15:28:36');
+INSERT INTO `sys_oper_log` VALUES (214, '请假', 1, 'com.ruoyi.web.controller.activiti.LeaveapplyController.addSave()', 'POST', 1, 'admin', '研发部门', '/leaveapply/add', '127.0.0.1', '内网IP', '{\"userId\":[\"admin\"],\"leaveType\":[\"事假\"],\"startTime\":[\"2022-07-13 16:30:33\"],\"endTime\":[\"2022-07-06 06:50:33\"],\"reason\":[\"ddd\"],\"deptleader\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-07-08 16:36:39');
+INSERT INTO `sys_oper_log` VALUES (215, '菜单管理', 1, 'com.ruoyi.web.controller.system.SysMenuController.addSave()', 'POST', 1, 'admin', '研发部门', '/system/menu/add', '127.0.0.1', '内网IP', '{\"parentId\":[\"2002\"],\"menuType\":[\"C\"],\"menuName\":[\"执行实例\"],\"url\":[\"\"],\"target\":[\"menuItem\"],\"perms\":[\"\"],\"orderNum\":[\"2\"],\"icon\":[\"\"],\"visible\":[\"0\"],\"isRefresh\":[\"1\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-07-12 08:48:44');
+INSERT INTO `sys_oper_log` VALUES (216, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.editSave()', 'POST', 1, 'admin', '研发部门', '/system/menu/edit', '127.0.0.1', '内网IP', '{\"menuId\":[\"2011\"],\"parentId\":[\"2002\"],\"menuType\":[\"C\"],\"menuName\":[\"运行历史\"],\"url\":[\"/flow/monitor/history\"],\"target\":[\"menuItem\"],\"perms\":[\"\"],\"orderNum\":[\"2\"],\"icon\":[\"#\"],\"visible\":[\"0\"],\"isRefresh\":[\"1\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-07-12 08:48:54');
+INSERT INTO `sys_oper_log` VALUES (217, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.editSave()', 'POST', 1, 'admin', '研发部门', '/system/menu/edit', '127.0.0.1', '内网IP', '{\"menuId\":[\"2011\"],\"parentId\":[\"2002\"],\"menuType\":[\"C\"],\"menuName\":[\"运行历史\"],\"url\":[\"/flow/monitor/history\"],\"target\":[\"menuItem\"],\"perms\":[\"\"],\"orderNum\":[\"3\"],\"icon\":[\"#\"],\"visible\":[\"0\"],\"isRefresh\":[\"1\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-07-12 08:49:05');
+INSERT INTO `sys_oper_log` VALUES (218, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.editSave()', 'POST', 1, 'admin', '研发部门', '/system/menu/edit', '127.0.0.1', '内网IP', '{\"menuId\":[\"2014\"],\"parentId\":[\"2002\"],\"menuType\":[\"C\"],\"menuName\":[\"执行实例\"],\"url\":[\"/flow/monitor/listExecutions\"],\"target\":[\"menuItem\"],\"perms\":[\"\"],\"orderNum\":[\"2\"],\"icon\":[\"#\"],\"visible\":[\"0\"],\"isRefresh\":[\"1\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-07-12 08:49:39');
+INSERT INTO `sys_oper_log` VALUES (219, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.editSave()', 'POST', 1, 'admin', '研发部门', '/system/menu/edit', '127.0.0.1', '内网IP', '{\"menuId\":[\"2014\"],\"parentId\":[\"2002\"],\"menuType\":[\"C\"],\"menuName\":[\"执行实例\"],\"url\":[\"/flow/monitor/execution\"],\"target\":[\"menuItem\"],\"perms\":[\"\"],\"orderNum\":[\"2\"],\"icon\":[\"#\"],\"visible\":[\"0\"],\"isRefresh\":[\"1\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-07-12 08:51:18');
 
 -- ----------------------------
 -- Table structure for sys_post
@@ -1161,13 +1334,13 @@ CREATE TABLE `sys_role`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`role_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
 INSERT INTO `sys_role` VALUES (1, '超级管理员', 'admin', 1, '1', '0', '0', 'admin', '2022-05-26 15:25:37', '', NULL, '超级管理员');
-INSERT INTO `sys_role` VALUES (2, '普通角色', 'common', 2, '2', '0', '0', 'admin', '2022-05-26 15:25:37', '', NULL, '普通角色');
+INSERT INTO `sys_role` VALUES (2, '普通角色', 'common', 2, '2', '0', '0', 'admin', '2022-05-26 15:25:37', 'admin', '2022-06-17 15:40:00', '普通角色');
 
 -- ----------------------------
 -- Table structure for sys_role_dept
@@ -1202,7 +1375,6 @@ CREATE TABLE `sys_role_menu`  (
 INSERT INTO `sys_role_menu` VALUES (2, 1);
 INSERT INTO `sys_role_menu` VALUES (2, 2);
 INSERT INTO `sys_role_menu` VALUES (2, 3);
-INSERT INTO `sys_role_menu` VALUES (2, 4);
 INSERT INTO `sys_role_menu` VALUES (2, 100);
 INSERT INTO `sys_role_menu` VALUES (2, 101);
 INSERT INTO `sys_role_menu` VALUES (2, 102);
@@ -1284,6 +1456,18 @@ INSERT INTO `sys_role_menu` VALUES (2, 1058);
 INSERT INTO `sys_role_menu` VALUES (2, 1059);
 INSERT INTO `sys_role_menu` VALUES (2, 1060);
 INSERT INTO `sys_role_menu` VALUES (2, 1061);
+INSERT INTO `sys_role_menu` VALUES (2, 2000);
+INSERT INTO `sys_role_menu` VALUES (2, 2001);
+INSERT INTO `sys_role_menu` VALUES (2, 2002);
+INSERT INTO `sys_role_menu` VALUES (2, 2003);
+INSERT INTO `sys_role_menu` VALUES (2, 2004);
+INSERT INTO `sys_role_menu` VALUES (2, 2005);
+INSERT INTO `sys_role_menu` VALUES (2, 2006);
+INSERT INTO `sys_role_menu` VALUES (2, 2007);
+INSERT INTO `sys_role_menu` VALUES (2, 2009);
+INSERT INTO `sys_role_menu` VALUES (2, 2011);
+INSERT INTO `sys_role_menu` VALUES (2, 2012);
+INSERT INTO `sys_role_menu` VALUES (2, 2013);
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -1312,13 +1496,13 @@ CREATE TABLE `sys_user`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 103, 'admin', '若依', '00', 'ry@163.com', '15888888888', '1', '', '29c67a30398638269fe600f73a054934', '111111', '0', '0', '127.0.0.1', '2022-06-07 15:15:44', '2022-05-26 15:25:37', 'admin', '2022-05-26 15:25:37', '', '2022-06-07 15:15:44', '管理员');
-INSERT INTO `sys_user` VALUES (2, 105, 'ry', '若依曼', '00', 'ry@qq.com', '15666666666', '1', '', '8e6d98b90472783cc73c17047ddccf36', '222222', '0', '0', '127.0.0.1', '2022-05-26 15:25:37', '2022-05-26 15:25:37', 'admin', '2022-05-26 15:25:37', 'admin', '2022-05-28 13:48:57', '测试员');
+INSERT INTO `sys_user` VALUES (1, 103, 'admin', '若依', '00', 'ry@163.com', '15888888888', '1', '', '29c67a30398638269fe600f73a054934', '111111', '0', '0', '127.0.0.1', '2022-07-12 16:07:36', '2022-05-26 15:25:37', 'admin', '2022-05-26 15:25:37', '', '2022-07-12 16:07:35', '管理员');
+INSERT INTO `sys_user` VALUES (2, 105, 'ry', '若依曼', '00', 'ry@qq.com', '15666666666', '1', '', '8e6d98b90472783cc73c17047ddccf36', '222222', '0', '0', '127.0.0.1', '2022-06-17 15:40:09', '2022-05-26 15:25:37', 'admin', '2022-05-26 15:25:37', 'admin', '2022-06-17 15:40:08', '测试员');
 
 -- ----------------------------
 -- Table structure for sys_user_online
@@ -1342,7 +1526,7 @@ CREATE TABLE `sys_user_online`  (
 -- ----------------------------
 -- Records of sys_user_online
 -- ----------------------------
-INSERT INTO `sys_user_online` VALUES ('eaee67e8-7452-489e-8dd4-7975e11c61eb', 'admin', '研发部门', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', 'on_line', '2022-06-07 15:15:41', '2022-06-07 15:15:44', 1800000);
+INSERT INTO `sys_user_online` VALUES ('1bd6907a-fd6c-4151-b110-4f5c80b44ace', 'admin', '研发部门', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', 'on_line', '2022-07-12 16:07:32', '2022-07-12 16:09:41', 1800000);
 
 -- ----------------------------
 -- Table structure for sys_user_post
