@@ -196,7 +196,6 @@ public class DynamicFlowController {
         // 流程图自动布局
         new BpmnAutoLayout(bpmnModel).execute();
 
-
         // 模型合法性校验
         List<ValidationError> validationErrorList = repositoryService.validateProcess(bpmnModel);
         if (validationErrorList.size() == 0) {

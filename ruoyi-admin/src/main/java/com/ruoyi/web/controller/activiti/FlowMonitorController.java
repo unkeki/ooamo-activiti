@@ -20,6 +20,7 @@ import org.activiti.engine.history.HistoricVariableInstance;
 import org.activiti.engine.impl.util.IoUtil;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.Execution;
+import org.activiti.engine.runtime.ExecutionQuery;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.runtime.ProcessInstanceQuery;
 import org.activiti.engine.task.Comment;
@@ -79,6 +80,11 @@ public class FlowMonitorController extends BaseController {
     @GetMapping("/history")
     public String processHistory() {
         return prefix + "/processHistory";
+    }
+
+    @GetMapping("/execution")
+    public String execution() {
+        return prefix + "/execution";
     }
 
     @GetMapping("/historyDetail")
@@ -223,24 +229,38 @@ public class FlowMonitorController extends BaseController {
     @ApiOperation("查询所有正在运行的执行实例列表")
     @RequestMapping(value = "/listExecutions", method = RequestMethod.POST)
     @ResponseBody
-    public TableDataInfo listExecutions(@RequestParam(required = false) String key, @RequestParam(required = false) String name,
-                                        Integer pageSize, Integer pageNum) {
-        int start = (pageNum - 1) * pageSize;
-        List<Execution> executionList = runtimeService.createExecutionQuery().orderByProcessInstanceId().desc().listPage(start, pageSize);
-        int total = runtimeService.createExecutionQuery().orderByProcessInstanceId().desc().list().size();
+    public List<FlowInfo> listExecutions(@RequestParam(required = false) String name) {
+        ExecutionQuery condition = runtimeService.createExecutionQuery();
+        if (StringUtils.isNotEmpty(name)) {
+            condition.processDefinitionName(name);
+        }
+        List<Execution> executionList = condition.orderByProcessInstanceId().desc().list();
         List<FlowInfo> flows = new ArrayList<>();
         executionList.stream().forEach(p -> {
             FlowInfo info = new FlowInfo();
             info.setProcessInstanceId(p.getProcessInstanceId());
             info.setSuspended(p.isSuspended());
-            info.setEnded(p.isEnded());
+            // 当前活动节点
+            if (p.getActivityId() != null) {
+                info.setCurrentTask(p.getActivityId());
+            } else {
+                ProcessInstance process = runtimeService.createProcessInstanceQuery().processInstanceId(p.getProcessInstanceId()).singleResult();
+                info.setStartTime(process.getStartTime());
+                info.setStartUserId(process.getStartUserId());
+                info.setName(process.getProcessDefinitionName());
+                List<Task> tasks =  taskService.createTaskQuery().processInstanceId(p.getProcessInstanceId()).list();
+                String taskName = "";
+                for (Task t : tasks) {
+                    taskName += t.getName() + ",";
+                }
+                taskName = taskName.substring(0, taskName.length() -1);
+                info.setCurrentTask(taskName);
+            }
+            info.setExecutionId(p.getId());
+            info.setParentExecutionId(p.getParentId());
             flows.add(info);
         });
-        TableDataInfo rspData = new TableDataInfo();
-        rspData.setCode(0);
-        rspData.setRows(flows);
-        rspData.setTotal(total);
-        return rspData;
+        return flows;
     }
 
     @ApiOperation("流程图进度追踪,已结束标红，运行中标绿")
