@@ -12,6 +12,7 @@ import com.ruoyi.web.util.ActivitiTracingChart;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.activiti.bpmn.model.BpmnModel;
+import org.activiti.bpmn.model.FlowElement;
 import org.activiti.engine.*;
 import org.activiti.engine.history.HistoricActivityInstance;
 import org.activiti.engine.history.HistoricProcessInstance;
@@ -40,9 +41,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * 流程监控
@@ -240,9 +239,12 @@ public class FlowMonitorController extends BaseController {
             FlowInfo info = new FlowInfo();
             info.setProcessInstanceId(p.getProcessInstanceId());
             info.setSuspended(p.isSuspended());
-            // 当前活动节点
             if (p.getActivityId() != null) {
                 info.setCurrentTask(p.getActivityId());
+                ProcessInstance process = runtimeService.createProcessInstanceQuery().processInstanceId(p.getProcessInstanceId()).singleResult();
+                BpmnModel bpmnModel = repositoryService.getBpmnModel(process.getProcessDefinitionId());
+                Map<String, FlowElement> nodes = bpmnModel.getMainProcess().getFlowElementMap();
+                info.setName(nodes.get(p.getActivityId()).getName());
             } else {
                 ProcessInstance process = runtimeService.createProcessInstanceQuery().processInstanceId(p.getProcessInstanceId()).singleResult();
                 info.setStartTime(process.getStartTime());
