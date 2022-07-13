@@ -240,11 +240,11 @@ public class FlowMonitorController extends BaseController {
             info.setProcessInstanceId(p.getProcessInstanceId());
             info.setSuspended(p.isSuspended());
             if (p.getActivityId() != null) {
-                info.setCurrentTask(p.getActivityId());
                 ProcessInstance process = runtimeService.createProcessInstanceQuery().processInstanceId(p.getProcessInstanceId()).singleResult();
                 BpmnModel bpmnModel = repositoryService.getBpmnModel(process.getProcessDefinitionId());
                 Map<String, FlowElement> nodes = bpmnModel.getMainProcess().getFlowElementMap();
-                info.setName(nodes.get(p.getActivityId()).getName());
+                info.setCurrentTask(nodes.get(p.getActivityId()).getName());
+                info.setName(process.getProcessDefinitionName());
             } else {
                 ProcessInstance process = runtimeService.createProcessInstanceQuery().processInstanceId(p.getProcessInstanceId()).singleResult();
                 info.setStartTime(process.getStartTime());
