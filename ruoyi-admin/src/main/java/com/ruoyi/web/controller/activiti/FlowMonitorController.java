@@ -5,9 +5,11 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.bean.BeanUtils;
+import com.ruoyi.system.domain.ActRuExecution;
 import com.ruoyi.system.domain.FlowInfo;
 import com.ruoyi.system.domain.TaskInfo;
 import com.ruoyi.system.domain.VariableInfo;
+import com.ruoyi.system.mapper.ActRuExecutionMapper;
 import com.ruoyi.web.util.ActivitiTracingChart;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -68,6 +70,10 @@ public class FlowMonitorController extends BaseController {
 
     @Resource
     private ActivitiTracingChart activitiTracingChart;
+
+    @Resource
+    ActRuExecutionMapper actRuExecutionMapper;
+
 
     private String prefix = "activiti/monitor";
 
@@ -229,28 +235,33 @@ public class FlowMonitorController extends BaseController {
     @RequestMapping(value = "/listExecutions", method = RequestMethod.POST)
     @ResponseBody
     public List<FlowInfo> listExecutions(@RequestParam(required = false) String name) {
-        ExecutionQuery condition = runtimeService.createExecutionQuery();
-        if (StringUtils.isNotEmpty(name)) {
-            condition.processDefinitionName(name);
-        }
-        List<Execution> executionList = condition.orderByProcessInstanceId().desc().list();
+        List<ActRuExecution> executionList = actRuExecutionMapper.selectActRuExecutionListByProcessName(name);
         List<FlowInfo> flows = new ArrayList<>();
         executionList.stream().forEach(p -> {
             FlowInfo info = new FlowInfo();
-            info.setProcessInstanceId(p.getProcessInstanceId());
-            info.setSuspended(p.isSuspended());
-            if (p.getActivityId() != null) {
-                ProcessInstance process = runtimeService.createProcessInstanceQuery().processInstanceId(p.getProcessInstanceId()).singleResult();
+            info.setProcessInstanceId(p.getProcInstId());
+            if (p.getSuspensionState() == 1L) {
+                info.setSuspended(false);
+            } else {
+                info.setSuspended(true);
+            }
+            if (p.getIsActive() == 0) {
+                info.setActive(false);
+            } else {
+                info.setActive(true);
+            }
+            if (p.getActId() != null) {
+                ProcessInstance process = runtimeService.createProcessInstanceQuery().processInstanceId(p.getProcInstId()).singleResult();
                 BpmnModel bpmnModel = repositoryService.getBpmnModel(process.getProcessDefinitionId());
                 Map<String, FlowElement> nodes = bpmnModel.getMainProcess().getFlowElementMap();
-                info.setCurrentTask(nodes.get(p.getActivityId()).getName());
+                info.setCurrentTask(nodes.get(p.getActId()).getName());
                 info.setName(process.getProcessDefinitionName());
             } else {
-                ProcessInstance process = runtimeService.createProcessInstanceQuery().processInstanceId(p.getProcessInstanceId()).singleResult();
+                ProcessInstance process = runtimeService.createProcessInstanceQuery().processInstanceId(p.getProcInstId()).singleResult();
                 info.setStartTime(process.getStartTime());
                 info.setStartUserId(process.getStartUserId());
                 info.setName(process.getProcessDefinitionName());
-                List<Task> tasks =  taskService.createTaskQuery().processInstanceId(p.getProcessInstanceId()).list();
+                List<Task> tasks =  taskService.createTaskQuery().processInstanceId(p.getProcInstId()).list();
                 String taskName = "";
                 for (Task t : tasks) {
                     taskName += t.getName() + ",";
@@ -258,8 +269,13 @@ public class FlowMonitorController extends BaseController {
                 taskName = taskName.substring(0, taskName.length() -1);
                 info.setCurrentTask(taskName);
             }
+            info.setStartTime(p.getStartTime());
             info.setExecutionId(p.getId());
-            info.setParentExecutionId(p.getParentId());
+            if (p.getParentId() == null) {
+                info.setParentExecutionId("0");
+            } else {
+                info.setParentExecutionId(p.getParentId());
+            }
             flows.add(info);
         });
         return flows;

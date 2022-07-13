@@ -45,7 +45,6 @@
         }
 
         $(function() {
-
             var options = {
                 code: "executionId",
                 parentCode: "parentExecutionId",
@@ -68,6 +67,16 @@
                 {
                     field: 'currentTask',
                     title: '当前节点'
+                },
+                {
+                    field: 'active',
+                    title: '是否存活',
+                    formatter: function(value, item, index) {
+                         if (item.active == true)
+                             return '是';
+                         else
+                             return '否';
+                     }
                 },
                 {
                     field: 'suspended',

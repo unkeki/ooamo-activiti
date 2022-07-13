@@ -21,6 +21,8 @@ public class FlowInfo {
     Boolean suspended;
 
     Boolean ended;
+    // 是否存活
+    Boolean active;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     Date startTime;
@@ -128,5 +130,13 @@ public class FlowInfo {
 
     public void setParentExecutionId(String parentExecutionId) {
         this.parentExecutionId = parentExecutionId;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 }
