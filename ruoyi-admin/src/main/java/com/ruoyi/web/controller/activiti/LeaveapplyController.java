@@ -239,4 +239,5 @@ public class LeaveapplyController extends BaseController
     {
         return toAjax(leaveapplyService.deleteLeaveapplyByIds(ids));
     }
+
 }

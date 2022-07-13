@@ -15,9 +15,7 @@ import org.activiti.engine.ProcessEngineConfiguration;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
-import org.activiti.engine.repository.Model;
-import org.activiti.engine.repository.ProcessDefinition;
-import org.activiti.engine.repository.ProcessDefinitionQuery;
+import org.activiti.engine.repository.*;
 import org.activiti.image.ProcessDiagramGenerator;
 import org.apache.commons.io.IOUtils;
 
@@ -95,12 +93,21 @@ public class FlowController extends BaseController {
     @ResponseBody
     public TableDataInfo getlist(@RequestParam(required = false) String key, @RequestParam(required = false) String name,
                                  Integer pageSize, Integer pageNum) {
-        ProcessDefinitionQuery query = repositoryService.createProcessDefinitionQuery();
+        String sql = "select * from act_re_procdef where 1=1";
         if (StringUtils.isNotEmpty(key)) {
-            query.processDefinitionKey(key);
+            sql += " and key = #{key}";
         }
         if (StringUtils.isNotEmpty(name)) {
-            query.processDefinitionName(name);
+            sql += " and name= #{name}";
+        }
+        sql += " order by deployment_id_ desc";
+        NativeProcessDefinitionQuery query = repositoryService.createNativeProcessDefinitionQuery().sql(sql);
+
+        if (StringUtils.isNotEmpty(key)) {
+            query.parameter("key", key);
+        }
+        if (StringUtils.isNotEmpty(name)) {
+            query.parameter("name", name);
         }
         int start = (pageNum - 1) * pageSize;
         int total = query.list().size();
