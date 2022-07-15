@@ -73,8 +73,6 @@ public class ActivitiTracingChart {
             // 高亮流程已发生流转的线id集合
             List<String> highLightedFlowIds = getHighLightedFlows(bpmnModel, historicActivityInstances);
 
-            System.out.println(highLightedFlowIds);
-
             // 使用默认配置获得流程图表生成器，并生成追踪图片字符流
             InputStream imageStream = processDiagramGenerator
                 .generateDiagram(bpmnModel, "png", highLightedActivitiIds, highLightedFlowIds, "宋体", "微软雅黑", "黑体", null, 2.0);
