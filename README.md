@@ -83,7 +83,6 @@
 - 流程变量监控
 ![输入图片说明](pic/%E6%B5%81%E7%A8%8B%E5%8F%98%E9%87%8F%E7%9B%91%E6%8E%A7.jpg)
 
-![输入图片说明](pic/%E5%9B%BE%E7%89%871.jpg)
 
 ### 附录：中央技术储备仓库（Central Technique Reserve Repository）
 
