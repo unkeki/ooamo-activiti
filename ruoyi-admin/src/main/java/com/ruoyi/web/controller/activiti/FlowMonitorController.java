@@ -155,7 +155,6 @@ public class FlowMonitorController extends BaseController {
     @ResponseBody
     public TableDataInfo listHistoryProcess(@RequestParam(required = false) String bussinesskey, @RequestParam(required = false) String name,
                                             Integer pageSize, Integer pageNum) {
-        int total = historyService.createHistoricProcessInstanceQuery().orderByProcessInstanceStartTime().desc().list().size();
         int start = (pageNum - 1) * pageSize;
         HistoricProcessInstanceQuery condition = historyService.createHistoricProcessInstanceQuery();
         if (StringUtils.isNotEmpty(bussinesskey)) {
@@ -164,6 +163,7 @@ public class FlowMonitorController extends BaseController {
         if (StringUtils.isNotEmpty(name)) {
             condition.processDefinitionName(name);
         }
+        int total = condition.orderByProcessInstanceStartTime().desc().list().size();
         List<HistoricProcessInstance> processList = condition.orderByProcessInstanceStartTime().desc().listPage(start, pageSize);
         List<FlowInfo> flows = new ArrayList<>();
         processList.stream().forEach(p -> {
