@@ -83,6 +83,10 @@
 - 流程变量监控
 ![输入图片说明](pic/%E6%B5%81%E7%A8%8B%E5%8F%98%E9%87%8F%E7%9B%91%E6%8E%A7.jpg)
 
+- 荣誉
+
+![输入图片说明](pic/%E8%8D%A3%E8%AA%89.jpg)
+
 
 ### 附录：中央技术储备仓库（Central Technique Reserve Repository）
 
@@ -120,7 +124,7 @@
 <a href="https://images.gitee.com/uploads/images/2020/0106/201827_ac61db63_1110335.gif" target="_blank">效果图</a>
 26. 使用jenkins+centos+git+maven搭建持续集成环境自动化部署分布式服务 
 27. 使用docker+compose+jenkins+gitlab+spring cloud实现微服务的编排、持续集成和动态扩容 
-28. 使用Spark进行分布式计算
+28. 使用Spark进行分布式计算 
 - Spark SQL做离线计算
 - Spark Streaming做实时计算
 - Structured Streaming做实时计算
