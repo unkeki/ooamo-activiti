@@ -60,7 +60,7 @@ public class ActivitiTracingChart {
             // 获取流程中已经执行的节点
             List<HistoricActivityInstance> historicActivityInstances = historyService.createHistoricActivityInstanceQuery()
                 .processInstanceId(processInstanceId)
-                .orderByHistoricActivityInstanceId().asc().list();
+                .orderByHistoricActivityInstanceStartTime().asc().list();
             // 高亮已经执行流程节点ID集合
             List<String> highLightedActivitiIds = new ArrayList<>();
             for (HistoricActivityInstance historicActivityInstance : historicActivityInstances) {
@@ -114,14 +114,17 @@ public class ActivitiTracingChart {
             currentFlowNode = (FlowNode) bpmnModel.getMainProcess().getFlowElement(currentActivityInstance.getActivityId(), true);
             List<SequenceFlow> sequenceFlows = currentFlowNode.getOutgoingFlows();
 
-            // 通过outgoingFlows能够在历史活动中找到的全部节点均为已流转
+            // 通过outgoingFlows能够在历史活动中找到且目标节点和当前节点执行顺序相邻
             for (SequenceFlow sequenceFlow : sequenceFlows) {
                 targetFlowNode = (FlowNode) bpmnModel.getMainProcess().getFlowElement(sequenceFlow.getTargetRef(), true);
                 if (historicActivityNodes.contains(targetFlowNode)) {
-                    highLightedFlowIds.add(sequenceFlow.getId());
+                    int target = historicActivityNodes.indexOf(targetFlowNode);
+                    int current = historicActivityNodes.indexOf(currentFlowNode);
+                    if (target - current == 1) {
+                        highLightedFlowIds.add(sequenceFlow.getId());
+                    }
                 }
             }
-
         }
         return highLightedFlowIds;
     }
