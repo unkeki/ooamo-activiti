@@ -92,26 +92,20 @@ public class FlowController extends BaseController {
     @RequestMapping(value = "/getprocesslists", method = RequestMethod.POST)
     @ResponseBody
     public TableDataInfo getlist(@RequestParam(required = false) String key, @RequestParam(required = false) String name,
-                                 Integer pageSize, Integer pageNum) {
-        String sql = "select * from act_re_procdef where 1=1";
+                                 @RequestParam(required = false) Boolean latest, Integer pageSize, Integer pageNum) {
+        ProcessDefinitionQuery queryCondition = repositoryService.createProcessDefinitionQuery();
         if (StringUtils.isNotEmpty(key)) {
-            sql += " and key = #{key}";
+            queryCondition.processDefinitionKey(key);
         }
         if (StringUtils.isNotEmpty(name)) {
-            sql += " and name= #{name}";
+            queryCondition.processDefinitionName(name);
         }
-        sql += " order by deployment_id_ desc";
-        NativeProcessDefinitionQuery query = repositoryService.createNativeProcessDefinitionQuery().sql(sql);
-
-        if (StringUtils.isNotEmpty(key)) {
-            query.parameter("key", key);
+        if (latest) {
+            queryCondition.latestVersion();
         }
-        if (StringUtils.isNotEmpty(name)) {
-            query.parameter("name", name);
-        }
+        int total = queryCondition.list().size();
         int start = (pageNum - 1) * pageSize;
-        int total = query.list().size();
-        List<ProcessDefinition> pageList = query.listPage(start, pageSize);
+        List<ProcessDefinition> pageList = queryCondition.orderByDeploymentId().desc().listPage(start, pageSize);
         List<Process> mylist = new ArrayList<Process>();
         for (int i = 0; i < pageList.size(); i++) {
             Process p = new Process();
@@ -121,6 +115,7 @@ public class FlowController extends BaseController {
             p.setName(pageList.get(i).getName());
             p.setResourceName(pageList.get(i).getResourceName());
             p.setDiagramresourceName(pageList.get(i).getDiagramResourceName());
+            p.setVersion(pageList.get(i).getVersion());
             mylist.add(p);
         }
         TableDataInfo rspData = new TableDataInfo();

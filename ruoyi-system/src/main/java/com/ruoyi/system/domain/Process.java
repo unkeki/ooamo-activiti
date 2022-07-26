@@ -13,6 +13,8 @@ public class Process {
 
 	String diagramresourceName;
 
+	Integer version;
+
 	public String getId() {
 		return id;
 	}
@@ -59,5 +61,13 @@ public class Process {
 
 	public void setDiagramresourceName(String diagramresourceName) {
 		this.diagramresourceName = diagramresourceName;
+	}
+
+	public Integer getVersion() {
+		return version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
 	}
 }

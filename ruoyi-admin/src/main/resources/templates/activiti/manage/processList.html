@@ -17,6 +17,12 @@
 								流程名称：<input type="text" name="name"/>
 							</li>
 							<li>
+								版本：<select name="latest">
+											<option value="true" selected>只看最新版</option>
+											<option value="false">全部版本</option>
+										</select>
+							</li>
+							<li>
 								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
 							    <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
 							</li>
@@ -70,6 +76,11 @@
 		            title: '流程资源定义',
 		            sortable: true
 		        },
+				{
+					field: 'version',
+					title: '版本号',
+					sortable: true
+				},
 		        {
 		            title: '操作',
 		            align: 'center',
