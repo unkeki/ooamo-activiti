@@ -281,7 +281,7 @@ public class FlowMonitorController extends BaseController {
         return flows;
     }
 
-    @ApiOperation("流程图进度追踪,已结束标红，运行中标绿")
+    @ApiOperation("流程图进度追踪")
     @RequestMapping(value = {"/traceProcess/{processInstanceId}"}, method = RequestMethod.GET)
     public void traceprocess(@PathVariable String processInstanceId, HttpServletResponse response) throws IOException {
         activitiTracingChart.generateFlowChart(processInstanceId, response.getOutputStream());
