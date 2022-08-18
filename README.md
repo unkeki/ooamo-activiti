@@ -148,6 +148,6 @@
 ### 视频教程
 
 ![输入图片说明](pic/%E5%B0%81%E9%9D%A2.png)
-<a href="https://www.roncoo.com/view/1551481849552183297" target="_blank">RuoYi-activiti开发指南</a>
+<a href="https://mp.weixin.qq.com/s/s7vCaIlD5STMJuKMwzM32Q" target="_blank">RuoYi-activiti开发指南</a>
 ### 关注微信公众号获取更多技术文章和源码
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/1022/183316_f03b4f99_1110335.jpeg "qrcode_for_gh_4c2318bb0f7f_258.jpg")
