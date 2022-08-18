@@ -52,8 +52,10 @@
                 id: "process",
                 url: prefix + "/listExecutions",
                 modalName: "运行中的流程实例",
-                columns: [{
-                    checkbox: true
+                columns: [
+                {
+                    field: 'selectItem',
+                    radio: true
                 },
                 {
                     field: 'executionId',
