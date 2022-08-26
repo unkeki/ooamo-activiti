@@ -15,6 +15,8 @@ public class Process {
 
 	Integer version;
 
+	Boolean suspended;
+
 	public String getId() {
 		return id;
 	}
@@ -69,5 +71,13 @@ public class Process {
 
 	public void setVersion(Integer version) {
 		this.version = version;
+	}
+
+	public Boolean getSuspended() {
+		return suspended;
+	}
+
+	public void setSuspended(Boolean suspended) {
+		this.suspended = suspended;
 	}
 }

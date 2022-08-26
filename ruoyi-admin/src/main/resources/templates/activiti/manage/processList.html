@@ -74,20 +74,37 @@
 		        {
 		            field: 'resourceName',
 		            title: '流程资源定义',
-		            sortable: true
+		            sortable: true,
+					formatter: function(value, row, index) {
+						return $.table.tooltip(value);
+					}
 		        },
 				{
 					field: 'version',
 					title: '版本号',
 					sortable: true
 				},
+				{
+					title: '详情',
+					align: 'center',
+					formatter: function(value, row, index) {
+						var actions = [];
+						actions.push('<a class="btn btn-warning btn-xs" target="_blank" href="/flow/manage/showProcessDefinition/'+row.deploymentId+'/'+ row.resourceName +  '"><i class="fa fa-edit"></i>查看定义</a> ');
+						actions.push('<a class="btn btn-success btn-xs" target="_blank" href="/flow/manage/showresource?pdid='+row.id +  '"><i class="fa fa-area-chart"></i>流程图</a> ');
+						return actions.join('');
+					}
+				},
 		        {
 		            title: '操作',
 		            align: 'center',
 					formatter: function(value, row, index) {
 						var actions = [];
-						actions.push('<a class="btn btn-success btn-xs" target="_blank" href="/flow/manage/showProcessDefinition/'+row.deploymentId+'/'+ row.resourceName +  '"><i class="fa fa-edit"></i>查看</a> ');
-						actions.push('<a class="btn btn-info btn-xs" target="_blank" href="/flow/manage/showresource?pdid='+row.id +  '"><i class="fa fa-area-chart"></i>流程图</a> ');
+						if (row.suspended == true)
+						{
+							actions.push('<a class="btn btn-info btn-xs" href="javascript:void(0)" onclick="run(\'' + row.id + '\')"><i class="fa fa-plug"></i>激活</a> ');
+						} else {
+							actions.push('<a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="suspend(\'' + row.id + '\')"><i class="fa fa-bolt"></i>挂起</a> ');
+						}
 						actions.push('<a class="btn btn-primary btn-xs" href="#" onclick="model(\'' + row.id + '\')"><i class="fa fa-chrome"></i>转为模型</a> ');
 						actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="$.operate.remove(\'' + row.deploymentId + '\')"><i class="fa fa-remove"></i>删除</a>');
 						return actions.join('');
@@ -101,6 +118,14 @@
 			$.get("/flow/manage/exchangeProcessToModel/" + pdid, function (data) {
 				$.modal.alert("转换成功");
 			});
+		}
+
+		function suspend(pdid) {
+			$.modal.open('挂起流程定义', "/flow/manage/suspend?pdid=" + pdid, '780', '480');
+		}
+
+		function run(pdid) {
+			$.modal.open('激活流程定义', "/flow/manage/activate?pdid=" + pdid, '780', '480');
 		}
 	</script>
 </body>

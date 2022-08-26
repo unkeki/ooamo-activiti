@@ -20,6 +20,7 @@ import org.activiti.image.ProcessDiagramGenerator;
 import org.apache.commons.io.IOUtils;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import com.ruoyi.system.domain.Process;
@@ -29,7 +30,9 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.zip.ZipInputStream;
 
@@ -65,6 +68,20 @@ public class FlowController extends BaseController {
     public String deploy()
     {
         return prefix + "/deployProcess";
+    }
+
+    @GetMapping("suspend")
+    public String suspend(@RequestParam("pdid") String pdid, ModelMap mmap)
+    {
+        mmap.put("pdid", pdid);
+        return prefix + "/suspend";
+    }
+
+    @GetMapping("activate")
+    public String activate(@RequestParam("pdid") String pdid, ModelMap mmap)
+    {
+        mmap.put("pdid", pdid);
+        return prefix + "/activate";
     }
 
     @ApiOperation("上传一个工作流文件")
@@ -116,6 +133,7 @@ public class FlowController extends BaseController {
             p.setResourceName(pageList.get(i).getResourceName());
             p.setDiagramresourceName(pageList.get(i).getDiagramResourceName());
             p.setVersion(pageList.get(i).getVersion());
+            p.setSuspended(pageList.get(i).isSuspended());
             mylist.add(p);
         }
         TableDataInfo rspData = new TableDataInfo();
@@ -186,5 +204,32 @@ public class FlowController extends BaseController {
         // 保存模型json
         repositoryService.addModelEditorSource(modelData.getId(), objectNode.toString().getBytes(StandardCharsets.UTF_8));
         return objectNode.toString();
+    }
+
+    @ApiOperation("挂起一个流程定义")
+    @RequestMapping(value = "/suspendProcessDefinition", method = RequestMethod.GET)
+    @ResponseBody
+    public AjaxResult suspendProcessDefinition(@RequestParam("pdid") String pdid, @RequestParam("flag") Boolean flag,
+                                               @RequestParam(value="date") String date) throws Exception {
+        if (StringUtils.isNotEmpty(date)) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            repositoryService.suspendProcessDefinitionById(pdid, flag,  sdf.parse(date));
+        } else {
+            repositoryService.suspendProcessDefinitionById(pdid, flag, null);
+        }
+        return AjaxResult.success();
+    }
+
+    @ApiOperation("激活一个流程定义")
+    @RequestMapping(value = "/activateProcessDefinition", method = RequestMethod.GET)
+    @ResponseBody
+    public AjaxResult activateProcessDefinition(@RequestParam("pdid") String pdid, @RequestParam("flag") Boolean flag, @RequestParam(value="date") String date) throws Exception {
+        if (StringUtils.isNotEmpty(date)) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            repositoryService.activateProcessDefinitionById(pdid, flag,  sdf.parse(date));
+        } else {
+            repositoryService.activateProcessDefinitionById(pdid, flag, null);
+        }
+        return AjaxResult.success();
     }
 }
