@@ -5,10 +5,7 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.bean.BeanUtils;
-import com.ruoyi.system.domain.ActRuExecution;
-import com.ruoyi.system.domain.FlowInfo;
-import com.ruoyi.system.domain.TaskInfo;
-import com.ruoyi.system.domain.VariableInfo;
+import com.ruoyi.system.domain.*;
 import com.ruoyi.system.mapper.ActRuExecutionMapper;
 import com.ruoyi.web.util.ActivitiTracingChart;
 import io.swagger.annotations.Api;
@@ -22,14 +19,12 @@ import org.activiti.engine.history.HistoricProcessInstanceQuery;
 import org.activiti.engine.history.HistoricVariableInstance;
 import org.activiti.engine.impl.util.IoUtil;
 import org.activiti.engine.repository.ProcessDefinition;
-import org.activiti.engine.runtime.Execution;
-import org.activiti.engine.runtime.ExecutionQuery;
-import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.engine.runtime.ProcessInstanceQuery;
+import org.activiti.engine.runtime.*;
 import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
 import org.activiti.image.ProcessDiagramGenerator;
 import org.apache.commons.io.IOUtils;
+import org.aspectj.weaver.loadtime.Aj;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -66,7 +61,7 @@ public class FlowMonitorController extends BaseController {
     RepositoryService repositoryService;
 
     @Resource
-    ProcessEngineConfiguration configuration;
+    ManagementService managementService;
 
     @Resource
     private ActivitiTracingChart activitiTracingChart;
@@ -90,6 +85,11 @@ public class FlowMonitorController extends BaseController {
     @GetMapping("/execution")
     public String execution() {
         return prefix + "/execution";
+    }
+
+    @GetMapping("/job")
+    public String job() {
+        return prefix + "/job";
     }
 
     @GetMapping("/historyDetail")
@@ -131,16 +131,18 @@ public class FlowMonitorController extends BaseController {
             info.setEnded(p.isEnded());
             // 查看当前活动任务
             List<Task> tasks =  taskService.createTaskQuery().processInstanceId(p.getProcessInstanceId()).list();
-            String taskName = "";
-            String assignee = "";
-            for (Task t : tasks) {
-                taskName += t.getName() + ",";
-                assignee += t.getAssignee() + ",";
+            if (tasks.size() > 0) {
+                String taskName = "";
+                String assignee = "";
+                for (Task t : tasks) {
+                    taskName += t.getName() + ",";
+                    assignee += t.getAssignee() + ",";
+                }
+                taskName = taskName.substring(0, taskName.length() -1);
+                assignee = assignee.substring(0, assignee.length() -1);
+                info.setCurrentTask(taskName);
+                info.setAssignee(assignee);
             }
-            taskName = taskName.substring(0, taskName.length() -1);
-            assignee = assignee.substring(0, assignee.length() -1);
-            info.setCurrentTask(taskName);
-            info.setAssignee(assignee);
             flows.add(info);
         });
         TableDataInfo rspData = new TableDataInfo();
@@ -178,16 +180,18 @@ public class FlowMonitorController extends BaseController {
                 info.setEnded(false);
                 // 查看当前活动任务
                 List<Task> tasks =  taskService.createTaskQuery().processInstanceId(p.getId()).list();
-                String taskName = "";
-                String assignee = "";
-                for (Task t : tasks) {
-                    taskName += t.getName() + ",";
-                    assignee += t.getAssignee() + ",";
+                if (tasks.size() > 0) {
+                    String taskName = "";
+                    String assignee = "";
+                    for (Task t : tasks) {
+                        taskName += t.getName() + ",";
+                        assignee += t.getAssignee() + ",";
+                    }
+                    taskName = taskName.substring(0, taskName.length() -1);
+                    assignee = assignee.substring(0, assignee.length() -1);
+                    info.setCurrentTask(taskName);
+                    info.setAssignee(assignee);
                 }
-                taskName = taskName.substring(0, taskName.length() -1);
-                assignee = assignee.substring(0, assignee.length() -1);
-                info.setCurrentTask(taskName);
-                info.setAssignee(assignee);
             } else {
                 info.setEnded(true);
             }
@@ -262,12 +266,14 @@ public class FlowMonitorController extends BaseController {
                 info.setStartUserId(process.getStartUserId());
                 info.setName(process.getProcessDefinitionName());
                 List<Task> tasks =  taskService.createTaskQuery().processInstanceId(p.getProcInstId()).list();
-                String taskName = "";
-                for (Task t : tasks) {
-                    taskName += t.getName() + ",";
+                if (tasks.size() > 0) {
+                    String taskName = "";
+                    for (Task t : tasks) {
+                        taskName += t.getName() + ",";
+                    }
+                    taskName = taskName.substring(0, taskName.length() -1);
+                    info.setCurrentTask(taskName);
                 }
-                taskName = taskName.substring(0, taskName.length() -1);
-                info.setCurrentTask(taskName);
             }
             info.setStartTime(p.getStartTime());
             info.setExecutionId(p.getId());
@@ -324,5 +330,93 @@ public class FlowMonitorController extends BaseController {
         return rspData;
     }
 
-    
+    @ApiOperation("按类型查询所有的作业列表:定时作业、异步作业、挂起作业、死亡作业")
+    @PostMapping(value = "/listJobs")
+    @ResponseBody
+    public TableDataInfo listJobs(@RequestParam(required = false) String processDefinitionId, @RequestParam(required = false) String startDate,
+        @RequestParam(required = false) String endDate,@RequestParam Integer type, Integer pageSize, Integer pageNum) throws Exception {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        int start = (pageNum - 1) * pageSize;
+        int total = 0;
+        List<Job> jobList = null;
+        ArrayList<DeadLetterJob> jobs = new ArrayList<>();
+        TableDataInfo rspData = new TableDataInfo();
+        if (type == 1) {
+            // 定时作业
+            TimerJobQuery condition = managementService.createTimerJobQuery();
+            if (StringUtils.isNotEmpty(processDefinitionId)) {
+                condition.processDefinitionId(processDefinitionId);
+            }
+            if (StringUtils.isNotEmpty(startDate)) {
+                condition.duedateHigherThan(sdf.parse(startDate));
+            }
+            if (StringUtils.isNotEmpty(endDate)) {
+                condition.duedateLowerThan(sdf.parse(endDate));
+            }
+            total = condition.orderByJobDuedate().desc().list().size();
+            jobList = condition.orderByJobDuedate().desc().listPage(start, pageSize);
+            rspData.setRows(jobList);
+        } else if (type == 2) {
+            // 异步作业
+            JobQuery condition = managementService.createJobQuery();
+            if (StringUtils.isNotEmpty(processDefinitionId)) {
+                condition.processDefinitionId(processDefinitionId);
+            }
+            if (StringUtils.isNotEmpty(startDate)) {
+                condition.duedateHigherThan(sdf.parse(startDate));
+            }
+            if (StringUtils.isNotEmpty(endDate)) {
+                condition.duedateLowerThan(sdf.parse(endDate));
+            }
+            total = condition.orderByJobDuedate().desc().list().size();
+            jobList = condition.orderByJobDuedate().desc().listPage(start, pageSize);
+            rspData.setRows(jobList);
+        } else if (type == 3) {
+            // 挂起作业
+            SuspendedJobQuery condition = managementService.createSuspendedJobQuery();
+            if (StringUtils.isNotEmpty(processDefinitionId)) {
+                condition.processDefinitionId(processDefinitionId);
+            }
+            if (StringUtils.isNotEmpty(startDate)) {
+                condition.duedateHigherThan(sdf.parse(startDate));
+            }
+            if (StringUtils.isNotEmpty(endDate)) {
+                condition.duedateLowerThan(sdf.parse(endDate));
+            }
+            total = condition.orderByJobDuedate().desc().list().size();
+            jobList = condition.orderByJobDuedate().desc().listPage(start, pageSize);
+            rspData.setRows(jobList);
+        } else if (type == 4) {
+            // 死亡作业
+            DeadLetterJobQuery condition = managementService.createDeadLetterJobQuery();
+            if (StringUtils.isNotEmpty(processDefinitionId)) {
+                condition.processDefinitionId(processDefinitionId);
+            }
+            if (StringUtils.isNotEmpty(startDate)) {
+                condition.duedateHigherThan(sdf.parse(startDate));
+            }
+            if (StringUtils.isNotEmpty(endDate)) {
+                condition.duedateLowerThan(sdf.parse(endDate));
+            }
+            total = condition.orderByJobDuedate().desc().list().size();
+            jobList = condition.orderByJobDuedate().desc().listPage(start, pageSize);
+
+            jobList.stream().forEach(j->{
+                DeadLetterJob job = new DeadLetterJob();
+                job.setId(j.getId());
+                job.setDueDate(j.getDuedate());
+                job.setJobType(j.getJobType());
+                job.setExceptionMessage(j.getExceptionMessage());
+                job.setJobHandlerType(j.getJobHandlerType());
+                job.setProcessDefId(j.getProcessDefinitionId());
+                job.setProcessInstanceId(j.getProcessInstanceId());
+                job.setExecutionId(j.getExecutionId());
+                jobs.add(job);
+            });
+            rspData.setRows(jobs);
+        }
+        rspData.setCode(0);
+        rspData.setTotal(total);
+        return rspData;
+    }
 }
