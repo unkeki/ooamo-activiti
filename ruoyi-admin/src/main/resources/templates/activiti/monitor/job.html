@@ -9,7 +9,8 @@
 <div class="container-div">
     <div class="row">
         <div class="col-sm-12">
-            <div class="tabs-container">
+            <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+                <div class="tabs-container">
                 <ul class="nav nav-tabs">
                     <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true"> 定时作业</a>
                     </li>
@@ -30,22 +31,27 @@
                                             <li>
                                                 流程定义ID：<input type="text" name="processDefinitionId">
                                             </li>
+                                            <li class="select-time">
+                                                <label style="width: 100px">计划执行时间：</label>
+                                                <input style="width: 150px" type="text" class="time-input" id="startDate1" placeholder="开始时间"  name="startDate"/>
+                                                <span>-</span>
+                                                <input style="width: 150px" type="text" class="time-input" id="endDate1" placeholder="结束时间" name="endDate"/>
+                                            </li>
                                             <li>
-                                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search('formId', 'job' )"><i class="fa fa-search"></i>&nbsp;搜索</a>
-                                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset('formId', 'job')"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search('formId', 'timerjob' )"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset('formId', 'timerjob')"><i class="fa fa-refresh"></i>&nbsp;重置</a>
                                             </li>
                                         </ul>
                                     </div>
                                 </form>
                             </div>
                             <div class="col-sm-12 select-table table-striped">
-                                <table id="job"></table>
+                                <table id="timerjob"></table>
                             </div>
                         </div>
                     </div>
                     <div id="tab-2" class="tab-pane">
                         <div class="panel-body">
-
                                 <div class="col-sm-12 search-collapse">
                                     <form id="form2">
                                         <div class="select-list">
@@ -53,16 +59,22 @@
                                                 <li>
                                                     流程定义ID：<input type="text" name="processDefinitionId">
                                                 </li>
+                                                <li class="select-time">
+                                                    <label style="width: 100px">计划执行时间：</label>
+                                                    <input style="width: 150px" type="text" class="time-input" id="startDate2" placeholder="开始时间"  name="startDate"/>
+                                                    <span>-</span>
+                                                    <input style="width: 150px" type="text" class="time-input" id="endDate2" placeholder="结束时间" name="endDate"/>
+                                                </li>
                                                 <li>
-                                                    <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search('form2', 'timerjob' )"><i class="fa fa-search"></i>&nbsp;搜索</a>
-                                                    <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset('form2', 'timerjob')"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                                                    <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search('form2', 'job' )"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                                    <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset('form2', 'job')"><i class="fa fa-refresh"></i>&nbsp;重置</a>
                                                 </li>
                                             </ul>
                                         </div>
                                     </form>
                                 </div>
                             <div class="col-sm-12 select-table table-striped">
-                                <table id="timerjob"></table>
+                                <table id="job"></table>
                             </div>
                         </div>
                     </div>
@@ -97,6 +109,12 @@
                                                 <li>
                                                     流程定义ID：<input type="text" name="processDefinitionId">
                                                 </li>
+                                                <li class="select-time">
+                                                    <label style="width: 100px">计划执行时间：</label>
+                                                    <input style="width: 150px" type="text" class="time-input" id="startDate4" placeholder="开始时间"  name="startDate"/>
+                                                    <span>-</span>
+                                                    <input style="width: 150px" type="text" class="time-input" id="endDate4" placeholder="结束时间" name="endDate"/>
+                                                </li>
                                                 <li>
                                                     <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search('form4', 'deadjob' )"><i class="fa fa-search"></i>&nbsp;搜索</a>
                                                     <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset('form4', 'deadjob')"><i class="fa fa-refresh"></i>&nbsp;重置</a>
@@ -112,6 +130,7 @@
                     </div>
                 </div>
             </div>
+            </div>
         </div>
 </div>
 </div>
@@ -121,7 +140,7 @@
 
     $(function() {
         var options = {
-            id: "job",
+            id: "timerjob",
             url: prefix + "/listJobs?type=1",
             modalName: "定时作业",
             columns: [
@@ -136,7 +155,7 @@
                 },
                 {
                     field: 'duedate',
-                    title: '应当执行时间'
+                    title: '计划执行时间'
                 },
                 {
                     field: 'processInstanceId',
@@ -150,7 +169,7 @@
         $.table.init(options);
 
         var joboptions = {
-            id: "timerjob",
+            id: "job",
             url: prefix + "/listJobs?type=2",
             modalName: "异步作业",
             columns: [
@@ -165,7 +184,7 @@
                 },
                 {
                     field: 'duedate',
-                    title: '应当执行时间'
+                    title: '计划执行时间'
                 },
                 {
                     field: 'processInstanceId',
@@ -194,7 +213,7 @@
                 },
                 {
                     field: 'duedate',
-                    title: '应当执行时间'
+                    title: '计划执行时间'
                 },
                 {
                     field: 'processInstanceId',
@@ -223,7 +242,7 @@
                 },
                 {
                     field: 'dueDate',
-                    title: '应当执行时间'
+                    title: '计划执行时间'
                 },
                 {
                     field: 'processInstanceId',
@@ -238,6 +257,48 @@
                 }]
         };
         $.table.init(deadoptions);
+
+        layui.use('laydate', function(){
+            var laydate = layui.laydate;
+
+            laydate.render({
+                elem: '#startDate1',
+                type: 'datetime',
+                trigger: 'click'
+            });
+
+            laydate.render({
+                elem: '#endDate1',
+                type: 'datetime',
+                trigger: 'click'
+            });
+
+            laydate.render({
+                elem: '#startDate2',
+                type: 'datetime',
+                trigger: 'click'
+            });
+
+            laydate.render({
+                elem: '#endDate2',
+                type: 'datetime',
+                trigger: 'click'
+            });
+
+            laydate.render({
+                elem: '#startDate4',
+                type: 'datetime',
+                trigger: 'click'
+            });
+
+            laydate.render({
+                elem: '#endDate4',
+                type: 'datetime',
+                trigger: 'click'
+            });
+        });
+
+
     });
 </script>
 </body>
