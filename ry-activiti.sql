@@ -11,7 +11,7 @@
  Target Server Version : 50731
  File Encoding         : 65001
 
- Date: 12/07/2022 16:11:17
+ Date: 30/08/2022 18:04:44
 */
 
 SET NAMES utf8mb4;
@@ -43,13 +43,14 @@ CREATE TABLE `gen_table`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`table_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '代码生成业务表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '代码生成业务表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of gen_table
 -- ----------------------------
 INSERT INTO `gen_table` VALUES (1, 'purchase', '采购表', '', NULL, 'Purchase', 'crud', 'com.ruoyi.system', 'system', 'purchase', '采购', 'shenzhanwang', '0', '/', '{\"parentMenuId\":\"2000\",\"treeName\":\"\",\"treeParentCode\":\"\",\"parentMenuName\":\"功能表\",\"treeCode\":\"\"}', 'admin', '2022-05-28 10:24:22', '', '2022-05-28 10:25:46', '');
 INSERT INTO `gen_table` VALUES (2, 'meeting', '会议表', '', NULL, 'Meeting', 'crud', 'com.ruoyi.system', 'system', 'meeting', '会议', 'shenzhanwang', '0', '/', '{\"parentMenuId\":\"2013\",\"treeName\":\"\",\"treeParentCode\":\"\",\"parentMenuName\":\"发起会议\",\"treeCode\":\"\"}', 'admin', '2022-05-30 17:16:41', '', '2022-05-30 17:17:41', '');
+INSERT INTO `gen_table` VALUES (3, 'act_ru_execution', '执行实例', '', NULL, 'ActRuExecution', 'crud', 'com.ruoyi.system', 'system', 'execution', '执行实例', 'ruoyi', '0', '/', '{\"parentMenuId\":\"2014\",\"treeName\":\"\",\"treeParentCode\":\"\",\"parentMenuName\":\"执行实例\",\"treeCode\":\"\"}', 'admin', '2022-07-13 13:18:25', '', '2022-07-13 13:19:21', '');
 
 -- ----------------------------
 -- Table structure for gen_table_column
@@ -79,7 +80,7 @@ CREATE TABLE `gen_table_column`  (
   `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`column_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '代码生成业务表字段' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 44 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '代码生成业务表字段' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of gen_table_column
@@ -97,6 +98,49 @@ INSERT INTO `gen_table_column` VALUES (10, '2', 'peoplelist', '参会人员', 'v
 INSERT INTO `gen_table_column` VALUES (11, '2', 'start_time', '开始时间', 'datetime', 'Date', 'startTime', '0', '0', NULL, '1', '1', '1', NULL, 'EQ', 'datetime', '', 6, 'admin', '2022-05-30 17:16:42', NULL, '2022-05-30 17:17:41');
 INSERT INTO `gen_table_column` VALUES (12, '2', 'end_time', '结束时间', 'datetime', 'Date', 'endTime', '0', '0', NULL, '1', '1', '1', NULL, 'EQ', 'datetime', '', 7, 'admin', '2022-05-30 17:16:42', NULL, '2022-05-30 17:17:41');
 INSERT INTO `gen_table_column` VALUES (13, '2', 'content', '会议纪要', 'text', 'String', 'content', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'summernote', '', 8, 'admin', '2022-05-30 17:16:42', NULL, '2022-05-30 17:17:41');
+INSERT INTO `gen_table_column` VALUES (14, '3', 'ID_', '', 'varchar(64)', 'String', 'id', '1', '0', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admin', '2022-07-13 13:18:25', NULL, '2022-07-13 13:19:21');
+INSERT INTO `gen_table_column` VALUES (15, '3', 'REV_', '', 'int(11)', 'Long', 'rev', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 2, 'admin', '2022-07-13 13:18:25', NULL, '2022-07-13 13:19:21');
+INSERT INTO `gen_table_column` VALUES (16, '3', 'PROC_INST_ID_', '', 'varchar(64)', 'String', 'procInstId', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 3, 'admin', '2022-07-13 13:18:25', NULL, '2022-07-13 13:19:21');
+INSERT INTO `gen_table_column` VALUES (17, '3', 'BUSINESS_KEY_', '', 'varchar(255)', 'String', 'businessKey', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 4, 'admin', '2022-07-13 13:18:25', NULL, '2022-07-13 13:19:21');
+INSERT INTO `gen_table_column` VALUES (18, '3', 'PARENT_ID_', '', 'varchar(64)', 'String', 'parentId', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 5, 'admin', '2022-07-13 13:18:25', NULL, '2022-07-13 13:19:21');
+INSERT INTO `gen_table_column` VALUES (19, '3', 'PROC_DEF_ID_', '', 'varchar(64)', 'String', 'procDefId', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 6, 'admin', '2022-07-13 13:18:25', NULL, '2022-07-13 13:19:21');
+INSERT INTO `gen_table_column` VALUES (20, '3', 'SUPER_EXEC_', '', 'varchar(64)', 'String', 'superExec', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 7, 'admin', '2022-07-13 13:18:25', NULL, '2022-07-13 13:19:21');
+INSERT INTO `gen_table_column` VALUES (21, '3', 'ROOT_PROC_INST_ID_', '', 'varchar(64)', 'String', 'rootProcInstId', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 8, 'admin', '2022-07-13 13:18:25', NULL, '2022-07-13 13:19:21');
+INSERT INTO `gen_table_column` VALUES (22, '3', 'ACT_ID_', '', 'varchar(255)', 'String', 'actId', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 9, 'admin', '2022-07-13 13:18:25', NULL, '2022-07-13 13:19:21');
+INSERT INTO `gen_table_column` VALUES (23, '3', 'IS_ACTIVE_', '', 'tinyint(4)', 'Integer', 'isActive', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 10, 'admin', '2022-07-13 13:18:25', NULL, '2022-07-13 13:19:21');
+INSERT INTO `gen_table_column` VALUES (24, '3', 'IS_CONCURRENT_', '', 'tinyint(4)', 'Integer', 'isConcurrent', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 11, 'admin', '2022-07-13 13:18:25', NULL, '2022-07-13 13:19:21');
+INSERT INTO `gen_table_column` VALUES (25, '3', 'IS_SCOPE_', '', 'tinyint(4)', 'Integer', 'isScope', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 12, 'admin', '2022-07-13 13:18:25', NULL, '2022-07-13 13:19:21');
+INSERT INTO `gen_table_column` VALUES (26, '3', 'IS_EVENT_SCOPE_', '', 'tinyint(4)', 'Integer', 'isEventScope', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 13, 'admin', '2022-07-13 13:18:25', NULL, '2022-07-13 13:19:21');
+INSERT INTO `gen_table_column` VALUES (27, '3', 'IS_MI_ROOT_', '', 'tinyint(4)', 'Integer', 'isMiRoot', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 14, 'admin', '2022-07-13 13:18:25', NULL, '2022-07-13 13:19:21');
+INSERT INTO `gen_table_column` VALUES (28, '3', 'SUSPENSION_STATE_', '', 'int(11)', 'Long', 'suspensionState', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 15, 'admin', '2022-07-13 13:18:25', NULL, '2022-07-13 13:19:21');
+INSERT INTO `gen_table_column` VALUES (29, '3', 'CACHED_ENT_STATE_', '', 'int(11)', 'Long', 'cachedEntState', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 16, 'admin', '2022-07-13 13:18:25', NULL, '2022-07-13 13:19:21');
+INSERT INTO `gen_table_column` VALUES (30, '3', 'TENANT_ID_', '', 'varchar(255)', 'String', 'tenantId', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 17, 'admin', '2022-07-13 13:18:25', NULL, '2022-07-13 13:19:21');
+INSERT INTO `gen_table_column` VALUES (31, '3', 'NAME_', '', 'varchar(255)', 'String', 'name', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 18, 'admin', '2022-07-13 13:18:25', NULL, '2022-07-13 13:19:21');
+INSERT INTO `gen_table_column` VALUES (32, '3', 'START_TIME_', '', 'datetime(3)', 'Date', 'startTime', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'datetime', '', 19, 'admin', '2022-07-13 13:18:25', NULL, '2022-07-13 13:19:21');
+INSERT INTO `gen_table_column` VALUES (33, '3', 'START_USER_ID_', '', 'varchar(255)', 'String', 'startUserId', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 20, 'admin', '2022-07-13 13:18:25', NULL, '2022-07-13 13:19:21');
+INSERT INTO `gen_table_column` VALUES (34, '3', 'LOCK_TIME_', '', 'timestamp(3)', 'Date', 'lockTime', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'datetime', '', 21, 'admin', '2022-07-13 13:18:25', NULL, '2022-07-13 13:19:21');
+INSERT INTO `gen_table_column` VALUES (35, '3', 'IS_COUNT_ENABLED_', '', 'tinyint(4)', 'Integer', 'isCountEnabled', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 22, 'admin', '2022-07-13 13:18:25', NULL, '2022-07-13 13:19:21');
+INSERT INTO `gen_table_column` VALUES (36, '3', 'EVT_SUBSCR_COUNT_', '', 'int(11)', 'Long', 'evtSubscrCount', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 23, 'admin', '2022-07-13 13:18:25', NULL, '2022-07-13 13:19:21');
+INSERT INTO `gen_table_column` VALUES (37, '3', 'TASK_COUNT_', '', 'int(11)', 'Long', 'taskCount', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 24, 'admin', '2022-07-13 13:18:25', NULL, '2022-07-13 13:19:21');
+INSERT INTO `gen_table_column` VALUES (38, '3', 'JOB_COUNT_', '', 'int(11)', 'Long', 'jobCount', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 25, 'admin', '2022-07-13 13:18:25', NULL, '2022-07-13 13:19:21');
+INSERT INTO `gen_table_column` VALUES (39, '3', 'TIMER_JOB_COUNT_', '', 'int(11)', 'Long', 'timerJobCount', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 26, 'admin', '2022-07-13 13:18:25', NULL, '2022-07-13 13:19:21');
+INSERT INTO `gen_table_column` VALUES (40, '3', 'SUSP_JOB_COUNT_', '', 'int(11)', 'Long', 'suspJobCount', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 27, 'admin', '2022-07-13 13:18:25', NULL, '2022-07-13 13:19:21');
+INSERT INTO `gen_table_column` VALUES (41, '3', 'DEADLETTER_JOB_COUNT_', '', 'int(11)', 'Long', 'deadletterJobCount', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 28, 'admin', '2022-07-13 13:18:25', NULL, '2022-07-13 13:19:21');
+INSERT INTO `gen_table_column` VALUES (42, '3', 'VAR_COUNT_', '', 'int(11)', 'Long', 'varCount', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 29, 'admin', '2022-07-13 13:18:25', NULL, '2022-07-13 13:19:21');
+INSERT INTO `gen_table_column` VALUES (43, '3', 'ID_LINK_COUNT_', '', 'int(11)', 'Long', 'idLinkCount', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 30, 'admin', '2022-07-13 13:18:25', NULL, '2022-07-13 13:19:21');
+
+-- ----------------------------
+-- Table structure for hibernate_sequences
+-- ----------------------------
+DROP TABLE IF EXISTS `hibernate_sequences`;
+CREATE TABLE `hibernate_sequences`  (
+  `sequence_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `sequence_next_hi_value` int(11) NULL DEFAULT NULL
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of hibernate_sequences
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for leaveapply
@@ -113,7 +157,7 @@ CREATE TABLE `leaveapply`  (
   `reality_start_time` datetime(0) NULL DEFAULT NULL COMMENT '实际起始时间',
   `reality_end_time` datetime(0) NULL DEFAULT NULL COMMENT '实际结束时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '请假表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '请假表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of leaveapply
@@ -133,7 +177,7 @@ CREATE TABLE `meeting`  (
   `end_time` datetime(0) NULL DEFAULT NULL COMMENT '结束时间',
   `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '会议纪要',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 34 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of meeting
@@ -150,7 +194,7 @@ CREATE TABLE `purchase`  (
   `applytime` datetime(0) NULL DEFAULT NULL,
   `applyer` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 49 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 56 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of purchase
@@ -591,7 +635,7 @@ CREATE TABLE `sys_logininfor`  (
   `msg` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '提示消息',
   `login_time` datetime(0) NULL DEFAULT NULL COMMENT '访问时间',
   PRIMARY KEY (`info_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 495 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统访问记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 677 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统访问记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_logininfor
@@ -991,6 +1035,188 @@ INSERT INTO `sys_logininfor` VALUES (491, 'admin', '127.0.0.1', '内网IP', 'Chr
 INSERT INTO `sys_logininfor` VALUES (492, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-12 15:51:13');
 INSERT INTO `sys_logininfor` VALUES (493, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-12 16:05:08');
 INSERT INTO `sys_logininfor` VALUES (494, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-12 16:07:35');
+INSERT INTO `sys_logininfor` VALUES (495, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-12 16:12:21');
+INSERT INTO `sys_logininfor` VALUES (496, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '1', '验证码错误', '2022-07-13 08:55:27');
+INSERT INTO `sys_logininfor` VALUES (497, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-13 08:55:30');
+INSERT INTO `sys_logininfor` VALUES (498, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-13 09:39:09');
+INSERT INTO `sys_logininfor` VALUES (499, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-13 09:42:04');
+INSERT INTO `sys_logininfor` VALUES (500, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-13 09:57:51');
+INSERT INTO `sys_logininfor` VALUES (501, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-13 10:32:40');
+INSERT INTO `sys_logininfor` VALUES (502, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-13 10:43:08');
+INSERT INTO `sys_logininfor` VALUES (503, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-13 10:46:50');
+INSERT INTO `sys_logininfor` VALUES (504, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '1', '验证码错误', '2022-07-13 10:51:09');
+INSERT INTO `sys_logininfor` VALUES (505, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-13 10:51:13');
+INSERT INTO `sys_logininfor` VALUES (506, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-13 10:56:42');
+INSERT INTO `sys_logininfor` VALUES (507, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-13 11:01:17');
+INSERT INTO `sys_logininfor` VALUES (508, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '退出成功', '2022-07-13 11:02:49');
+INSERT INTO `sys_logininfor` VALUES (509, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-13 11:02:53');
+INSERT INTO `sys_logininfor` VALUES (510, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-13 11:05:33');
+INSERT INTO `sys_logininfor` VALUES (511, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-13 11:10:03');
+INSERT INTO `sys_logininfor` VALUES (512, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-13 11:11:45');
+INSERT INTO `sys_logininfor` VALUES (513, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-13 13:40:43');
+INSERT INTO `sys_logininfor` VALUES (514, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-13 13:44:40');
+INSERT INTO `sys_logininfor` VALUES (515, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-13 13:52:41');
+INSERT INTO `sys_logininfor` VALUES (516, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-13 14:04:34');
+INSERT INTO `sys_logininfor` VALUES (517, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-13 14:07:01');
+INSERT INTO `sys_logininfor` VALUES (518, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-13 16:34:24');
+INSERT INTO `sys_logininfor` VALUES (519, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-14 10:54:41');
+INSERT INTO `sys_logininfor` VALUES (520, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-14 13:39:51');
+INSERT INTO `sys_logininfor` VALUES (521, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-15 08:59:17');
+INSERT INTO `sys_logininfor` VALUES (522, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-15 09:03:03');
+INSERT INTO `sys_logininfor` VALUES (523, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-15 09:12:15');
+INSERT INTO `sys_logininfor` VALUES (524, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '退出成功', '2022-07-15 09:12:54');
+INSERT INTO `sys_logininfor` VALUES (525, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-15 09:12:57');
+INSERT INTO `sys_logininfor` VALUES (526, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-15 09:16:25');
+INSERT INTO `sys_logininfor` VALUES (527, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-15 09:18:49');
+INSERT INTO `sys_logininfor` VALUES (528, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '1', '验证码错误', '2022-07-15 09:26:34');
+INSERT INTO `sys_logininfor` VALUES (529, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-15 09:26:37');
+INSERT INTO `sys_logininfor` VALUES (530, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-15 09:30:14');
+INSERT INTO `sys_logininfor` VALUES (531, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-15 09:36:08');
+INSERT INTO `sys_logininfor` VALUES (532, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-15 09:44:12');
+INSERT INTO `sys_logininfor` VALUES (533, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-15 10:05:54');
+INSERT INTO `sys_logininfor` VALUES (534, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-15 16:39:48');
+INSERT INTO `sys_logininfor` VALUES (535, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-21 16:22:52');
+INSERT INTO `sys_logininfor` VALUES (536, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-22 09:56:51');
+INSERT INTO `sys_logininfor` VALUES (537, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-22 13:27:28');
+INSERT INTO `sys_logininfor` VALUES (538, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-22 15:59:33');
+INSERT INTO `sys_logininfor` VALUES (539, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '1', '验证码错误', '2022-07-22 16:02:14');
+INSERT INTO `sys_logininfor` VALUES (540, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-22 16:02:17');
+INSERT INTO `sys_logininfor` VALUES (541, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-23 13:20:54');
+INSERT INTO `sys_logininfor` VALUES (542, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-23 14:06:34');
+INSERT INTO `sys_logininfor` VALUES (543, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-25 10:17:31');
+INSERT INTO `sys_logininfor` VALUES (544, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-25 11:02:12');
+INSERT INTO `sys_logininfor` VALUES (545, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-25 14:43:58');
+INSERT INTO `sys_logininfor` VALUES (546, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '退出成功', '2022-07-25 15:23:13');
+INSERT INTO `sys_logininfor` VALUES (547, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-25 15:23:15');
+INSERT INTO `sys_logininfor` VALUES (548, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-26 16:28:29');
+INSERT INTO `sys_logininfor` VALUES (549, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-26 16:37:35');
+INSERT INTO `sys_logininfor` VALUES (550, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-26 16:40:54');
+INSERT INTO `sys_logininfor` VALUES (551, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-27 16:12:20');
+INSERT INTO `sys_logininfor` VALUES (552, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-30 19:51:27');
+INSERT INTO `sys_logininfor` VALUES (553, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-31 09:08:49');
+INSERT INTO `sys_logininfor` VALUES (554, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-07-31 16:02:16');
+INSERT INTO `sys_logininfor` VALUES (555, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-01 09:39:04');
+INSERT INTO `sys_logininfor` VALUES (556, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-01 15:31:32');
+INSERT INTO `sys_logininfor` VALUES (557, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-11 14:18:38');
+INSERT INTO `sys_logininfor` VALUES (558, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-18 10:55:58');
+INSERT INTO `sys_logininfor` VALUES (559, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-18 16:47:51');
+INSERT INTO `sys_logininfor` VALUES (560, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-24 16:10:58');
+INSERT INTO `sys_logininfor` VALUES (561, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-25 08:59:52');
+INSERT INTO `sys_logininfor` VALUES (562, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-25 09:09:26');
+INSERT INTO `sys_logininfor` VALUES (563, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-25 09:19:32');
+INSERT INTO `sys_logininfor` VALUES (564, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-25 09:29:17');
+INSERT INTO `sys_logininfor` VALUES (565, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-25 09:30:16');
+INSERT INTO `sys_logininfor` VALUES (566, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-25 09:33:29');
+INSERT INTO `sys_logininfor` VALUES (567, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-25 09:44:11');
+INSERT INTO `sys_logininfor` VALUES (568, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-25 09:45:57');
+INSERT INTO `sys_logininfor` VALUES (569, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-25 09:48:53');
+INSERT INTO `sys_logininfor` VALUES (570, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-25 13:17:24');
+INSERT INTO `sys_logininfor` VALUES (571, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-25 13:21:12');
+INSERT INTO `sys_logininfor` VALUES (572, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-25 13:22:33');
+INSERT INTO `sys_logininfor` VALUES (573, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-25 13:26:22');
+INSERT INTO `sys_logininfor` VALUES (574, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-25 13:27:31');
+INSERT INTO `sys_logininfor` VALUES (575, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '1', '验证码错误', '2022-08-25 13:30:52');
+INSERT INTO `sys_logininfor` VALUES (576, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-25 13:30:54');
+INSERT INTO `sys_logininfor` VALUES (577, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-25 13:32:47');
+INSERT INTO `sys_logininfor` VALUES (578, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-25 13:37:40');
+INSERT INTO `sys_logininfor` VALUES (579, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-25 15:29:53');
+INSERT INTO `sys_logininfor` VALUES (580, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-25 15:31:31');
+INSERT INTO `sys_logininfor` VALUES (581, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-25 15:32:27');
+INSERT INTO `sys_logininfor` VALUES (582, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-25 15:42:54');
+INSERT INTO `sys_logininfor` VALUES (583, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-25 15:46:45');
+INSERT INTO `sys_logininfor` VALUES (584, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-25 15:49:21');
+INSERT INTO `sys_logininfor` VALUES (585, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-25 16:11:55');
+INSERT INTO `sys_logininfor` VALUES (586, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-25 16:13:24');
+INSERT INTO `sys_logininfor` VALUES (587, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-25 16:18:12');
+INSERT INTO `sys_logininfor` VALUES (588, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-25 16:21:39');
+INSERT INTO `sys_logininfor` VALUES (589, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-25 16:23:26');
+INSERT INTO `sys_logininfor` VALUES (590, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '1', '验证码错误', '2022-08-25 16:25:10');
+INSERT INTO `sys_logininfor` VALUES (591, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-25 16:25:13');
+INSERT INTO `sys_logininfor` VALUES (592, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-25 16:27:48');
+INSERT INTO `sys_logininfor` VALUES (593, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-25 16:31:26');
+INSERT INTO `sys_logininfor` VALUES (594, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-25 16:45:37');
+INSERT INTO `sys_logininfor` VALUES (595, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-25 18:48:45');
+INSERT INTO `sys_logininfor` VALUES (596, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '1', '验证码错误', '2022-08-25 18:54:54');
+INSERT INTO `sys_logininfor` VALUES (597, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-25 18:54:57');
+INSERT INTO `sys_logininfor` VALUES (598, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-26 09:38:45');
+INSERT INTO `sys_logininfor` VALUES (599, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-26 09:45:23');
+INSERT INTO `sys_logininfor` VALUES (600, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-26 09:48:00');
+INSERT INTO `sys_logininfor` VALUES (601, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-26 09:49:09');
+INSERT INTO `sys_logininfor` VALUES (602, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-26 09:50:52');
+INSERT INTO `sys_logininfor` VALUES (603, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-26 09:52:20');
+INSERT INTO `sys_logininfor` VALUES (604, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-26 09:57:52');
+INSERT INTO `sys_logininfor` VALUES (605, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-26 10:02:00');
+INSERT INTO `sys_logininfor` VALUES (606, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-26 10:03:19');
+INSERT INTO `sys_logininfor` VALUES (607, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-26 10:05:03');
+INSERT INTO `sys_logininfor` VALUES (608, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-26 10:09:35');
+INSERT INTO `sys_logininfor` VALUES (609, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '退出成功', '2022-08-26 10:11:50');
+INSERT INTO `sys_logininfor` VALUES (610, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '1', '验证码错误', '2022-08-26 10:12:20');
+INSERT INTO `sys_logininfor` VALUES (611, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-26 10:12:23');
+INSERT INTO `sys_logininfor` VALUES (612, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-26 10:14:44');
+INSERT INTO `sys_logininfor` VALUES (613, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-26 10:22:37');
+INSERT INTO `sys_logininfor` VALUES (614, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-26 10:23:26');
+INSERT INTO `sys_logininfor` VALUES (615, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-26 10:41:32');
+INSERT INTO `sys_logininfor` VALUES (616, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-26 10:45:49');
+INSERT INTO `sys_logininfor` VALUES (617, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-26 11:02:37');
+INSERT INTO `sys_logininfor` VALUES (618, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-26 13:19:38');
+INSERT INTO `sys_logininfor` VALUES (619, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-26 13:32:25');
+INSERT INTO `sys_logininfor` VALUES (620, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-26 13:53:58');
+INSERT INTO `sys_logininfor` VALUES (621, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-26 14:03:10');
+INSERT INTO `sys_logininfor` VALUES (622, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-26 14:05:08');
+INSERT INTO `sys_logininfor` VALUES (623, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-26 14:06:50');
+INSERT INTO `sys_logininfor` VALUES (624, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '1', '验证码错误', '2022-08-26 14:10:33');
+INSERT INTO `sys_logininfor` VALUES (625, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-26 14:10:36');
+INSERT INTO `sys_logininfor` VALUES (626, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '1', '验证码错误', '2022-08-26 14:16:02');
+INSERT INTO `sys_logininfor` VALUES (627, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-26 14:16:05');
+INSERT INTO `sys_logininfor` VALUES (628, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '退出成功', '2022-08-26 14:18:26');
+INSERT INTO `sys_logininfor` VALUES (629, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-26 14:18:29');
+INSERT INTO `sys_logininfor` VALUES (630, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-26 14:22:06');
+INSERT INTO `sys_logininfor` VALUES (631, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-26 14:33:08');
+INSERT INTO `sys_logininfor` VALUES (632, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-26 14:44:18');
+INSERT INTO `sys_logininfor` VALUES (633, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-26 15:19:11');
+INSERT INTO `sys_logininfor` VALUES (634, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '1', '验证码错误', '2022-08-26 15:44:05');
+INSERT INTO `sys_logininfor` VALUES (635, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '1', '验证码错误', '2022-08-26 15:44:08');
+INSERT INTO `sys_logininfor` VALUES (636, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-26 15:44:13');
+INSERT INTO `sys_logininfor` VALUES (637, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-26 15:45:10');
+INSERT INTO `sys_logininfor` VALUES (638, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-27 10:02:49');
+INSERT INTO `sys_logininfor` VALUES (639, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-27 10:26:12');
+INSERT INTO `sys_logininfor` VALUES (640, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-27 10:27:18');
+INSERT INTO `sys_logininfor` VALUES (641, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-27 10:30:16');
+INSERT INTO `sys_logininfor` VALUES (642, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-27 10:32:05');
+INSERT INTO `sys_logininfor` VALUES (643, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-27 10:38:09');
+INSERT INTO `sys_logininfor` VALUES (644, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-27 10:39:15');
+INSERT INTO `sys_logininfor` VALUES (645, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-27 15:04:58');
+INSERT INTO `sys_logininfor` VALUES (646, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-27 15:08:39');
+INSERT INTO `sys_logininfor` VALUES (647, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-27 15:09:50');
+INSERT INTO `sys_logininfor` VALUES (648, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-27 15:13:01');
+INSERT INTO `sys_logininfor` VALUES (649, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-27 15:14:45');
+INSERT INTO `sys_logininfor` VALUES (650, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-27 15:18:06');
+INSERT INTO `sys_logininfor` VALUES (651, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-27 15:19:49');
+INSERT INTO `sys_logininfor` VALUES (652, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '1', '验证码错误', '2022-08-27 15:21:19');
+INSERT INTO `sys_logininfor` VALUES (653, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-27 15:21:22');
+INSERT INTO `sys_logininfor` VALUES (654, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-27 15:22:41');
+INSERT INTO `sys_logininfor` VALUES (655, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-27 15:23:43');
+INSERT INTO `sys_logininfor` VALUES (656, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-27 15:29:03');
+INSERT INTO `sys_logininfor` VALUES (657, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-27 15:32:18');
+INSERT INTO `sys_logininfor` VALUES (658, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-27 15:37:49');
+INSERT INTO `sys_logininfor` VALUES (659, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-27 15:42:10');
+INSERT INTO `sys_logininfor` VALUES (660, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-27 15:45:46');
+INSERT INTO `sys_logininfor` VALUES (661, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-27 15:52:49');
+INSERT INTO `sys_logininfor` VALUES (662, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-27 15:59:38');
+INSERT INTO `sys_logininfor` VALUES (663, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-27 16:07:44');
+INSERT INTO `sys_logininfor` VALUES (664, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-27 16:09:54');
+INSERT INTO `sys_logininfor` VALUES (665, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-27 16:10:45');
+INSERT INTO `sys_logininfor` VALUES (666, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-27 16:11:26');
+INSERT INTO `sys_logininfor` VALUES (667, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-27 16:12:23');
+INSERT INTO `sys_logininfor` VALUES (668, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-27 16:13:26');
+INSERT INTO `sys_logininfor` VALUES (669, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-27 16:15:10');
+INSERT INTO `sys_logininfor` VALUES (670, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-27 16:17:38');
+INSERT INTO `sys_logininfor` VALUES (671, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-27 16:21:17');
+INSERT INTO `sys_logininfor` VALUES (672, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-27 16:22:36');
+INSERT INTO `sys_logininfor` VALUES (673, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-27 16:25:11');
+INSERT INTO `sys_logininfor` VALUES (674, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-27 16:27:32');
+INSERT INTO `sys_logininfor` VALUES (675, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '1', '验证码错误', '2022-08-29 08:46:37');
+INSERT INTO `sys_logininfor` VALUES (676, 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-08-29 08:46:40');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -1014,7 +1240,7 @@ CREATE TABLE `sys_menu`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT '' COMMENT '备注',
   PRIMARY KEY (`menu_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2015 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '菜单权限表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2016 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '菜单权限表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_menu
@@ -1117,6 +1343,7 @@ INSERT INTO `sys_menu` VALUES (2011, '运行历史', 2002, 3, '/flow/monitor/his
 INSERT INTO `sys_menu` VALUES (2012, '采购申请', 2000, 2, '/purchase', 'menuItem', 'C', '0', '1', '', '#', 'admin', '2022-05-28 10:39:32', 'admin', '2022-05-28 10:39:40', '');
 INSERT INTO `sys_menu` VALUES (2013, '发起会议', 2000, 3, '/meeting', 'menuItem', 'C', '0', '1', NULL, '#', 'admin', '2022-05-30 16:49:20', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (2014, '执行实例', 2002, 2, '/flow/monitor/execution', 'menuItem', 'C', '0', '1', '', '#', 'admin', '2022-07-12 08:48:44', 'admin', '2022-07-12 08:51:18', '');
+INSERT INTO `sys_menu` VALUES (2015, '作业管理', 2002, 4, '/flow/monitor/job', 'menuItem', 'C', '0', '1', '', '#', 'admin', '2022-08-27 10:25:16', 'admin', '2022-08-27 10:27:38', '');
 
 -- ----------------------------
 -- Table structure for sys_notice
@@ -1164,7 +1391,7 @@ CREATE TABLE `sys_oper_log`  (
   `error_msg` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '错误消息',
   `oper_time` datetime(0) NULL DEFAULT NULL COMMENT '操作时间',
   PRIMARY KEY (`oper_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 220 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '操作日志记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 242 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '操作日志记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_oper_log
@@ -1289,6 +1516,28 @@ INSERT INTO `sys_oper_log` VALUES (216, '菜单管理', 2, 'com.ruoyi.web.contro
 INSERT INTO `sys_oper_log` VALUES (217, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.editSave()', 'POST', 1, 'admin', '研发部门', '/system/menu/edit', '127.0.0.1', '内网IP', '{\"menuId\":[\"2011\"],\"parentId\":[\"2002\"],\"menuType\":[\"C\"],\"menuName\":[\"运行历史\"],\"url\":[\"/flow/monitor/history\"],\"target\":[\"menuItem\"],\"perms\":[\"\"],\"orderNum\":[\"3\"],\"icon\":[\"#\"],\"visible\":[\"0\"],\"isRefresh\":[\"1\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-07-12 08:49:05');
 INSERT INTO `sys_oper_log` VALUES (218, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.editSave()', 'POST', 1, 'admin', '研发部门', '/system/menu/edit', '127.0.0.1', '内网IP', '{\"menuId\":[\"2014\"],\"parentId\":[\"2002\"],\"menuType\":[\"C\"],\"menuName\":[\"执行实例\"],\"url\":[\"/flow/monitor/listExecutions\"],\"target\":[\"menuItem\"],\"perms\":[\"\"],\"orderNum\":[\"2\"],\"icon\":[\"#\"],\"visible\":[\"0\"],\"isRefresh\":[\"1\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-07-12 08:49:39');
 INSERT INTO `sys_oper_log` VALUES (219, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.editSave()', 'POST', 1, 'admin', '研发部门', '/system/menu/edit', '127.0.0.1', '内网IP', '{\"menuId\":[\"2014\"],\"parentId\":[\"2002\"],\"menuType\":[\"C\"],\"menuName\":[\"执行实例\"],\"url\":[\"/flow/monitor/execution\"],\"target\":[\"menuItem\"],\"perms\":[\"\"],\"orderNum\":[\"2\"],\"icon\":[\"#\"],\"visible\":[\"0\"],\"isRefresh\":[\"1\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-07-12 08:51:18');
+INSERT INTO `sys_oper_log` VALUES (220, '请假', 1, 'com.ruoyi.web.controller.activiti.LeaveapplyController.addSave()', 'POST', 1, 'admin', '研发部门', '/leaveapply/add', '127.0.0.1', '内网IP', '{\"userId\":[\"admin\"],\"leaveType\":[\"事假\"],\"startTime\":[\"2022-07-13 09:45:59\"],\"endTime\":[\"2022-07-14 10:50:59\"],\"reason\":[\"d\"],\"deptleader\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-07-13 09:50:09');
+INSERT INTO `sys_oper_log` VALUES (221, '采购', 1, 'com.ruoyi.web.controller.activiti.PurchaseController.addSave()', 'POST', 1, 'admin', '研发部门', '/purchase/add', '127.0.0.1', '内网IP', '{\"itemlist\":[\"ad\"],\"total\":[\"213\"],\"applyer\":[\"admin\"],\"purchasemanager\":[\"admin\"],\"finance\":[\"admin\"],\"pay\":[\"admin\"],\"manager\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-07-13 10:00:33');
+INSERT INTO `sys_oper_log` VALUES (222, '采购', 1, 'com.ruoyi.web.controller.activiti.PurchaseController.addSave()', 'POST', 1, 'admin', '研发部门', '/purchase/add', '127.0.0.1', '内网IP', '{\"itemlist\":[\"asd\"],\"total\":[\"21\"],\"applyer\":[\"admin\"],\"purchasemanager\":[\"admin\"],\"finance\":[\"admin\"],\"pay\":[\"admin\"],\"manager\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-07-13 10:00:39');
+INSERT INTO `sys_oper_log` VALUES (223, '代码生成', 6, 'com.ruoyi.generator.controller.GenController.importTableSave()', 'POST', 1, 'admin', '研发部门', '/tool/gen/importTable', '127.0.0.1', '内网IP', '{\"tables\":[\"act_ru_execution\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-07-13 13:18:25');
+INSERT INTO `sys_oper_log` VALUES (224, '代码生成', 2, 'com.ruoyi.generator.controller.GenController.editSave()', 'POST', 1, 'admin', '研发部门', '/tool/gen/edit', '127.0.0.1', '内网IP', '{\"tableId\":[\"3\"],\"tableName\":[\"act_ru_execution\"],\"tableComment\":[\"执行实例\"],\"className\":[\"ActRuExecution\"],\"functionAuthor\":[\"ruoyi\"],\"remark\":[\"\"],\"columns[0].columnId\":[\"14\"],\"columns[0].sort\":[\"1\"],\"columns[0].columnComment\":[\"\"],\"columns[0].javaType\":[\"String\"],\"columns[0].javaField\":[\"id\"],\"columns[0].isInsert\":[\"1\"],\"columns[0].queryType\":[\"EQ\"],\"columns[0].htmlType\":[\"input\"],\"columns[0].dictType\":[\"\"],\"columns[1].columnId\":[\"15\"],\"columns[1].sort\":[\"2\"],\"columns[1].columnComment\":[\"\"],\"columns[1].javaType\":[\"Long\"],\"columns[1].javaField\":[\"rev\"],\"columns[1].isInsert\":[\"1\"],\"columns[1].isEdit\":[\"1\"],\"columns[1].isList\":[\"1\"],\"columns[1].isQuery\":[\"1\"],\"columns[1].queryType\":[\"EQ\"],\"columns[1].htmlType\":[\"input\"],\"columns[1].dictType\":[\"\"],\"columns[2].columnId\":[\"16\"],\"columns[2].sort\":[\"3\"],\"columns[2].columnComment\":[\"\"],\"columns[2].javaType\":[\"String\"],\"columns[2].javaField\":[\"procInstId\"],\"columns[2].isInsert\":[\"1\"],\"columns[2].isEdit\":[\"1\"],\"columns[2].isList\":[\"1\"],\"columns[2].isQuery\":[\"1\"],\"columns[2].queryType\":[\"EQ\"],\"columns[2].htmlType\":[\"input\"],\"columns[2].dictType\":[\"\"],\"columns[3].columnId\":[\"17\"],\"columns[3].sort\":[\"4\"],\"columns[3].columnComment\":[\"\"],\"columns[3].javaType\":[\"String\"],\"columns[3].javaField\":[\"businessKey\"],\"columns[3].isInsert\":[\"1\"],\"columns[3].isEdit\":[\"1\"],\"columns[3].isList\":[\"1\"],\"columns[3].isQuery\":[\"1\"],\"columns[3].queryType\":[\"EQ\"],\"columns[3].htmlType\":[\"input\"],\"columns[3].dictType\":[\"\"],\"columns[4].columnId\":[\"18\"],\"columns[4].sort\":[\"5\"],\"columns[4].columnComment\":[\"\"],\"columns[4].javaType\":[\"String\"],\"columns[4].javaField\":[\"parentId\"],\"columns[4].isInsert\":[\"1\"],\"columns[4].isEdit\":[\"1\"],\"columns[4].isList\":[\"1\"],\"columns[4].isQuery\":[\"1\"],\"columns[4].queryType\":[\"EQ\"],\"columns[4].htmlType\":[\"input\"],\"columns[4].dictType\":[\"\"],\"columns[5].columnId\":[\"19\"],\"columns[5].sort\":[\"6\"],\"columns[5].columnComment\":[\"\"],\"columns[5].javaType\":[\"String\"],\"columns[5].javaField\":[\"procDefId\"],\"columns[5].isInsert\":[\"1\"],\"columns', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-07-13 13:19:21');
+INSERT INTO `sys_oper_log` VALUES (225, '代码生成', 8, 'com.ruoyi.generator.controller.GenController.batchGenCode()', 'GET', 1, 'admin', '研发部门', '/tool/gen/batchGenCode', '127.0.0.1', '内网IP', '{\"tables\":[\"act_ru_execution\"]}', NULL, 0, NULL, '2022-07-13 13:19:30');
+INSERT INTO `sys_oper_log` VALUES (226, '请假', 1, 'com.ruoyi.web.controller.activiti.LeaveapplyController.addSave()', 'POST', 1, 'admin', '研发部门', '/leaveapply/add', '127.0.0.1', '内网IP', '{\"userId\":[\"admin\"],\"leaveType\":[\"事假\"],\"startTime\":[\"2022-07-06 05:25:57\"],\"endTime\":[\"2022-07-06 06:50:57\"],\"reason\":[\"阿萨德\"],\"deptleader\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-07-14 10:55:05');
+INSERT INTO `sys_oper_log` VALUES (227, '请假', 1, 'com.ruoyi.web.controller.activiti.LeaveapplyController.addSave()', 'POST', 1, 'admin', '研发部门', '/leaveapply/add', '127.0.0.1', '内网IP', '{\"userId\":[\"admin\"],\"leaveType\":[\"事假\"],\"startTime\":[\"2022-07-05 05:25:54\"],\"endTime\":[\"2022-07-22 14:50:54\"],\"reason\":[\"有事\"],\"deptleader\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-07-22 14:05:13');
+INSERT INTO `sys_oper_log` VALUES (228, '采购', 1, 'com.ruoyi.web.controller.activiti.PurchaseController.addSave()', 'POST', 1, 'admin', '研发部门', '/purchase/add', '127.0.0.1', '内网IP', '{\"itemlist\":[\"阿打算\"],\"total\":[\"111\"],\"applyer\":[\"admin\"],\"purchasemanager\":[\"admin\"],\"finance\":[\"admin\"],\"pay\":[\"admin\"],\"manager\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-07-22 16:07:39');
+INSERT INTO `sys_oper_log` VALUES (229, '采购', 1, 'com.ruoyi.web.controller.activiti.PurchaseController.addSave()', 'POST', 1, 'admin', '研发部门', '/purchase/add', '127.0.0.1', '内网IP', '{\"itemlist\":[\"水电费\"],\"total\":[\"123\"],\"applyer\":[\"admin\"],\"purchasemanager\":[\"admin\"],\"finance\":[\"admin\"],\"pay\":[\"admin\"],\"manager\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-07-22 16:07:44');
+INSERT INTO `sys_oper_log` VALUES (230, '请假', 1, 'com.ruoyi.web.controller.activiti.LeaveapplyController.addSave()', 'POST', 1, 'admin', '研发部门', '/leaveapply/add', '127.0.0.1', '内网IP', '{\"userId\":[\"admin\"],\"leaveType\":[\"事假\"],\"startTime\":[\"2022-07-06 05:25:02\"],\"endTime\":[\"2022-07-13 10:50:02\"],\"reason\":[\"第三方\"],\"deptleader\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-07-23 14:04:08');
+INSERT INTO `sys_oper_log` VALUES (231, '采购', 1, 'com.ruoyi.web.controller.activiti.PurchaseController.addSave()', 'POST', 1, 'admin', '研发部门', '/purchase/add', '127.0.0.1', '内网IP', '{\"itemlist\":[\"asd\"],\"total\":[\"12345\"],\"applyer\":[\"admin\"],\"purchasemanager\":[\"admin\"],\"finance\":[\"admin\"],\"pay\":[\"admin\"],\"manager\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-07-25 14:03:54');
+INSERT INTO `sys_oper_log` VALUES (232, '请假', 3, 'com.ruoyi.web.controller.activiti.LeaveapplyController.remove()', 'POST', 1, 'admin', '研发部门', '/leaveapply/remove', '127.0.0.1', '内网IP', '{\"ids\":[\"7,8,9,10\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-07-31 16:02:35');
+INSERT INTO `sys_oper_log` VALUES (233, '请假', 1, 'com.ruoyi.web.controller.activiti.LeaveapplyController.addSave()', 'POST', 1, 'admin', '研发部门', '/leaveapply/add', '127.0.0.1', '内网IP', '{\"userId\":[\"admin\"],\"leaveType\":[\"事假\"],\"startTime\":[\"2022-07-06 05:30:48\"],\"endTime\":[\"2022-07-07 06:30:48\"],\"reason\":[\"有事\"],\"deptleader\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-07-31 16:10:15');
+INSERT INTO `sys_oper_log` VALUES (234, '请假', 3, 'com.ruoyi.web.controller.activiti.LeaveapplyController.remove()', 'POST', 1, 'admin', '研发部门', '/leaveapply/remove', '127.0.0.1', '内网IP', '{\"ids\":[\"11\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-07-31 17:03:29');
+INSERT INTO `sys_oper_log` VALUES (235, '采购', 1, 'com.ruoyi.web.controller.activiti.PurchaseController.addSave()', 'POST', 1, 'admin', '研发部门', '/purchase/add', '127.0.0.1', '内网IP', '{\"itemlist\":[\"书\"],\"total\":[\"111\"],\"applyer\":[\"admin\"],\"purchasemanager\":[\"admin\"],\"finance\":[\"admin\"],\"pay\":[\"ry\"],\"manager\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-08-01 10:18:34');
+INSERT INTO `sys_oper_log` VALUES (236, '采购', 1, 'com.ruoyi.web.controller.activiti.PurchaseController.addSave()', 'POST', 1, 'admin', '研发部门', '/purchase/add', '127.0.0.1', '内网IP', '{\"itemlist\":[\"数据\"],\"total\":[\"123\"],\"applyer\":[\"admin\"],\"purchasemanager\":[\"admin\"],\"finance\":[\"admin\"],\"pay\":[\"admin\"],\"manager\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-08-01 10:29:02');
+INSERT INTO `sys_oper_log` VALUES (237, '请假', 1, 'com.ruoyi.web.controller.activiti.LeaveapplyController.addSave()', 'POST', 1, 'admin', '研发部门', '/leaveapply/add', '127.0.0.1', '内网IP', '{\"userId\":[\"admin\"],\"leaveType\":[\"事假\"],\"startTime\":[\"2022-08-02 01:05:26\"],\"endTime\":[\"2022-08-10 06:30:26\"],\"reason\":[\"qingjia\"],\"deptleader\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-08-01 16:10:34');
+INSERT INTO `sys_oper_log` VALUES (238, '请假', 1, 'com.ruoyi.web.controller.activiti.LeaveapplyController.addSave()', 'POST', 1, 'admin', '研发部门', '/leaveapply/add', '127.0.0.1', '内网IP', '{\"userId\":[\"admin\"],\"leaveType\":[\"事假\"],\"startTime\":[\"2022-08-08 05:25:20\"],\"endTime\":[\"2022-08-10 05:25:20\"],\"reason\":[\"qingjia\"],\"deptleader\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-08-01 17:09:29');
+INSERT INTO `sys_oper_log` VALUES (239, '请假', 1, 'com.ruoyi.web.controller.activiti.LeaveapplyController.addSave()', 'POST', 1, 'admin', '研发部门', '/leaveapply/add', '127.0.0.1', '内网IP', '{\"userId\":[\"admin\"],\"leaveType\":[\"事假\"],\"startTime\":[\"2022-08-02 01:25:28\"],\"endTime\":[\"2022-08-18 10:50:28\"],\"reason\":[\"dsf\"],\"deptleader\":[\"admin\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-08-26 10:25:36');
+INSERT INTO `sys_oper_log` VALUES (240, '菜单管理', 1, 'com.ruoyi.web.controller.system.SysMenuController.addSave()', 'POST', 1, 'admin', '研发部门', '/system/menu/add', '127.0.0.1', '内网IP', '{\"parentId\":[\"2002\"],\"menuType\":[\"C\"],\"menuName\":[\"作业管理\"],\"url\":[\"/flow/monitor/listJobs\"],\"target\":[\"menuItem\"],\"perms\":[\"\"],\"orderNum\":[\"4\"],\"icon\":[\"\"],\"visible\":[\"0\"],\"isRefresh\":[\"1\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-08-27 10:25:16');
+INSERT INTO `sys_oper_log` VALUES (241, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.editSave()', 'POST', 1, 'admin', '研发部门', '/system/menu/edit', '127.0.0.1', '内网IP', '{\"menuId\":[\"2015\"],\"parentId\":[\"2002\"],\"menuType\":[\"C\"],\"menuName\":[\"作业管理\"],\"url\":[\"/flow/monitor/job\"],\"target\":[\"menuItem\"],\"perms\":[\"\"],\"orderNum\":[\"4\"],\"icon\":[\"#\"],\"visible\":[\"0\"],\"isRefresh\":[\"1\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2022-08-27 10:27:38');
 
 -- ----------------------------
 -- Table structure for sys_post
@@ -1501,7 +1750,7 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 103, 'admin', '若依', '00', 'ry@163.com', '15888888888', '1', '', '29c67a30398638269fe600f73a054934', '111111', '0', '0', '127.0.0.1', '2022-07-12 16:07:36', '2022-05-26 15:25:37', 'admin', '2022-05-26 15:25:37', '', '2022-07-12 16:07:35', '管理员');
+INSERT INTO `sys_user` VALUES (1, 103, 'admin', '若依', '00', 'ry@163.com', '15888888888', '1', '', '29c67a30398638269fe600f73a054934', '111111', '0', '0', '127.0.0.1', '2022-08-29 08:46:40', '2022-05-26 15:25:37', 'admin', '2022-05-26 15:25:37', '', '2022-08-29 08:46:40', '管理员');
 INSERT INTO `sys_user` VALUES (2, 105, 'ry', '若依曼', '00', 'ry@qq.com', '15666666666', '1', '', '8e6d98b90472783cc73c17047ddccf36', '222222', '0', '0', '127.0.0.1', '2022-06-17 15:40:09', '2022-05-26 15:25:37', 'admin', '2022-05-26 15:25:37', 'admin', '2022-06-17 15:40:08', '测试员');
 
 -- ----------------------------
@@ -1526,7 +1775,7 @@ CREATE TABLE `sys_user_online`  (
 -- ----------------------------
 -- Records of sys_user_online
 -- ----------------------------
-INSERT INTO `sys_user_online` VALUES ('1bd6907a-fd6c-4151-b110-4f5c80b44ace', 'admin', '研发部门', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', 'on_line', '2022-07-12 16:07:32', '2022-07-12 16:09:41', 1800000);
+INSERT INTO `sys_user_online` VALUES ('7201efca-2380-4e33-a2a7-4f34f1684259', 'admin', '研发部门', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', 'on_line', '2022-08-29 08:46:33', '2022-08-29 08:55:51', 1800000);
 
 -- ----------------------------
 -- Table structure for sys_user_post
