@@ -1,0 +1,77 @@
+package com.ooamo.web.controller.activiti;
+
+import com.ooamo.common.core.domain.AjaxResult;
+import com.ooamo.common.core.domain.entity.SysUser;
+import com.ooamo.system.domain.Form;
+import com.ooamo.system.service.IFormService;
+import com.ooamo.system.service.ISysUserService;
+import com.ooamo.system.service.IUserTaskService;
+import com.ooamo.system.vo.UserTaskVO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.ooamo.common.utils.ShiroUtils.getSysUser;
+
+@Api(value = "设计用户任务接口")
+@Controller
+@RequestMapping("/userTask/manage")
+public class UserTaskController {
+
+    private String prefix = "activiti/public";
+
+    @Autowired
+    private IUserTaskService userTaskService;
+
+    @Autowired
+    private ISysUserService userService;
+
+    @Autowired
+    private IFormService formService;
+
+    @ApiOperation(value = "为任务选择待办人页面")
+    @GetMapping("/add")
+    public String add(ModelMap mmap, @RequestParam("pId") String pId)
+    {
+        SysUser user = getSysUser();
+        List<SysUser> userList = userService.selectUserList(new SysUser());
+        List<Form> formList = formService.selectFormList(new Form());
+        List<UserTaskVO> userTasks = userTaskService.findUserTaskByPdId(pId);
+        mmap.put("pdId", pId);
+        mmap.put("user", user);
+        mmap.put("userList", userList);
+        mmap.put("formList", formList);
+        mmap.put("userTasks", userTasks);
+        return prefix + "/add";
+    }
+
+    @ApiOperation(value = "通过流程定义Id获取用户任务")
+    @GetMapping("/list")
+    @ResponseBody
+    public List<UserTaskVO> findUserTaskByPdId(String pId){
+        return userTaskService.findUserTaskByPdId(pId);
+    }
+
+    @ApiOperation(value = "为每个任务添加用户")
+    @PostMapping("/addUser2Task")
+    @ResponseBody
+    public AjaxResult addUser2Task(HttpServletRequest request, @RequestParam("pdId") String pdId){
+
+        Map<String, String[]> parameterMap = request.getParameterMap();
+        Map<String, String> taskNameAssigneeMap = new HashMap<>();
+        for (Map.Entry<String, String[]> entry : parameterMap.entrySet()){
+            taskNameAssigneeMap.put(entry.getKey(), entry.getValue()[0]);
+        }
+        userTaskService.addUser2Task(taskNameAssigneeMap, pdId);
+        return AjaxResult.success();
+
+    }
+}

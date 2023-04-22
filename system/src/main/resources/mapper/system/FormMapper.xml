@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ooamo.system.mapper.FormMapper">
+    
+    <resultMap type="Form" id="FormResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="content"    column="content"    />
+        <result property="applytime"    column="applytime"    />
+        <result property="applyer"    column="applyer"    />
+    </resultMap>
+
+    <sql id="selectFormVo">
+        select id, name, content, applytime, applyer from form
+    </sql>
+
+    <select id="selectFormList" parameterType="Form" resultMap="FormResult">
+        <include refid="selectFormVo"/>
+        <where>
+            <if test="name != null and name != ''"> and name = #{name}</if>
+            <if test="content != null and content != ''"> and content = #{content}</if>
+            <if test="params.beginApplytime != null and params.beginApplytime != '' and params.endApplytime != null and params.endApplytime != ''"> and applytime between #{params.beginApplytime} and #{params.endApplytime}</if>
+            <if test="applyer != null  and applyer != ''"> and applyer = #{applyer}</if>
+        </where>
+    </select>
+    
+    <select id="selectFormById" parameterType="Long" resultMap="FormResult">
+        <include refid="selectFormVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertForm" parameterType="Form" useGeneratedKeys="true" keyProperty="id">
+        insert into form
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="content != null and content != ''">content,</if>
+            <if test="applytime != null">applytime,</if>
+            <if test="applyer != null">applyer,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="content != null and content != ''">#{content},</if>
+            <if test="applytime != null">#{applytime},</if>
+            <if test="applyer != null">#{applyer},</if>
+         </trim>
+    </insert>
+
+    <update id="updateForm" parameterType="Form">
+        update form
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="content != null and content != ''">content = #{content},</if>
+            <if test="applytime != null">applytime = #{applytime},</if>
+            <if test="applyer != null">applyer = #{applyer},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFormById" parameterType="Long">
+        delete from form where id = #{id}
+    </delete>
+
+    <delete id="deleteFormByIds" parameterType="String">
+        delete from form where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
