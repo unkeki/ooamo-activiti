@@ -1,6 +1,5 @@
 package com.ooamo.web.util;
 
-import com.ooamo.framework.web.domain.server.Sys;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowNode;
 import org.activiti.bpmn.model.SequenceFlow;
