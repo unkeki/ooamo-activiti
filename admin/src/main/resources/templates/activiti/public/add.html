@@ -36,7 +36,7 @@
     <th:block th:include="include :: footer" />
     <th:block th:include="include :: datetimepicker-js" />
     <script th:inline="javascript">
-        var prefix = ctx + "userTask/manage";
+        var prefix = ctx + "userTask";
         var pdId = [[${pdId}]];
         $("#form-purchase-add").validate({
             focusCleanup: true
@@ -44,7 +44,7 @@
 
         function submitHandler() {
             if ($.validate.form()) {
-                $.operate.save(prefix + "/addUser2Task?pdId="+pdId, $('#form-purchase-add'));
+                $.operate.save(prefix + "/addUser2Task?pdId="+pdId, $('#form-purchase-add').serialize());
             }
         }
     </script>

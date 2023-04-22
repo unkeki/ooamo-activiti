@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@Api(value = "待办任务接口")
 @Controller
 @RequestMapping("/task/manage")
 public class TaskController extends BaseController {
@@ -39,7 +38,7 @@ public class TaskController extends BaseController {
     private TaskService taskService;
 
     @Autowired
-    FormService formService;
+    private FormService formService;
 
     @Resource
     private HistoryService historyService;

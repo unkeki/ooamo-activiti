@@ -1194,7 +1194,7 @@ var table = {
                     url: url,
                     type: "post",
                     dataType: "json",
-                    data: data.serialize(),
+                    data: data,
                     beforeSend: function () {
                         $.modal.loading("正在处理中，请稍候...");
                         $.modal.disable();

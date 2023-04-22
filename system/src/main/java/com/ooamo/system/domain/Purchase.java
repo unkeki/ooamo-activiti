@@ -128,7 +128,7 @@ public class Purchase extends BaseEntity
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
-            .append("itemlist", getFormId())
+            .append("formId", getFormId())
             .append("total", getTotal())
             .append("applytime", getApplytime())
             .append("applyer", getApplyer())

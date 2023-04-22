@@ -1,6 +1,8 @@
 package com.ooamo.system.service.impl;
 
 import com.ooamo.common.utils.StringUtils;
+import com.ooamo.system.domain.FlowForm;
+import com.ooamo.system.service.IFlowFormService;
 import com.ooamo.system.service.IUserTaskService;
 import com.ooamo.system.vo.UserTaskVO;
 import org.activiti.bpmn.converter.BpmnXMLConverter;
@@ -9,6 +11,8 @@ import org.activiti.bpmn.model.Process;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.runtime.ProcessInstance;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -20,14 +24,21 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 
+import static com.ooamo.common.utils.ShiroUtils.getSysUser;
+
 @Service
 public class UserTaskServiceImpl implements IUserTaskService {
+
+    private final String formKey = "userTask/manage";
 
     @Resource
     private RepositoryService repositoryService;
 
     @Resource
     private RuntimeService runtimeService;
+
+    @Autowired
+    private IFlowFormService flowFormService;
 
     @Override
     public List<UserTaskVO> findUserTaskByPdId(String processDefinitionId) {
@@ -47,14 +58,21 @@ public class UserTaskServiceImpl implements IUserTaskService {
     public void addUser2Task(Map<String, String> assigneeUserMap, String pdId) {
 
         List<UserTaskVO> userTasks = findUserTaskByPdId(pdId);
-        HashMap<String, Object> variables = new HashMap<>();
+        Map<String, Object> variables = new HashMap<>();
         for (UserTaskVO userTaskVO : userTasks){
             String taskName = userTaskVO.getTaskName();
             String assignee = assigneeUserMap.get(taskName);
             String assigneeName = userTaskVO.getAssignee();
             variables.put(formatAssignee(assigneeName), assignee);
         }
-        runtimeService.startProcessInstanceById(pdId,variables);
+        ProcessInstance processInstance = runtimeService.startProcessInstanceById(pdId, variables);
+        FlowForm flowForm = FlowForm.builder()
+                .id(processInstance.getId())
+                .formId(Long.parseLong(assigneeUserMap.get("formId")))
+                .applyer(getSysUser().getUserName())
+                .applytime(new Date())
+                .build();
+        flowFormService.insertFlowForm(flowForm);
 
     }
 
@@ -73,6 +91,7 @@ public class UserTaskServiceImpl implements IUserTaskService {
             List<UserTask> userTasks = process.findFlowElementsOfType(UserTask.class);
             List<StartEvent> startEvents = process.findFlowElementsOfType(StartEvent.class);
             startEvents.forEach(event -> {
+                event.setFormKey(formKey);
                 UserTaskVO userTaskVO = UserTaskVO.builder()
                         .taskId(event.getId())
                         .taskName(event.getName())
@@ -82,6 +101,7 @@ public class UserTaskServiceImpl implements IUserTaskService {
                 processTasks.add(userTaskVO);
             });
             userTasks.forEach(task -> {
+                task.setFormKey(formKey);
                 UserTaskVO userTaskVO = UserTaskVO.builder()
                         .taskId(task.getId())
                         .taskName(task.getName())

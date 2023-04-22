@@ -11,7 +11,7 @@ public class Form extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
 
-	private String id;
+	private Long id;
 
 	private String name;
 
@@ -21,11 +21,11 @@ public class Form extends BaseEntity {
 
 	private String applyer;
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
