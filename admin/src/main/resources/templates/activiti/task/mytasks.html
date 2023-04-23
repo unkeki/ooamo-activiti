@@ -95,7 +95,7 @@
                     align: 'center',
                     formatter: function(value, row, index) {
                         var actions = [];
-                        actions.push('<a class="btn btn-danger btn-xs href="javascript:void(0)" onclick="showForm(\''+ row.taskName + '\',\'' + row.formKey + '?taskid=' + row.taskId +'\' )"><i class="fa fa-envelope-open"></i>办理</a>');
+                        actions.push('<a class="btn btn-danger btn-xs href="javascript:void(0)" onclick="showForm(\''+ row.taskName + '\',\'' + 'userTask/manage' + '?taskid=' + row.taskId +'\' )"><i class="fa fa-envelope-open"></i>办理</a>');
                         return actions.join('');
                     }
                 }]

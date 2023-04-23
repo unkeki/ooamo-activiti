@@ -34,7 +34,7 @@ import static com.ooamo.common.utils.ShiroUtils.getSysUser;
 @RequestMapping("/userTask")
 public class UserTaskController {
 
-    private String prefix = "activiti/public";
+    private final String prefix = "activiti/public";
 
     @Autowired
     private IUserTaskService userTaskService;

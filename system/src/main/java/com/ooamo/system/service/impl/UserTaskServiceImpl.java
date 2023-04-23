@@ -29,8 +29,6 @@ import static com.ooamo.common.utils.ShiroUtils.getSysUser;
 @Service
 public class UserTaskServiceImpl implements IUserTaskService {
 
-    private final String formKey = "userTask/manage";
-
     @Resource
     private RepositoryService repositoryService;
 
@@ -91,7 +89,6 @@ public class UserTaskServiceImpl implements IUserTaskService {
             List<UserTask> userTasks = process.findFlowElementsOfType(UserTask.class);
             List<StartEvent> startEvents = process.findFlowElementsOfType(StartEvent.class);
             startEvents.forEach(event -> {
-                event.setFormKey(formKey);
                 UserTaskVO userTaskVO = UserTaskVO.builder()
                         .taskId(event.getId())
                         .taskName(event.getName())
@@ -101,7 +98,6 @@ public class UserTaskServiceImpl implements IUserTaskService {
                 processTasks.add(userTaskVO);
             });
             userTasks.forEach(task -> {
-                task.setFormKey(formKey);
                 UserTaskVO userTaskVO = UserTaskVO.builder()
                         .taskId(task.getId())
                         .taskName(task.getName())
