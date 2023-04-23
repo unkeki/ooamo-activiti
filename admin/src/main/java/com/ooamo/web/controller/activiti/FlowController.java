@@ -7,6 +7,7 @@ import com.ooamo.common.core.domain.AjaxResult;
 import com.ooamo.common.core.domain.entity.SysUser;
 import com.ooamo.common.core.page.TableDataInfo;
 import com.ooamo.common.utils.StringUtils;
+import com.ooamo.system.domain.Process;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.activiti.bpmn.model.BpmnModel;
@@ -15,16 +16,15 @@ import org.activiti.editor.language.json.converter.BpmnJsonConverter;
 import org.activiti.engine.ProcessEngineConfiguration;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
-import org.activiti.engine.TaskService;
-import org.activiti.engine.repository.*;
+import org.activiti.engine.repository.Model;
+import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.repository.ProcessDefinitionQuery;
 import org.activiti.image.ProcessDiagramGenerator;
 import org.apache.commons.io.IOUtils;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import com.ooamo.system.domain.Process;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
@@ -48,15 +48,12 @@ public class FlowController extends BaseController {
     private RuntimeService runtimeService;
 
     @Resource
-    private TaskService taskService;
+    private RepositoryService repositoryService;
 
     @Resource
-    RepositoryService repositoryService;
+    private ProcessEngineConfiguration configuration;
 
-    @Resource
-    ProcessEngineConfiguration configuration;
-
-    private String prefix = "activiti/manage";
+    private final String prefix = "activiti/manage";
 
     @GetMapping("")
     public String processList()
@@ -85,7 +82,7 @@ public class FlowController extends BaseController {
     }
 
     @ApiOperation("上传一个工作流文件")
-    @RequestMapping(value = "/uploadworkflow", method = RequestMethod.POST)
+    @PostMapping(value = "/uploadworkflow")
     @ResponseBody
     public AjaxResult fileupload(@RequestParam MultipartFile uploadfile) {
         try {
@@ -106,7 +103,7 @@ public class FlowController extends BaseController {
     }
 
     @ApiOperation("查询已部署工作流列表")
-    @RequestMapping(value = "/getprocesslists", method = RequestMethod.POST)
+    @PostMapping(value = "/getprocesslists")
     @ResponseBody
     public TableDataInfo getlist(@RequestParam(required = false) String key, @RequestParam(required = false) String name,
                                  @RequestParam(required = false) Boolean latest, Integer pageSize, Integer pageNum) {
@@ -124,16 +121,16 @@ public class FlowController extends BaseController {
         int start = (pageNum - 1) * pageSize;
         List<ProcessDefinition> pageList = queryCondition.orderByDeploymentId().desc().listPage(start, pageSize);
         List<Process> mylist = new ArrayList<Process>();
-        for (int i = 0; i < pageList.size(); i++) {
+        for (ProcessDefinition processDefinition : pageList) {
             Process p = new Process();
-            p.setDeploymentId(pageList.get(i).getDeploymentId());
-            p.setId(pageList.get(i).getId());
-            p.setKey(pageList.get(i).getKey());
-            p.setName(pageList.get(i).getName());
-            p.setResourceName(pageList.get(i).getResourceName());
-            p.setDiagramresourceName(pageList.get(i).getDiagramResourceName());
-            p.setVersion(pageList.get(i).getVersion());
-            p.setSuspended(pageList.get(i).isSuspended());
+            p.setDeploymentId(processDefinition.getDeploymentId());
+            p.setId(processDefinition.getId());
+            p.setKey(processDefinition.getKey());
+            p.setName(processDefinition.getName());
+            p.setResourceName(processDefinition.getResourceName());
+            p.setDiagramresourceName(processDefinition.getDiagramResourceName());
+            p.setVersion(processDefinition.getVersion());
+            p.setSuspended(processDefinition.isSuspended());
             mylist.add(p);
         }
         TableDataInfo rspData = new TableDataInfo();
@@ -144,16 +141,15 @@ public class FlowController extends BaseController {
     }
 
     @ApiOperation("删除一次部署的工作流")
-    @RequestMapping(value = "/remove/{deploymentId}", method = RequestMethod.POST)
+    @PostMapping(value = "/remove/{deploymentId}")
     @ResponseBody
     public AjaxResult remove(@PathVariable String deploymentId) {
         repositoryService.deleteDeployment(deploymentId, true);
         return AjaxResult.success();
     }
 
-
     @ApiOperation("查看工作流图片")
-    @RequestMapping(value = "/showresource", method = RequestMethod.GET)
+    @GetMapping(value = "/showresource")
     public void showresource(@RequestParam("pdid") String pdid,
                        HttpServletResponse response) throws Exception {
         BpmnModel bpmnModel = repositoryService.getBpmnModel(pdid);
@@ -164,7 +160,7 @@ public class FlowController extends BaseController {
     }
 
     @ApiOperation("查看工作流定义")
-    @RequestMapping(value = "/showProcessDefinition", method = RequestMethod.GET)
+    @GetMapping(value = "/showProcessDefinition")
     public void showProcessDefinition(@RequestParam("pdid") String pdid, @RequestParam(value="resource") String resource,
                        HttpServletResponse response) throws Exception {
         InputStream is = repositoryService.getResourceAsStream(pdid, resource);
@@ -173,7 +169,7 @@ public class FlowController extends BaseController {
     }
 
     @ApiOperation("将流程定义转为模型")
-    @RequestMapping(value = "/exchangeProcessToModel/{pdid}", method = RequestMethod.GET)
+    @GetMapping(value = "/exchangeProcessToModel/{pdid}")
     @ResponseBody
     public String exchangeProcessToModel(@PathVariable("pdid") String pdid, HttpServletResponse response) throws Exception {
         ProcessDefinition definition = repositoryService.createProcessDefinitionQuery().processDefinitionId(pdid).singleResult();
@@ -207,7 +203,7 @@ public class FlowController extends BaseController {
     }
 
     @ApiOperation("挂起一个流程定义")
-    @RequestMapping(value = "/suspendProcessDefinition", method = RequestMethod.GET)
+    @GetMapping(value = "/suspendProcessDefinition")
     @ResponseBody
     public AjaxResult suspendProcessDefinition(@RequestParam("pdid") String pdid, @RequestParam("flag") Boolean flag,
                                                @RequestParam(value="date") String date) throws Exception {
@@ -221,7 +217,7 @@ public class FlowController extends BaseController {
     }
 
     @ApiOperation("激活一个流程定义")
-    @RequestMapping(value = "/activateProcessDefinition", method = RequestMethod.GET)
+    @GetMapping(value = "/activateProcessDefinition")
     @ResponseBody
     public AjaxResult activateProcessDefinition(@RequestParam("pdid") String pdid, @RequestParam("flag") Boolean flag, @RequestParam(value="date") String date) throws Exception {
         if (StringUtils.isNotEmpty(date)) {
@@ -234,7 +230,7 @@ public class FlowController extends BaseController {
     }
 
     @ApiOperation("发布一个流程定义")
-    @RequestMapping(value = "/publish", method = RequestMethod.GET)
+    @GetMapping(value = "/publish")
     @ResponseBody
     public AjaxResult publishProcessDefinition(@RequestParam("pdid") String pdid){
         SysUser sysUser = getSysUser();
@@ -244,7 +240,7 @@ public class FlowController extends BaseController {
     }
 
     @ApiOperation("激活一个流程定义")
-    @RequestMapping(value = "/startBiShow", method = RequestMethod.GET)
+    @GetMapping(value = "/startBiShow")
     @ResponseBody
     public AjaxResult startBiShow() throws Exception {
         runtimeService.startProcessInstanceByKey("bi-show" , "1");

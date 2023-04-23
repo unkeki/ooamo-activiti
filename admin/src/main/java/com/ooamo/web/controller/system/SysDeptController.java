@@ -1,16 +1,5 @@
 package com.ooamo.web.controller.system;
 
-import java.util.List;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import com.ooamo.common.annotation.Log;
 import com.ooamo.common.constant.UserConstants;
 import com.ooamo.common.core.controller.BaseController;
@@ -21,17 +10,23 @@ import com.ooamo.common.core.domain.entity.SysRole;
 import com.ooamo.common.enums.BusinessType;
 import com.ooamo.common.utils.StringUtils;
 import com.ooamo.system.service.ISysDeptService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 部门信息
- * 
- * @author ruoyi
  */
 @Controller
 @RequestMapping("/system/dept")
 public class SysDeptController extends BaseController
 {
-    private String prefix = "system/dept";
+    private final String prefix = "system/dept";
 
     @Autowired
     private ISysDeptService deptService;

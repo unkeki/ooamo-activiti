@@ -4,14 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.ooamo.common.annotation.Log;
 import com.ooamo.common.core.controller.BaseController;
 import com.ooamo.common.core.domain.AjaxResult;
-import com.ooamo.common.core.domain.entity.SysUser;
 import com.ooamo.common.core.page.TableDataInfo;
-import com.ooamo.common.enums.BusinessType;
 import com.ooamo.common.utils.StringUtils;
-import com.ooamo.system.domain.Leaveapply;
 import com.ooamo.system.domain.ModelParam;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,18 +20,15 @@ import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.Model;
 import org.activiti.engine.repository.ModelQuery;
 import org.apache.poi.util.IOUtils;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
 
 @Api(value = "模型管理接口")
 @Controller
@@ -43,12 +36,12 @@ import java.util.*;
 public class ModelManageController extends BaseController {
 
     @Resource
-    RepositoryService repositoryService;
+    private RepositoryService repositoryService;
 
     @Resource
     private ObjectMapper objectMapper;
 
-    private String prefix = "activiti/manage";
+    private final String prefix = "activiti/manage";
 
 
     @GetMapping("")
@@ -79,7 +72,6 @@ public class ModelManageController extends BaseController {
 
     /**
      * 新增模型页面
-     * @return
      */
     @GetMapping("/add")
     public String add()
@@ -87,9 +79,7 @@ public class ModelManageController extends BaseController {
         return prefix + "/add";
     }
 
-    /**
-     * 新增模型
-     */
+    @ApiOperation("新增模型")
     @PostMapping("/add")
     @ResponseBody
     public AjaxResult addSave(ModelParam modelRequest) throws JsonProcessingException {
@@ -126,6 +116,7 @@ public class ModelManageController extends BaseController {
         }
     }
 
+    @ApiOperation("发布模型")
     @RequestMapping("/deploy/{modelId}")
     @ResponseBody
     public AjaxResult modelDeployment(@PathVariable String modelId) {
@@ -147,6 +138,7 @@ public class ModelManageController extends BaseController {
         }
     }
 
+    @ApiOperation("删除模型")
     @PostMapping("/remove/{modelId}")
     @ResponseBody
     public AjaxResult removeModel(@PathVariable String modelId) {
@@ -154,6 +146,7 @@ public class ModelManageController extends BaseController {
         return AjaxResult.success("删除成功");
     }
 
+    @ApiOperation("导出模型")
     @GetMapping("/export/{modelId}")
     public void modelExport(@PathVariable String modelId, HttpServletResponse response) throws IOException {
         byte[] modelData = repositoryService.getModelEditorSource(modelId);

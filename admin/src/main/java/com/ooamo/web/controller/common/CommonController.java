@@ -24,13 +24,10 @@ import com.ooamo.common.utils.file.FileUtils;
 
 /**
  * 通用请求处理
- * 
- * @author ruoyi
  */
 @Controller
 @RequestMapping("/common")
-public class CommonController
-{
+public class CommonController {
     private static final Logger log = LoggerFactory.getLogger(CommonController.class);
 
     @Autowired

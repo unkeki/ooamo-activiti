@@ -1,49 +1,43 @@
 package com.ooamo.web.controller.activiti;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
+import com.ooamo.common.annotation.Log;
+import com.ooamo.common.core.controller.BaseController;
+import com.ooamo.common.core.domain.AjaxResult;
 import com.ooamo.common.core.domain.entity.SysUser;
+import com.ooamo.common.core.page.TableDataInfo;
+import com.ooamo.common.enums.BusinessType;
+import com.ooamo.common.utils.poi.ExcelUtil;
 import com.ooamo.system.domain.Form;
-import com.ooamo.system.domain.Leaveapply;
+import com.ooamo.system.domain.Purchase;
 import com.ooamo.system.service.IFormService;
+import com.ooamo.system.service.IPurchaseService;
 import com.ooamo.system.service.ISysUserService;
+import io.swagger.annotations.ApiOperation;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.ooamo.common.annotation.Log;
-import com.ooamo.common.enums.BusinessType;
-import com.ooamo.system.domain.Purchase;
-import com.ooamo.system.service.IPurchaseService;
-import com.ooamo.common.core.controller.BaseController;
-import com.ooamo.common.core.domain.AjaxResult;
-import com.ooamo.common.utils.poi.ExcelUtil;
-import com.ooamo.common.core.page.TableDataInfo;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 采购Controller
- * 
- * @author shenzhanwang
- * @date 2022-05-28
  */
 @Controller
 @RequestMapping("/purchase")
 public class PurchaseController extends BaseController
 {
-    private String prefix = "activiti/purchase";
+    private final String prefix = "activiti/purchase";
 
     @Autowired
     private IPurchaseService purchaseService;
@@ -66,9 +60,7 @@ public class PurchaseController extends BaseController
         return prefix + "/purchase";
     }
 
-    /**
-     * 查询采购列表
-     */
+    @ApiOperation("查询采购列表")
     @PostMapping("/list")
     @ResponseBody
     public TableDataInfo list(Purchase purchase)
@@ -78,9 +70,7 @@ public class PurchaseController extends BaseController
         return getDataTable(list);
     }
 
-    /**
-     * 导出采购列表
-     */
+    @ApiOperation("导出采购列表")
     @PostMapping("/export")
     @ResponseBody
     public AjaxResult export(Purchase purchase)
@@ -105,9 +95,7 @@ public class PurchaseController extends BaseController
         return prefix + "/add";
     }
 
-    /**
-     * 新增保存采购
-     */
+    @ApiOperation("新增保存采购")
     @Log(title = "采购", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     @ResponseBody
@@ -117,6 +105,7 @@ public class PurchaseController extends BaseController
         return toAjax(purchaseService.insertPurchase(purchase));
     }
 
+    @ApiOperation("编辑采购")
     @PostMapping("/edit")
     @ResponseBody
     public AjaxResult edit(Purchase purchase)
@@ -124,9 +113,7 @@ public class PurchaseController extends BaseController
         return toAjax(purchaseService.updatePurchase(purchase));
     }
 
-    /**
-     * 删除采购
-     */
+    @ApiOperation("删除采购")
     @Log(title = "采购", businessType = BusinessType.DELETE)
     @PostMapping( "/remove")
     @ResponseBody

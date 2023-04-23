@@ -2,6 +2,7 @@ package com.ooamo.web.controller.activiti.explorer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.swagger.annotations.ApiOperation;
 import org.activiti.editor.constants.ModelDataJsonConstants;
 import org.activiti.engine.ActivitiException;
 import org.activiti.engine.RepositoryService;
@@ -35,13 +36,11 @@ public class ModelController {
     @Autowired
     private ObjectMapper objectMapper;
 
-
     /**
      * 打开在线编辑器时加载指定模型到页面
-     * @param modelId
-     * @return
      */
-    @RequestMapping(value="/model/{modelId}/json", method = RequestMethod.GET, produces = "application/json")
+    @ApiOperation(value = "打开在线编辑器时加载指定模型到页面")
+    @GetMapping(value="/model/{modelId}/json", produces = "application/json")
     public ObjectNode getEditorJson(@PathVariable String modelId) {
         ObjectNode modelNode = null;
 
@@ -70,13 +69,9 @@ public class ModelController {
 
     /**
      * 保存流程图编辑器的信息
-     * @param modelId
-     * @param name
-     * @param description
-     * @param json_xml
-     * @param svg_xml
      */
-    @RequestMapping(value = "/model/{modelId}/save", method = RequestMethod.PUT)
+    @ApiOperation(value = "保存流程图编辑器的信息")
+    @PutMapping(value = "/model/{modelId}/save")
     @ResponseStatus(value = HttpStatus.OK)
     public void saveModel(@PathVariable String modelId, String name, String description, String json_xml, String svg_xml) {
         try {
@@ -111,10 +106,9 @@ public class ModelController {
 
     /**
      * 获取流程图编辑器的汉化文件
-     * @return
      */
-    @RequestMapping(value = "/editor/stencilset", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
-    @ResponseBody
+    @ApiOperation(value = "获取流程图编辑器的汉化文件")
+    @GetMapping(value = "/editor/stencilset", produces = "application/json;charset=utf-8")
     public String getStencilset() {
         InputStream stencilsetStream = this.getClass().getClassLoader().getResourceAsStream("stencilset.json");
         try {

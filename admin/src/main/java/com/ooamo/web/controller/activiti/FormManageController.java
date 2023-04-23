@@ -4,7 +4,6 @@ import com.ooamo.common.core.controller.BaseController;
 import com.ooamo.common.core.domain.AjaxResult;
 import com.ooamo.common.core.domain.entity.SysUser;
 import com.ooamo.common.core.page.TableDataInfo;
-import com.ooamo.common.json.JSONObject;
 import com.ooamo.common.utils.poi.ExcelUtil;
 import com.ooamo.system.domain.Form;
 import com.ooamo.system.service.IFormService;
@@ -25,7 +24,7 @@ public class FormManageController extends BaseController {
     @Resource
     private IFormService formService;
 
-    private String prefix = "activiti/form";
+    private final String prefix = "activiti/form";
 
 
     @GetMapping("")
@@ -61,18 +60,13 @@ public class FormManageController extends BaseController {
 
     }
 
-    /**
-     * 新增表单页面
-     */
     @GetMapping("/add")
     public String add()
     {
         return prefix + "/add";
     }
 
-    /**
-     * 新增表单
-     */
+    @ApiOperation("创建一个表单")
     @PostMapping("/add")
     @ResponseBody
     public AjaxResult add(Form form){
@@ -85,9 +79,7 @@ public class FormManageController extends BaseController {
 
     }
 
-    /**
-     * 编辑表单
-     */
+    @ApiOperation("编辑表单")
     @PostMapping("/edit")
     @ResponseBody
     public AjaxResult edit(String id, String content){
@@ -98,6 +90,7 @@ public class FormManageController extends BaseController {
 
     }
 
+    @ApiOperation("删除一个表单")
     @PostMapping("/remove")
     @ResponseBody
     public AjaxResult removeForm(String ids) {
@@ -105,6 +98,7 @@ public class FormManageController extends BaseController {
         return toAjax(formService.deleteFormByIds(ids));
     }
 
+    @ApiOperation("导出表单数据")
     @PostMapping("/export")
     @ResponseBody
     public AjaxResult formExport(Form form){

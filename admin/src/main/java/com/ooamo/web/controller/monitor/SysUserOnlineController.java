@@ -1,14 +1,5 @@
 package com.ooamo.web.controller.monitor;
 
-import java.util.List;
-import org.apache.shiro.authz.annotation.Logical;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import com.ooamo.common.annotation.Log;
 import com.ooamo.common.core.controller.BaseController;
 import com.ooamo.common.core.domain.AjaxResult;
@@ -21,17 +12,23 @@ import com.ooamo.framework.shiro.session.OnlineSession;
 import com.ooamo.framework.shiro.session.OnlineSessionDAO;
 import com.ooamo.system.domain.SysUserOnline;
 import com.ooamo.system.service.ISysUserOnlineService;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 /**
  * 在线用户监控
- * 
- * @author ruoyi
  */
 @Controller
 @RequestMapping("/monitor/online")
-public class SysUserOnlineController extends BaseController
-{
-    private String prefix = "monitor/online";
+public class SysUserOnlineController extends BaseController {
 
     @Autowired
     private ISysUserOnlineService userOnlineService;
@@ -43,6 +40,7 @@ public class SysUserOnlineController extends BaseController
     @GetMapping()
     public String online()
     {
+        String prefix = "monitor/online";
         return prefix + "/online";
     }
 

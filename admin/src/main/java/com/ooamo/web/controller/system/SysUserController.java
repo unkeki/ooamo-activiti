@@ -1,19 +1,5 @@
 package com.ooamo.web.controller.system;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import com.ooamo.common.annotation.Log;
 import com.ooamo.common.constant.UserConstants;
 import com.ooamo.common.core.controller.BaseController;
@@ -31,17 +17,26 @@ import com.ooamo.framework.shiro.util.AuthorizationUtils;
 import com.ooamo.system.service.ISysPostService;
 import com.ooamo.system.service.ISysRoleService;
 import com.ooamo.system.service.ISysUserService;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 用户信息
- * 
- * @author ruoyi
  */
 @Controller
 @RequestMapping("/system/user")
 public class SysUserController extends BaseController
 {
-    private String prefix = "system/user";
+    private final String prefix = "system/user";
 
     @Autowired
     private ISysUserService userService;

@@ -1,16 +1,5 @@
 package com.ooamo.web.controller.system;
 
-import java.util.List;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import com.ooamo.common.annotation.Log;
 import com.ooamo.common.constant.UserConstants;
 import com.ooamo.common.core.controller.BaseController;
@@ -24,17 +13,23 @@ import com.ooamo.framework.shiro.util.AuthorizationUtils;
 import com.ooamo.system.domain.SysUserRole;
 import com.ooamo.system.service.ISysRoleService;
 import com.ooamo.system.service.ISysUserService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 角色信息
- * 
- * @author ruoyi
  */
 @Controller
 @RequestMapping("/system/role")
 public class SysRoleController extends BaseController
 {
-    private String prefix = "system/role";
+    private final String prefix = "system/role";
 
     @Autowired
     private ISysRoleService roleService;

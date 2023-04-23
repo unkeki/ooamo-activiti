@@ -6,9 +6,9 @@ import com.ooamo.common.core.domain.entity.SysUser;
 import com.ooamo.common.core.page.TableDataInfo;
 import com.ooamo.common.utils.poi.ExcelUtil;
 import com.ooamo.system.domain.Meeting;
-import com.ooamo.system.domain.Purchase;
 import com.ooamo.system.service.IMeetingService;
 import com.ooamo.system.service.ISysUserService;
+import io.swagger.annotations.ApiOperation;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -29,7 +29,7 @@ import java.util.List;
 @RequestMapping("/meeting")
 public class MeetingController extends BaseController {
 
-    private String prefix = "activiti/meeting";
+    private final String prefix = "activiti/meeting";
 
     @Resource
     private RuntimeService runtimeService;
@@ -43,17 +43,13 @@ public class MeetingController extends BaseController {
     @Autowired
     private IMeetingService meetingService;
 
-
     @GetMapping()
     public String meeting()
     {
         return prefix + "/meeting";
     }
 
-
-    /**
-     * 查询会议列表
-     */
+    @ApiOperation("查询会议列表")
     @PostMapping("/list")
     @ResponseBody
     public TableDataInfo list(Meeting meeting)
@@ -63,9 +59,7 @@ public class MeetingController extends BaseController {
         return getDataTable(list);
     }
 
-    /**
-     * 导出会议列表
-     */
+    @ApiOperation("导出会议列表")
     @PostMapping("/export")
     @ResponseBody
     public AjaxResult export(Meeting meeting)
@@ -87,9 +81,7 @@ public class MeetingController extends BaseController {
         return prefix + "/add";
     }
 
-    /**
-     * 新增保存会议
-     */
+    @ApiOperation("新增保存会议")
     @PostMapping("/add")
     @ResponseBody
     public AjaxResult addSave(Meeting meeting)
@@ -97,6 +89,7 @@ public class MeetingController extends BaseController {
         return toAjax(meetingService.insertMeeting(meeting));
     }
 
+    @ApiOperation("编辑会议")
     @PostMapping("/edit")
     @ResponseBody
     public AjaxResult edit(Meeting meeting)
@@ -104,9 +97,7 @@ public class MeetingController extends BaseController {
         return toAjax(meetingService.updateMeeting(meeting));
     }
 
-    /**
-     * 删除会议
-     */
+    @ApiOperation("删除会议")
     @PostMapping( "/remove")
     @ResponseBody
     public AjaxResult remove(String ids)

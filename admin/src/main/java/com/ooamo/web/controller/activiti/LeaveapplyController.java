@@ -1,16 +1,20 @@
 package com.ooamo.web.controller.activiti;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
+import com.ooamo.common.annotation.Log;
+import com.ooamo.common.core.controller.BaseController;
+import com.ooamo.common.core.domain.AjaxResult;
 import com.ooamo.common.core.domain.entity.SysUser;
+import com.ooamo.common.core.page.TableDataInfo;
+import com.ooamo.common.enums.BusinessType;
+import com.ooamo.common.utils.poi.ExcelUtil;
+import com.ooamo.system.domain.Leaveapply;
+import com.ooamo.system.service.ILeaveapplyService;
 import com.ooamo.system.service.ISysUserService;
+import io.swagger.annotations.ApiOperation;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -18,28 +22,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.ooamo.common.annotation.Log;
-import com.ooamo.common.enums.BusinessType;
-import com.ooamo.system.domain.Leaveapply;
-import com.ooamo.system.service.ILeaveapplyService;
-import com.ooamo.common.core.controller.BaseController;
-import com.ooamo.common.core.domain.AjaxResult;
-import com.ooamo.common.utils.poi.ExcelUtil;
-import com.ooamo.common.core.page.TableDataInfo;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 请假Controller
- * 
- * @author shenzhanwang
- * @date 2022-04-02
  */
 @Controller
 @RequestMapping("/leaveapply")
 public class LeaveapplyController extends BaseController
 {
-    private String prefix = "activiti/leaveapply";
+    private final String prefix = "activiti/leaveapply";
 
     @Autowired
     private ILeaveapplyService leaveapplyService;
@@ -61,7 +57,6 @@ public class LeaveapplyController extends BaseController
 
     /**
      * 部门领导审批
-     * @return
      */
     @GetMapping("/deptleadercheck")
     public String deptleadercheck(String taskid, ModelMap mmap)
@@ -83,7 +78,6 @@ public class LeaveapplyController extends BaseController
 
     /**
      * 人事审批
-     * @return
      */
     @GetMapping("/hrcheck")
     public String hrcheck(String taskid, ModelMap mmap)
@@ -104,7 +98,6 @@ public class LeaveapplyController extends BaseController
 
     /**
      * 销假
-     * @return
      */
     @GetMapping("/destroyapply")
     public String destroyapply(String taskid, ModelMap mmap)
@@ -126,7 +119,6 @@ public class LeaveapplyController extends BaseController
 
     /**
      * 调整申请
-     * @return
      */
     @GetMapping("/modifyapply")
     public String modifyapply(String taskid, ModelMap mmap)
@@ -148,7 +140,6 @@ public class LeaveapplyController extends BaseController
     /**
      * 发起请假申请
      * 驳回后使用
-     * @return
      */
     @GetMapping("/addleave")
     public String addLeave(String taskid, ModelMap mmap)
@@ -167,9 +158,7 @@ public class LeaveapplyController extends BaseController
         return prefix + "/addleave";
     }
 
-    /**
-     * 查询请假列表
-     */
+    @ApiOperation("查询请假列表")
     @PostMapping("/list")
     @ResponseBody
     public TableDataInfo list(Leaveapply leaveapply)
@@ -182,9 +171,7 @@ public class LeaveapplyController extends BaseController
         return getDataTable(list);
     }
 
-    /**
-     * 导出请假列表
-     */
+    @ApiOperation("导出请假列表")
     @Log(title = "请假", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     @ResponseBody
@@ -210,9 +197,7 @@ public class LeaveapplyController extends BaseController
         return prefix + "/add";
     }
 
-    /**
-     * 发起请假流程
-     */
+    @ApiOperation("发起请假流程")
     @Log(title = "请假", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     @ResponseBody
@@ -222,6 +207,7 @@ public class LeaveapplyController extends BaseController
         return toAjax(leaveapplyService.insertLeaveapply(leaveapply));
     }
 
+    @ApiOperation("更新请假")
     @PostMapping("/update")
     @ResponseBody
     public AjaxResult update(Leaveapply leaveapply)
@@ -229,9 +215,7 @@ public class LeaveapplyController extends BaseController
         return toAjax(leaveapplyService.updateLeaveapply(leaveapply));
     }
 
-    /**
-     * 删除请假
-     */
+    @ApiOperation("删除请假")
     @Log(title = "请假", businessType = BusinessType.DELETE)
     @PostMapping( "/remove")
     @ResponseBody

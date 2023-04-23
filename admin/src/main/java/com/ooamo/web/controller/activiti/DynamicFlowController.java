@@ -6,9 +6,8 @@ import com.ooamo.common.utils.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.activiti.bpmn.BpmnAutoLayout;
-import org.activiti.bpmn.model.*;
 import org.activiti.bpmn.model.Process;
-import org.activiti.engine.HistoryService;
+import org.activiti.bpmn.model.*;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
@@ -17,7 +16,10 @@ import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.task.Task;
 import org.activiti.validation.ValidationError;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -36,12 +38,7 @@ public class DynamicFlowController {
     private TaskService taskService;
 
     @Resource
-    RepositoryService repositoryService;
-
-    @Resource
-    private HistoryService historyService;
-
-
+    private RepositoryService repositoryService;
 
     @ApiOperation("遍历流程信息")
     @GetMapping(value = "/info/{processInstanceId}")

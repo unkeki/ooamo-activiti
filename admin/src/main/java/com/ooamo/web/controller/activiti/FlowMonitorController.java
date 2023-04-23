@@ -20,10 +20,6 @@ import org.activiti.engine.history.HistoricVariableInstance;
 import org.activiti.engine.runtime.*;
 import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
-import org.aspectj.weaver.loadtime.Aj;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +28,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 流程监控
@@ -52,19 +50,18 @@ public class FlowMonitorController extends BaseController {
     private HistoryService historyService;
 
     @Resource
-    RepositoryService repositoryService;
+    private RepositoryService repositoryService;
 
     @Resource
-    ManagementService managementService;
+    private ManagementService managementService;
 
     @Resource
     private ActivitiTracingChart activitiTracingChart;
 
     @Resource
-    ActRuExecutionMapper actRuExecutionMapper;
+    private ActRuExecutionMapper actRuExecutionMapper;
 
-
-    private String prefix = "activiti/monitor";
+    private final String prefix = "activiti/monitor";
 
     @GetMapping("/instance")
     public String processList() {
@@ -99,7 +96,7 @@ public class FlowMonitorController extends BaseController {
     }
 
     @ApiOperation("查询所有正在运行的流程实例列表")
-    @RequestMapping(value = "/listProcess", method = RequestMethod.POST)
+    @PostMapping(value = "/listProcess")
     @ResponseBody
     public TableDataInfo getlist(@RequestParam(required = false) String bussinesskey, @RequestParam(required = false) String name,
                                  Integer pageSize, Integer pageNum) {
@@ -114,7 +111,7 @@ public class FlowMonitorController extends BaseController {
         int total = condition.orderByProcessDefinitionId().desc().list().size();
         List<ProcessInstance> processList = condition.orderByProcessDefinitionId().desc().listPage(start, pageSize);
         List<FlowInfo> flows = new ArrayList<>();
-        processList.stream().forEach(p -> {
+        processList.forEach(p -> {
             FlowInfo info = new FlowInfo();
             info.setProcessInstanceId(p.getProcessInstanceId());
             info.setBusinessKey(p.getBusinessKey());
@@ -147,7 +144,7 @@ public class FlowMonitorController extends BaseController {
     }
 
     @ApiOperation("查询所有流程实例列表-包含在运行和已结束")
-    @RequestMapping(value = "/listHistoryProcess", method = RequestMethod.POST)
+    @PostMapping(value = "/listHistoryProcess")
     @ResponseBody
     public TableDataInfo listHistoryProcess(@RequestParam(required = false) String bussinesskey, @RequestParam(required = false) String name,
                                             Integer pageSize, Integer pageNum) {
@@ -162,7 +159,7 @@ public class FlowMonitorController extends BaseController {
         int total = condition.orderByProcessInstanceStartTime().desc().list().size();
         List<HistoricProcessInstance> processList = condition.orderByProcessInstanceStartTime().desc().listPage(start, pageSize);
         List<FlowInfo> flows = new ArrayList<>();
-        processList.stream().forEach(p -> {
+        processList.forEach(p -> {
             FlowInfo info = new FlowInfo();
             info.setProcessInstanceId(p.getId());
             info.setBusinessKey(p.getBusinessKey());
@@ -199,7 +196,7 @@ public class FlowMonitorController extends BaseController {
     }
 
     @ApiOperation("查询一个流程的活动历史")
-    @RequestMapping(value = "/history/{processInstanceId}", method = RequestMethod.POST)
+    @PostMapping(value = "/history/{processInstanceId}")
     @ResponseBody
     public TableDataInfo history(@PathVariable String processInstanceId, Integer pageSize, Integer pageNum) {
         int start = (pageNum - 1) * pageSize;
@@ -230,12 +227,12 @@ public class FlowMonitorController extends BaseController {
     }
 
     @ApiOperation("查询所有正在运行的执行实例列表")
-    @RequestMapping(value = "/listExecutions", method = RequestMethod.POST)
+    @PostMapping(value = "/listExecutions")
     @ResponseBody
     public List<FlowInfo> listExecutions(@RequestParam(required = false) String name) {
         List<ActRuExecution> executionList = actRuExecutionMapper.selectActRuExecutionListByProcessName(name);
         List<FlowInfo> flows = new ArrayList<>();
-        executionList.stream().forEach(p -> {
+        executionList.forEach(p -> {
             FlowInfo info = new FlowInfo();
             info.setProcessInstanceId(p.getProcInstId());
             if (p.getSuspensionState() == 1L) {
@@ -282,13 +279,13 @@ public class FlowMonitorController extends BaseController {
     }
 
     @ApiOperation("流程图进度追踪")
-    @RequestMapping(value = {"/traceProcess/{processInstanceId}"}, method = RequestMethod.GET)
+    @GetMapping(value = "/traceProcess/{processInstanceId}")
     public void traceprocess(@PathVariable String processInstanceId, HttpServletResponse response) throws IOException {
         activitiTracingChart.generateFlowChart(processInstanceId, response.getOutputStream());
     }
 
     @ApiOperation("挂起一个流程实例")
-    @RequestMapping(value = "/suspend/{processInstanceId}", method = RequestMethod.GET)
+    @GetMapping(value = "/suspend/{processInstanceId}")
     @ResponseBody
     public AjaxResult suspend(@PathVariable String processInstanceId) {
         runtimeService.suspendProcessInstanceById(processInstanceId);
@@ -296,7 +293,7 @@ public class FlowMonitorController extends BaseController {
     }
 
     @ApiOperation("唤醒一个挂起的流程实例")
-    @RequestMapping(value = "/run/{processInstanceId}", method = RequestMethod.GET)
+    @GetMapping(value = "/run/{processInstanceId}")
     @ResponseBody
     public AjaxResult rerun(@PathVariable String processInstanceId) {
         runtimeService.activateProcessInstanceById(processInstanceId);
@@ -304,7 +301,7 @@ public class FlowMonitorController extends BaseController {
     }
 
     @ApiOperation("查询一个流程的变量")
-    @RequestMapping(value = "/variables/{processInstanceId}", method = RequestMethod.POST)
+    @PostMapping(value = "/variables/{processInstanceId}")
     @ResponseBody
     public TableDataInfo variables(@PathVariable String processInstanceId, Integer pageSize, Integer pageNum) {
         int start = (pageNum - 1) * pageSize;
@@ -395,7 +392,7 @@ public class FlowMonitorController extends BaseController {
             total = condition.orderByJobDuedate().desc().list().size();
             jobList = condition.orderByJobDuedate().desc().listPage(start, pageSize);
 
-            jobList.stream().forEach(j->{
+            jobList.forEach(j->{
                 DeadLetterJob job = new DeadLetterJob();
                 job.setId(j.getId());
                 job.setDueDate(j.getDuedate());

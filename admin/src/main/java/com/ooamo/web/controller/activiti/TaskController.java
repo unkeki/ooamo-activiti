@@ -6,7 +6,6 @@ import com.ooamo.common.core.domain.entity.SysUser;
 import com.ooamo.common.core.page.TableDataInfo;
 import com.ooamo.common.utils.StringUtils;
 import com.ooamo.system.domain.TaskInfo;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.activiti.engine.FormService;
 import org.activiti.engine.HistoryService;
@@ -43,7 +42,7 @@ public class TaskController extends BaseController {
     @Resource
     private HistoryService historyService;
 
-    private String prefix = "activiti/task";
+    private final String prefix = "activiti/task";
 
     @GetMapping("/mytask")
     public String mytasks()
@@ -57,9 +56,6 @@ public class TaskController extends BaseController {
         return prefix + "/alltasks";
     }
 
-    /**
-     * 查询我的待办任务列表
-     */
     @ApiOperation("查询我的待办任务列表")
     @PostMapping("/mylist")
     @ResponseBody
@@ -80,7 +76,7 @@ public class TaskController extends BaseController {
         List<Task> taskList = condition.active().orderByTaskCreateTime().desc().listPage(start, param.getPageSize());
         List<TaskInfo> tasks = new ArrayList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        taskList.stream().forEach(a->{
+        taskList.forEach(a->{
             ProcessInstance process = runtimeService.createProcessInstanceQuery().processInstanceId(a.getProcessInstanceId()).singleResult();
             TaskInfo info = new TaskInfo();
             info.setAssignee(a.getAssignee());
@@ -104,9 +100,6 @@ public class TaskController extends BaseController {
         return rspData;
     }
 
-    /**
-     * 查询所有待办任务列表
-     */
     @ApiOperation("查询所有待办任务列表")
     @PostMapping("/alllist")
     @ResponseBody
@@ -124,7 +117,7 @@ public class TaskController extends BaseController {
         List<Task> taskList = condition.active().orderByTaskCreateTime().desc().listPage(start, param.getPageSize());
         List<TaskInfo> tasks = new ArrayList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        taskList.stream().forEach(a->{
+        taskList.forEach(a->{
             ProcessInstance process = runtimeService.createProcessInstanceQuery().processInstanceId(a.getProcessInstanceId()).singleResult();
             TaskInfo info = new TaskInfo();
             info.setAssignee(a.getAssignee());
@@ -148,9 +141,7 @@ public class TaskController extends BaseController {
         return rspData;
     }
 
-    /**
-     * 用taskid查询formkey
-     **/
+
     @ApiOperation("用taskid查询formkey")
     @PostMapping("/forminfo/{taskId}")
     @ResponseBody
@@ -161,7 +152,7 @@ public class TaskController extends BaseController {
     }
 
     @ApiOperation("办理一个用户任务")
-    @RequestMapping(value = "/completeTask/{taskId}", method = RequestMethod.POST)
+    @PostMapping(value = "/completeTask/{taskId}")
     @ResponseBody
     public AjaxResult completeTask(@PathVariable("taskId") String taskId, @RequestBody(required=false) Map<String, Object> variables) {
         SysUser user = getSysUser();
@@ -183,7 +174,7 @@ public class TaskController extends BaseController {
     }
 
     @ApiOperation("任务办理时间轴")
-    @RequestMapping(value = "/history/{taskId}", method = RequestMethod.GET)
+    @GetMapping(value = "/history/{taskId}")
     @ResponseBody
     public List<TaskInfo> history(@PathVariable String taskId) {
         String processInstanceId = taskService.createTaskQuery().taskId(taskId).singleResult().getProcessInstanceId();

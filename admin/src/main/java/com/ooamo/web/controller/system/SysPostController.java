@@ -1,16 +1,5 @@
 package com.ooamo.web.controller.system;
 
-import java.util.List;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import com.ooamo.common.annotation.Log;
 import com.ooamo.common.constant.UserConstants;
 import com.ooamo.common.core.controller.BaseController;
@@ -20,17 +9,23 @@ import com.ooamo.common.enums.BusinessType;
 import com.ooamo.common.utils.poi.ExcelUtil;
 import com.ooamo.system.domain.SysPost;
 import com.ooamo.system.service.ISysPostService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 岗位信息操作处理
- * 
- * @author ruoyi
  */
 @Controller
 @RequestMapping("/system/post")
 public class SysPostController extends BaseController
 {
-    private String prefix = "system/post";
+    private final String prefix = "system/post";
 
     @Autowired
     private ISysPostService postService;
