@@ -63,12 +63,9 @@
                     title: '流程实例编号'
                 },
                 {
-                    field: 'executionId',
-                    title: '执行实例编号'
-                },
-                {
-                    field: 'businessKey',
-                    title: '业务号'
+                    field: 'processInstanceId',
+                    title: '表单',
+                    formatter: LinkFormatter
                 },
                 {
                     field: 'processName',
@@ -101,7 +98,28 @@
                 }]
             };
             $.table.init(options);
+            function LinkFormatter(value, row, index) {
 
+                var processInstanceId = row.processInstanceId;
+                var formName = showGetResult(processInstanceId);
+                // return "<a onclick=\"$.modal.open('表单信息', '/flowForm/getFlowFormContentById/" + processInstanceId + "', '780', '400');\"> " + formName + " </a>"
+                return "<a onclick=\"$.modal.openTab('表单信息', '/flowForm/getFlowFormContentById/" + processInstanceId + "');\"> " + formName + " </a>"
+            }
+            function showGetResult(processInstanceId)
+            {
+                var result = null;
+                var scriptUrl = "/flowForm/getFlowFormName/" + processInstanceId;
+                $.ajax({
+                    url: scriptUrl,
+                    type: 'get',
+                    dataType: 'text',
+                    async: false,
+                    success: function(data) {
+                        result = data;
+                    }
+                });
+                return result;
+            }
 
         });
     </script>

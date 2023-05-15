@@ -2,7 +2,9 @@ package com.ooamo.system.service.impl;
 
 import com.ooamo.common.utils.StringUtils;
 import com.ooamo.system.domain.FlowForm;
+import com.ooamo.system.domain.Form;
 import com.ooamo.system.service.IFlowFormService;
+import com.ooamo.system.service.IFormService;
 import com.ooamo.system.service.IUserTaskService;
 import com.ooamo.system.vo.UserTaskVO;
 import org.activiti.bpmn.converter.BpmnXMLConverter;
@@ -38,6 +40,9 @@ public class UserTaskServiceImpl implements IUserTaskService {
     @Autowired
     private IFlowFormService flowFormService;
 
+    @Autowired
+    private IFormService formService;
+
     @Override
     public List<UserTaskVO> findUserTaskByPdId(String processDefinitionId) {
         List<UserTaskVO> processTasks = new ArrayList<>();
@@ -64,9 +69,12 @@ public class UserTaskServiceImpl implements IUserTaskService {
             variables.put(formatAssignee(assigneeName), assignee);
         }
         ProcessInstance processInstance = runtimeService.startProcessInstanceById(pdId, variables);
+        long formId = Long.parseLong(assigneeUserMap.get("formId"));
+        Form form = formService.selectFormById(formId);
         FlowForm flowForm = FlowForm.builder()
                 .id(processInstance.getId())
-                .formId(Long.parseLong(assigneeUserMap.get("formId")))
+                .formId(formId)
+                .formContent(form.getContent())
                 .applyer(getSysUser().getUserName())
                 .applytime(new Date())
                 .build();

@@ -23,7 +23,7 @@
         <div class="form-group">
             <label class="col-sm-3 control-label">采购清单：</label>
             <div class="col-sm-8">
-                <span th:utext="${content}" readonly></span>
+                <span th:utext="${content}" id="content"></span>
             </div>
         </div>
         <div class="form-group">
@@ -58,7 +58,7 @@
 <th:block th:include="include :: footer" />
 <th:block th:include="include :: datetimepicker-js" />
 <script th:inline="javascript">
-    var prefix = ctx + "task/manage"
+    var prefix = ctx + "task/manage";
     $("#form-leaveapply-add").validate({
         focusCleanup: true
     });
@@ -67,7 +67,9 @@
         var taskid = $("#taskid").val();
         var purchaseauditi = document.querySelector("input[name='purchaseauditi']:checked").value;
         var comment = $("textarea[name=comment]").val();
-        var json = {"purchaseauditi": purchaseauditi, "comment": comment};
+        var content = document.getElementById("content");
+        var formId = [[${formId}]];
+        var json = {"purchaseauditi": purchaseauditi, "comment": comment, "content": content.innerHTML, "formId": formId};
         $.ajax({
             url : prefix + "/completeTask/" + taskid,
             type : "POST",

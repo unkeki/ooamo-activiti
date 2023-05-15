@@ -86,6 +86,7 @@ public class UserTaskController {
             mmap.put("applyer", flowForm.getApplyer());
             mmap.put("taskid", taskid);
             mmap.put("content", form.getContent());
+            mmap.put("formId", formId);
             mmap.put("taskName", t.getName());
         }
         return prefix + "/manage";

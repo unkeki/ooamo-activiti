@@ -26,6 +26,8 @@ public class FlowForm extends BaseEntity {
 
     private Long formId;
 
+    private String formContent;
+
     private String applyer;
 
     private Date applytime;

@@ -5,7 +5,9 @@ import com.ooamo.common.core.domain.AjaxResult;
 import com.ooamo.common.core.domain.entity.SysUser;
 import com.ooamo.common.core.page.TableDataInfo;
 import com.ooamo.common.utils.StringUtils;
+import com.ooamo.system.domain.Form;
 import com.ooamo.system.domain.TaskInfo;
+import com.ooamo.system.service.IFormService;
 import io.swagger.annotations.ApiOperation;
 import org.activiti.engine.FormService;
 import org.activiti.engine.HistoryService;
@@ -38,6 +40,9 @@ public class TaskController extends BaseController {
 
     @Autowired
     private FormService formService;
+
+    @Autowired
+    private IFormService iFormService;
 
     @Resource
     private HistoryService historyService;
@@ -158,6 +163,13 @@ public class TaskController extends BaseController {
         SysUser user = getSysUser();
         String username = user.getLoginName();
         taskService.setAssignee(taskId, username);
+        //更新表单数据
+        Long formId = Long.parseLong(variables.get("formId").toString());
+        String content = variables.get("content").toString();
+        Form form = iFormService.selectFormById(formId);
+        form.setContent(content);
+        iFormService.updateForm(form);
+
         // 查出流程实例id
         String processInstanceId = taskService.createTaskQuery().taskId(taskId).singleResult().getProcessInstanceId();
         if (variables == null) {
